@@ -1,0 +1,64 @@
+@startuml
+
+package Personnage{
+
+    Class Personnages{
+        -nom : String
+        -classe : Classes
+        -inventaire : Équipements[*]
+        -équipé : Équipements[2]
+        +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Équipements[*],équipé:Équipements[2])
+    }
+
+    Personnages "-race"*->Races : "est de race >"
+    Personnages "-classe"*-> Classes : "est de classe : "
+    Personnages "-caractéristiques"*->Caractéristiques : ""
+    Personnages "-inventaire"*->Équipements: ""
+
+    Class Caractéristiques{
+
+    }
+
+    Class Équipements{
+        -nom: String
+    }
+
+    Interface Armures Extends Équipements{
+        -point_armure : Integer
+    }
+    Class Lourde implements Armures{
+
+    }
+    Class Légerre implements Armures{
+
+    }
+
+    Interface Armes Extends Équipements{
+        -dégat : Dés
+        -portée : Integer
+    }
+
+    Class courantes implements Armes{
+
+    }
+
+    Class guerre implements Armes{
+
+    }
+
+    Class distance implements Armes{
+
+
+    }
+
+
+    Class Races{
+
+    }
+    Class Classes{
+
+    }
+
+}
+
+@enduml

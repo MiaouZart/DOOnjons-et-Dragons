@@ -6,7 +6,8 @@ package Personnage{
         -nom : String
         -classe : Classes
         -inventaire : Équipements[*]
-        -équipé : Équipements[2]
+        -armure : Armures
+        -armes : Armes
         +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Équipements[*],équipé:Équipements[2])
     }
 

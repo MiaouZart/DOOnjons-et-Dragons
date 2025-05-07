@@ -12,15 +12,21 @@ package Entity {
 
         +getPosX():Integer
         +getPosY():Integer
-        +getHp():Integer
         +getStrength():Integer
         +getDex():Integer
         +getInitiative():Integer
         +getSpeed():Integer
+        +getHp():Integer
+        +setHp(hp:Integer)
+
+        -move(x:Integer, y:Integer)
+        -attack(entity:Entity)
+        -actions:Dictionary<String:Func>
+        +getActions():Dictionary<String:Func>
     }
 
-    package Monstre {
-        class Monstre extends Entity.Entity {
+    package Monster {
+        class Monster extends Entity.Entity {
             -species:String
             -id:Integer
             -atkRange:Integer
@@ -31,9 +37,11 @@ package Entity {
     package Personnage{
 
         Class Personnage extends Entity.Entity {
-            -name : String
+            -name:String
             +<<create>> Personnage(nom:String,race:Races,class:Class)
 
+            -equip(stuff:Equipment)
+            -take(stuff:Equipment)
         }
 
         package Class{
@@ -77,26 +85,27 @@ package Entity {
             Class Elf extends Race{
                 +<<create>>Elf()
             }
-            Class Halfelin extends Race{
-                +<<create>>Halfelin()
+            Class Halfling extends Race{
+                +<<create>>Halfling()
             }
         }
-
     }
 }
 
 package Equipment {
     Class Equipment{
-        -name: String
-        +getName() : String
+        -name:String
+        -sprite:String
+        +getName():String
+        +getSprite():String
     }
 
     package Armor {
         Abstract Armor Extends Equipment.Equipment{
-            -class : Integer
-            -speedModifier : Integer
-            + getClass() : Integer
-            + getSpeedModifier() : Integer
+            -class:Integer
+            -speedModifier:Integer
+            + getClass():Integer
+            + getSpeedModifier():Integer
         }
 
         Abstract Heavy Extends Armor {
@@ -126,9 +135,9 @@ package Equipment {
 
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
-            -range : Integer
+            -range:Integer
 
-            +getRange() : Integer
+            +getRange():Integer
         }
 
         Abstract Simple extends Weapon {
@@ -177,41 +186,55 @@ package Equipment {
 package Dice{
     Class Dice{
         -value:Integer
-        -nbTrhow:Integer
-        +<<create>>Dice(trhow:Integer,value:Integer)
-        +trhrow():Integer
+        -nbThrow:Integer
+        +<<create>>Dice(throw:Integer,value:Integer)
+        +throw():Integer
     }
 }
 
 package Donjon{
     Class Donjon{
+        -dictEquipment:Dictionary<Equipment.Equipment, Integer[2]>
+
         +<<create>>Donjon()
-        +displayDonjon()
+        +setup()
+        +turn()
+    }
+
+    Class Map {
+        -dx:Integer
+        -dy:Integer
+        -obstacles:Set<Integer, Integer>
     }
 }
 
 
-Entity.Personnage.Personnage "-class"*-> Entity.Personnage.Class.Class : "Est de classe : "
-Entity.Personnage.Personnage "-inventory"*-> Equipment.Equipment : "A les équipements : "
-Entity.Personnage.Personnage "-weapon"*-> Equipment.Weapon.Weapon : "Armé équipes : "
-Entity.Personnage.Personnage "-armor"*-> Equipment.Armor.Armor : "Possède l'armure : "
-Entity.Personnage.Personnage "-race"*->Entity.Personnage.Race.Race : "est de race >"
-Entity.Personnage.Personnage "+getClass()"*-> Entity.Personnage.Class.Class : "Getter Est de classe : "
-Entity.Personnage.Personnage "+getInventory()"*-> Equipment.Equipment : "Getter A les équipements : "
-Entity.Personnage.Personnage "+getWeapon()"*-> Equipment.Weapon.Weapon : "Getter Armé équipes : "
-Entity.Personnage.Personnage "+getArmor()"*-> Equipment.Armor.Armor : "Getter Possède l'armure : "
-Entity.Personnage.Personnage "+getRace()"*->Entity.Personnage.Race.Race : "Getter est de race >"
+Entity.Personnage.Personnage "-class"*-> Entity.Personnage.Class.Class:"Est de classe:"
+Entity.Personnage.Personnage "-inventory"*-> Equipment.Equipment:"A les équipements:"
+Entity.Personnage.Personnage "-weapon"*-> Equipment.Weapon.Weapon:"Armé équipes:"
+Entity.Personnage.Personnage "-armor"*-> Equipment.Armor.Armor:"Possède l'armure:"
+Entity.Personnage.Personnage "-race"*->Entity.Personnage.Race.Race:"est de race >"
+Entity.Personnage.Personnage "+getClass()"*-> Entity.Personnage.Class.Class:"Getter Est de classe:"
+Entity.Personnage.Personnage "+getInventory()"*-> Equipment.Equipment:"Getter A les équipements:"
+Entity.Personnage.Personnage "+getWeapon()"*-> Equipment.Weapon.Weapon:"Getter Armé équipes:"
+Entity.Personnage.Personnage "+getArmor()"*-> Equipment.Armor.Armor:"Getter Possède l'armure:"
+Entity.Personnage.Personnage "+getRace()"*->Entity.Personnage.Race.Race:"Getter est de race >"
 
-Entity.Personnage.Personnage "+equip(weapon:Weapon)"*-> Equipment.Weapon.Weapon : "Équipe une arme : "
-Entity.Personnage.Personnage "+take(equipment:Equipment)"*-> Equipment.Equipment : "Récupère un équipement : "
+Entity.Personnage.Personnage "+equip(weapon:Weapon)"*-> Equipment.Weapon.Weapon:"Équipe une arme:"
+Entity.Personnage.Personnage "+take(equipment:Equipment)"*-> Equipment.Equipment:"Récupère un équipement:"
 
 Entity.Personnage.Class.Class "+getBaseStuff()" *--> Equipment.Equipment:"getter à pour stuff de base >"
 Entity.Personnage.Class.Class "-baseStuff[*]" *--> Equipment.Equipment:"à pour stuff de base >"
 
-Equipment.Weapon.Weapon "-damage"*-> Dice.Dice : "Dés de dommages"
-Equipment.Weapon.Weapon "getDamage()"*-> Dice.Dice : "Getter dés de dommages"
+Equipment.Weapon.Weapon "-damage"*-> Dice.Dice:"Dés de dommages"
+Equipment.Weapon.Weapon "getDamage()"*-> Dice.Dice:"Getter dés de dommages"
 
-Entity.Monstre.Monstre "-atkDamage"*->Dice.Dice : "Dés de dommages"
-Entity.Monstre.Monstre "+getAtkDamage()"*->Dice.Dice : "Getter Dés de dommages"
+Entity.Monster.Monster "-atkDamage"*->Dice.Dice:"Dés de dommages"
+Entity.Monster.Monster "+getAtkDamage()"*->Dice.Dice:"Getter Dés de dommages"
+
+Donjon.Donjon *-> Donjon.Map:"Gestion de la carte"
+Donjon.Donjon *-> Entity.Monster:"Création des monstres et les positionnes"
+Donjon.Donjon *-> Entity.Personnage.Personnage:"Positionne les joueurs"
+Donjon.Donjon *-> Equipment.Equipment:"Place de l'équipement"
 
 @enduml

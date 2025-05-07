@@ -5,53 +5,19 @@ package Personnage{
     Class Personnage{
         -nom : String
         -classe : Classe
-        -inventaire : Équipement[*]
-        -armure : Armure
-        -armes : Arme
-        +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Équipements[*],équipé:Équipements[2])
+        -inventaire : Equipment[*]
+        -Armor : Armor
+        -Weapons : Weapon
+        +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
     }
 
     Personnage "-race"*->Race : "est de race >"
     Personnage "-classe"*-> Classe : "est de classe : "
     Personnage "-caractéristique"*->Caractéristique : ""
-    Personnage "-inventaire"*->Équipement: ""
 
     Class Caractéristique{
 
     }
-
-    Class Équipement{
-        -nom: String
-    }
-
-    Interface Armure Extends Équipement{
-        -point_armure : Integer
-    }
-    Class Lourde implements Armure{
-
-    }
-    Class Légerre implements Armure{
-
-    }
-
-    Interface Arme Extends Équipement{
-        -dégat : Dés
-        -portée : Integer
-    }
-
-    Interface courante implements Arme{
-
-    }
-
-    Class guerre implements Arme{
-
-    }
-
-    Class distance implements Arme{
-
-
-    }
-
 
     Class Race{
 
@@ -60,7 +26,46 @@ package Personnage{
 
     }
 
+}
+
+
+package Equipment {
+    Class Equipment{
+        -name: String
+    }
+
+    package Armor {
+        Interface Armor Extends Equipment.Equipment{
+            -class : Integer
+        }
+        Interface Heavy implements Armor{
+
+        }
+        Interface Light implements Armor{
+
+        }
+    }
+
+    package Weapon {
+        Interface Weapon Extends Equipment.Equipment {
+            -damage : Dice
+            -range : Integer
+        }
+
+        Interface Simple implements Weapon {
+
+        }
+
+        Interface Martial implements Weapon {
+
+        }
+
+        Interface Ranged implements Weapon {
+
+        }
+    }
 
 }
+Personnage "-inventaire"*->Equipment.Equipment: ""
 
 @enduml

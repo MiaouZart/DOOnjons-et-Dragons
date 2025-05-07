@@ -1,10 +1,10 @@
 package Entity.Personnage.Race;
 
 public abstract class Race {
-    static int m_baseSpeed;
-    static int m_baseDex;
-    static int m_baseStrength;
-    static int m_baseInitiative;
+    private static int m_baseSpeed;
+    private static int m_baseDex;
+    private static int m_baseStrength;
+    private static int m_baseInitiative;
 
     /**
      * Create a new Race with default param

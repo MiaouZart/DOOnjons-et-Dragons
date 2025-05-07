@@ -1,4 +1,55 @@
 package Entity.Personnage;
 
-public class Entity {
+public abstract class Entity {
+    private int m_posX;
+    private int m_posY;
+    private int m_hp;
+    private int m_strength;
+    private int m_dex;
+    private int m_initiative;
+    private int m_speed;
+
+
+    private Entity(int X,int Y,int HP,int Strenght,int Dex,int Speed,int Initiative){
+        m_posX = X;
+        m_posY = Y;
+        m_hp = HP;
+        m_speed= Speed;
+        m_dex = Dex;
+        m_initiative = Initiative;
+        m_strength = Strenght;
+    }
+
+    private Entity(int HP,int Strenght,int Dex,int Speed,int Initiative){
+        this(-1,-1,HP,Strenght,Dex,Speed,Initiative);
+    }
+
+
+    public int getPosX(){
+        return m_posX;
+    }
+    public int getPosY(){
+        return m_posY;
+    }
+    public int getHp(){
+        return m_hp;
+    }
+    public int getStrength(){
+        return m_strength;
+    }
+    public int getInitiative(){
+        return m_initiative;
+    }
+
+    public int getDex(){
+        return m_dex;
+    }
+
+    public int getSpeed(){
+        return m_speed;
+    }
+
+
+
+
 }

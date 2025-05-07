@@ -22,6 +22,7 @@ Personnage.Personnage "-classe"*-> Classes.Classe : "est de classe : "
 package Classes{
     abstract Class Classe{
         -basHealth:Integer
+        +<<create>>Classe()
         +getHealth():Integer
         +getBaseStuff():Equipment.Equipment
     }

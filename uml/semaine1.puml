@@ -17,20 +17,27 @@ package Personnage{
         +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
     }
 
-
-    Personnage "-classe"*-> Classe : "est de classe : "
-    Personnage "-caractéristique"*->Caractéristique : ""
-
-    Class Caractéristique{
-
+}
+Personnage.Personnage "-classe"*-> Classes.Classe : "est de classe : "
+package Classes{
+    abstract Class Classe{
+        -basHealth:Integer
+        +getHealth():Integer
+        +getBaseStuff():Equipment.Equipment
     }
 
-    Class Classe{
-
+    Class Clerc extends Classe{
+        +<<create>>Clerc()
     }
-
+    Class Warior extends Classe{
+        +<<create>>Warior()
+    }
+    Class Wizard extends Classe{
+       +<<create>>Wizard()
+    }
 }
 
+Classe "-baseStuff[*]" *--> Equipment.Equipment:"à pour stuff de base >"
 
 package Equipment {
     Class Equipment{

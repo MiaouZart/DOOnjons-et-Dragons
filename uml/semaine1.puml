@@ -8,10 +8,16 @@ package Personnage{
         -inventaire : Equipment[*]
         -Armor : Armor
         -Weapons : Weapon
+
+        -speed:Integer
+        -strenght:Integer
+        -dex:Integer
+        +initiative:Integer
+
         +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
     }
 
-    Personnage "-race"*->Race : "est de race >"
+
     Personnage "-classe"*-> Classe : "est de classe : "
     Personnage "-caractéristique"*->Caractéristique : ""
 
@@ -19,9 +25,6 @@ package Personnage{
 
     }
 
-    Class Race{
-
-    }
     Class Classe{
 
     }
@@ -67,5 +70,37 @@ package Equipment {
 
 }
 Personnage "-inventaire"*->Equipment.Equipment: ""
+
+package Race{
+    abstract class Race{
+        -baseSpeed:Integer
+        -baseDex:Integer
+        -baseStrenght:Integer
+        -baseInitiative:Integer
+
+        +getBaseSpeed():Integer
+        +getBaseStrenght():Integer
+        +getBaseDex():Integer
+        +getBaseInitiative():Integer
+
+    }
+
+    Class Human extends Race{
+        +<<create>>Human()
+    }
+    Class Dwarf extends Race{
+        +<<create>>Dwarf()
+    }
+    Class Elf extends Race{
+        +<<create>>Elf()
+    }
+    Class Halfelin extends Race{
+        +<<create>>Halfelin()
+    }
+
+
+}
+Personnage "-race"*->Race.Race : "est de race >"
+
 
 @enduml

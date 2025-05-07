@@ -30,6 +30,8 @@ package Entity {
             -species:String
             -id:Integer
             -atkRange:Integer
+            -atkDamage:Dice.Dice
+            +getAtkDamage():Dice.Dice
             -armorClass:Integer
         }
     }
@@ -136,7 +138,8 @@ package Equipment {
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
             -range:Integer
-
+            -damage:Dice.Dice
+            +getDamage():Dice.Dice
             +getRange():Integer
         }
 
@@ -225,12 +228,6 @@ Entity.Personnage.Personnage "+take(equipment:Equipment)"*-> Equipment.Equipment
 
 Entity.Personnage.Class.Class "+getBaseStuff()" *--> Equipment.Equipment:"getter à pour stuff de base >"
 Entity.Personnage.Class.Class "-baseStuff[*]" *--> Equipment.Equipment:"à pour stuff de base >"
-
-Equipment.Weapon.Weapon "-damage"*-> Dice.Dice:"Dés de dommages"
-Equipment.Weapon.Weapon "getDamage()"*-> Dice.Dice:"Getter dés de dommages"
-
-Entity.Monster.Monster "-atkDamage"*->Dice.Dice:"Dés de dommages"
-Entity.Monster.Monster "+getAtkDamage()"*->Dice.Dice:"Getter Dés de dommages"
 
 Donjon.Donjon *-> Donjon.Map:"Gestion de la carte"
 Donjon.Donjon *-> Entity.Monster:"Création des monstres et les positionnes"

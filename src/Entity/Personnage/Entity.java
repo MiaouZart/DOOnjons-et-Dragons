@@ -10,14 +10,14 @@ public abstract class Entity {
     private int m_speed;
 
 
-    private Entity(int X,int Y,int HP,int Strenght,int Dex,int Speed,int Initiative){
+    private Entity(int X,int Y,int HP,int Strength,int Dex,int Speed,int Initiative){
         m_posX = X;
         m_posY = Y;
         m_hp = HP;
         m_speed= Speed;
         m_dex = Dex;
         m_initiative = Initiative;
-        m_strength = Strenght;
+        m_strength = Strength;
     }
 
     private Entity(int HP,int Strength,int Dex,int Speed,int Initiative){

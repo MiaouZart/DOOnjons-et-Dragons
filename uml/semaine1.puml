@@ -3,14 +3,14 @@
 package Personnage{
 
     Class Personnage{
-        -nom : String
-        -classe : Classe
-        -inventaire : Equipment[*]
+        -name : String
+        -class : Classe
+        -inventory : Equipment[*]
         -armor : Armor
-        -weapons : Weapon
+        -weapons : Weapon[*]
 
         -speed:Integer
-        -strenght:Integer
+        -strength:Integer
         -dex:Integer
         -initiative:Integer
 
@@ -30,8 +30,8 @@ package Classes{
     Class Clerc extends Classe{
         +<<create>>Clerc()
     }
-    Class Warior extends Classe{
-        +<<create>>Warior()
+    Class Warrior extends Classe{
+        +<<create>>Warrior()
     }
     Class Wizard extends Classe{
        +<<create>>Wizard()
@@ -49,7 +49,7 @@ package Equipment {
     package Armor {
         Abstract Armor Extends Equipment.Equipment{
             -class : Integer
-            -speed_modifier : Integer
+            -speedModifier : Integer
             + getClass() : Integer
             + getSpeedModifier() : Integer
         }
@@ -81,10 +81,10 @@ package Equipment {
 
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
-            -damage : Dice
+            -damage : Dice.Dice
             -range : Integer
 
-            +getDamage() : Dice
+            +getDamage() : Dice.Dice
             +getRange() : Integer
         }
 
@@ -136,11 +136,11 @@ package Race{
     abstract class Race{
         -baseSpeed:Integer
         -baseDex:Integer
-        -baseStrenght:Integer
+        -baseStrength:Integer
         -baseInitiative:Integer
 
         +getBaseSpeed():Integer
-        +getBaseStrenght():Integer
+        +getBaseStrength():Integer
         +getBaseDex():Integer
         +getBaseInitiative():Integer
 
@@ -163,7 +163,22 @@ package Race{
 }
 Personnage.Personnage "-race"*->Race.Race : "est de race >"
 
+package Monstre {
+    class Monstre {
+        -species:String
+        -id:Integer
 
+        -atkRange:Integer
+
+
+        -hp:Integer
+        -strength:Integer
+        -dex:Integer
+        -armorClass:Integer
+        -initiative:Integer
+    }
+}
+Monstre.Monstre "-atkDamage"*->Dice.Dice : "Dés de dommages"
 
 package Dice{
     Class Dice{

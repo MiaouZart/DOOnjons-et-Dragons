@@ -14,7 +14,7 @@ package Personnage{
         -dex:Integer
         +initiative:Integer
 
-        +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
+        +<<create>> Personnage(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
     }
 
 }
@@ -53,15 +53,29 @@ package Equipment {
             + getSpeedModifier() : Integer
         }
 
-        Abstract Heavy implements Armor {
+        Abstract Heavy Extends Armor {
 
         }
 
-        Abstract Light implements Armor {
+        Abstract Light Extends Armor {
 
         }
 
+        Class ScaleMail Extends Light {
 
+        }
+
+        Class HalfPlate Extends Light {
+
+        }
+
+        Class ChainMail Extends Heavy {
+
+        }
+
+        Class Plate Extends Heavy {
+
+        }
     }
 
     package Weapon {
@@ -73,21 +87,49 @@ package Equipment {
             +getRange() : Integer
         }
 
-        Abstract Simple implements Weapon {
+        Abstract Simple extends Weapon {
 
         }
 
-        Abstract Martial implements Weapon {
+        Abstract Martial extends Weapon {
 
         }
 
-        Abstract Ranged implements Weapon {
+        Abstract Ranged extends Weapon {
+
+        }
+
+        class Quarterstaff extends Simple {
+
+        }
+
+        class Mace extends Simple {
+
+        }
+
+        class Longsword extends Martial {
+
+        }
+
+        class Rapier extends Martial {
+
+        }
+
+        class Crossbow extends Ranged {
+
+        }
+
+        class Sling extends Ranged {
+
+        }
+
+        class Shortbow extends Ranged {
 
         }
     }
-
 }
-Personnage "-inventaire"*->Equipment.Equipment: ""
+
+Personnage.Personnage "-inventaire"*->Equipment.Equipment: ""
 
 package Race{
     abstract class Race{

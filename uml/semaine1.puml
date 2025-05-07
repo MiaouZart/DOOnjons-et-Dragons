@@ -2,63 +2,64 @@
 
 package Personnage{
 
-    Class Personnages{
+    Class Personnage{
         -nom : String
-        -classe : Classes
-        -inventaire : Équipements[*]
-        -armure : Armures
-        -armes : Armes
+        -classe : Classe
+        -inventaire : Équipement[*]
+        -armure : Armure
+        -armes : Arme
         +<<create>> Personnages(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Équipements[*],équipé:Équipements[2])
     }
 
-    Personnages "-race"*->Races : "est de race >"
-    Personnages "-classe"*-> Classes : "est de classe : "
-    Personnages "-caractéristiques"*->Caractéristiques : ""
-    Personnages "-inventaire"*->Équipements: ""
+    Personnage "-race"*->Race : "est de race >"
+    Personnage "-classe"*-> Classe : "est de classe : "
+    Personnage "-caractéristique"*->Caractéristique : ""
+    Personnage "-inventaire"*->Équipement: ""
 
-    Class Caractéristiques{
+    Class Caractéristique{
 
     }
 
-    Class Équipements{
+    Class Équipement{
         -nom: String
     }
 
-    Interface Armures Extends Équipements{
+    Interface Armure Extends Équipement{
         -point_armure : Integer
     }
-    Class Lourde implements Armures{
+    Class Lourde implements Armure{
 
     }
-    Class Légerre implements Armures{
+    Class Légerre implements Armure{
 
     }
 
-    Interface Armes Extends Équipements{
+    Interface Arme Extends Équipement{
         -dégat : Dés
         -portée : Integer
     }
 
-    Class courantes implements Armes{
+    Interface courante implements Arme{
 
     }
 
-    Class guerre implements Armes{
+    Class guerre implements Arme{
 
     }
 
-    Class distance implements Armes{
+    Class distance implements Arme{
 
 
     }
 
 
-    Class Races{
+    Class Race{
 
     }
-    Class Classes{
+    Class Classe{
 
     }
+
 
 }
 

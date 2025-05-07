@@ -189,4 +189,11 @@ package Dice{
     }
 }
 
+package Donjon{
+    Class Donjon{
+        +<<create>>Donjon()
+        +displayDonjon()
+    }
+}
+
 @enduml

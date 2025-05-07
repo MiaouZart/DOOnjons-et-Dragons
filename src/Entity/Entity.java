@@ -10,7 +10,7 @@ public abstract class Entity {
     private int m_speed;
 
 
-    private Entity(int X,int Y,int HP,int Strength,int Dex,int Speed,int Initiative){
+    public Entity(int X,int Y,int HP,int Strength,int Dex,int Speed,int Initiative){
         m_posX = X;
         m_posY = Y;
         m_hp = HP;
@@ -20,9 +20,16 @@ public abstract class Entity {
         m_strength = Strength;
     }
 
-    private Entity(int HP,int Strength,int Dex,int Speed,int Initiative){
-        this(-1,-1,HP,Strength,Dex,Speed,Initiative);
+    public Entity(int HP,int Strength,int Dex,int Speed,int Initiative){
+        this(-1,-1,HP,Strength,Dex,Speed,Initiative);//Si création sans position alors on place l'entité en dehors de la girlle
     }
+
+    public void setX_Y(int X,int Y){
+        m_posX = X;
+        m_posY = Y;
+    }
+
+
 
 
     public int getPosX(){

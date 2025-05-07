@@ -1,4 +1,4 @@
-package Entity.Personnage;
+package Entity;
 
 public abstract class Entity {
     private int m_posX;

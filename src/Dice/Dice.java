@@ -12,11 +12,12 @@ public class Dice {
     }
 
 
-    public ArrayList<Integer> roll(){
-        ArrayList<Integer> rolls = new ArrayList<Integer>();
+    public int[] roll(){
+
+        int[] rolls = new int[nb_Roll];
         Random rand = new Random();
         for(int i = 0; i< nb_Roll; i++){
-            rolls.add(rand.nextInt(m_value)+1);
+            rolls[i] = rand.nextInt(m_value)+1;
         }
         return rolls;
     }

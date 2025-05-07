@@ -1,18 +1,29 @@
 package Dice;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class Dice {
     private final int m_value;
-    private final int m_nbThrow;
+    private final int nb_Roll;
 
-    public Dice(int trhow,int value){
-        m_nbThrow =trhow;
+    public Dice(int roll,int value){
+        nb_Roll =roll;
         m_value = value;
     }
 
 
+    public ArrayList<Integer> roll(){
+        ArrayList<Integer> rolls = new ArrayList<Integer>();
+        Random rand = new Random();
+        for(int i = 0; i< nb_Roll; i++){
+            rolls.add(rand.nextInt(m_value)+1);
+        }
+        return rolls;
+    }
+
 
     @Override
     public String toString() {
-        return m_nbThrow+"d"+m_value;
+        return nb_Roll +"d"+m_value;
     }
 }

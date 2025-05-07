@@ -4,41 +4,34 @@ package Personnage{
 
     Class Personnage{
         -name : String
-        -class : Classe
-        -inventory : Equipment[*]
-        -armor : Armor
-        -weapons : Weapon[*]
 
         -speed:Integer
         -strength:Integer
         -dex:Integer
         -initiative:Integer
 
-        +<<create>> Personnage(nom:String,race:Races,classe:Classes)
+        +<<create>> Personnage(nom:String,race:Races,class:Class)
     }
 
 }
-Personnage.Personnage "-classe"*-> Classes.Classe : "est de classe : "
-package Classes{
-    abstract Class Classe{
+
+package Class{
+    abstract Class Class{
         -basHealth:Integer
-        +<<create>>Classe()
+        +<<create>>Class()
         +getHealth():Integer
-        +getBaseStuff():Equipment.Equipment
     }
 
-    Class Clerc extends Classe{
+    Class Clerc extends Class{
         +<<create>>Clerc()
     }
-    Class Warrior extends Classe{
+    Class Warrior extends Class{
         +<<create>>Warrior()
     }
-    Class Wizard extends Classe{
+    Class Wizard extends Class{
        +<<create>>Wizard()
     }
 }
-
-Classe "-baseStuff[*]" *--> Equipment.Equipment:"à pour stuff de base >"
 
 package Equipment {
     Class Equipment{
@@ -81,10 +74,8 @@ package Equipment {
 
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
-            -damage : Dice.Dice
             -range : Integer
 
-            +getDamage() : Dice.Dice
             +getRange() : Integer
         }
 
@@ -128,9 +119,8 @@ package Equipment {
 
         }
     }
-}
 
-Personnage.Personnage "-inventaire"*->Equipment.Equipment: ""
+}
 
 package Race{
     abstract class Race{
@@ -161,7 +151,6 @@ package Race{
 
 
 }
-Personnage.Personnage "-race"*->Race.Race : "est de race >"
 
 package Monstre {
     class Monstre {
@@ -178,7 +167,6 @@ package Monstre {
         -initiative:Integer
     }
 }
-Monstre.Monstre "-atkDamage"*->Dice.Dice : "Dés de dommages"
 
 package Dice{
     Class Dice{
@@ -195,5 +183,20 @@ package Donjon{
         +displayDonjon()
     }
 }
+
+
+Personnage.Personnage "-class"*-> Class.Class : "Est de classe : "
+Personnage.Personnage "-inventory"*-> Equipment.Equipment : "A les équipements : "
+Personnage.Personnage "-weapon"*-> Equipment.Weapon.Weapon : "Armé équipes : "
+Personnage.Personnage "-armor"*-> Equipment.Armor.Armor : "Possède l'armure : "
+Personnage.Personnage "-race"*->Race.Race : "est de race >"
+
+Class.Class "+getBaseStuff()" *--> Equipment.Equipment:"getter à pour stuff de base >"
+Class.Class "-baseStuff[*]" *--> Equipment.Equipment:"à pour stuff de base >"
+
+Equipment.Weapon.Weapon "-damage"*-> Dice.Dice : "Dés de dommages"
+Equipment.Weapon.Weapon "getDamage()"*-> Dice.Dice : "Getter dés de dommages"
+
+Monstre.Monstre "-atkDamage"*->Dice.Dice : "Dés de dommages"
 
 @enduml

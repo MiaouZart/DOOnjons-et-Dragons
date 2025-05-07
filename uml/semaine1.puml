@@ -12,9 +12,9 @@ package Personnage{
         -speed:Integer
         -strenght:Integer
         -dex:Integer
-        +initiative:Integer
+        -initiative:Integer
 
-        +<<create>> Personnage(nom:String,race:Races,classe:Classes,caractéristiques:Caractéristiques,inventaire:Equipment.Equipment[*],équipé:Equipment.Equipment[2])
+        +<<create>> Personnage(nom:String,race:Races,classe:Classes)
     }
 
 }
@@ -161,7 +161,17 @@ package Race{
 
 
 }
-Personnage "-race"*->Race.Race : "est de race >"
+Personnage.Personnage "-race"*->Race.Race : "est de race >"
 
+
+
+package Dice{
+    Class Dice{
+        -value:Integer
+        -nbTrhow:Integer
+        +<<create>>Dice(trhow:Integer,value:Integer)
+        +trhrow():Integer
+    }
+}
 
 @enduml

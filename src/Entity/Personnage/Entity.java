@@ -20,8 +20,8 @@ public abstract class Entity {
         m_strength = Strenght;
     }
 
-    private Entity(int HP,int Strenght,int Dex,int Speed,int Initiative){
-        this(-1,-1,HP,Strenght,Dex,Speed,Initiative);
+    private Entity(int HP,int Strength,int Dex,int Speed,int Initiative){
+        this(-1,-1,HP,Strength,Dex,Speed,Initiative);
     }
 
 

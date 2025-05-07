@@ -1,5 +1,10 @@
 package Race;
 
+import Entity.Personnage.Race.Dwarf;
+import Entity.Personnage.Race.Elf;
+import Entity.Personnage.Race.Halfelin;
+import Entity.Personnage.Race.Human;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RaceTest {
@@ -34,8 +39,8 @@ class RaceTest {
     @org.junit.jupiter.api.Test
     void testHalfelin() {
         Halfelin halfelin = new Halfelin();
-        assertEquals(0,halfelin.getSpeed());
-        assertEquals(6,halfelin.getDex());
+        assertEquals(2,halfelin.getSpeed());
+        assertEquals(4,halfelin.getDex());
         assertEquals(0,halfelin.getInitiative());
         assertEquals(0,halfelin.getStrenght());
     }

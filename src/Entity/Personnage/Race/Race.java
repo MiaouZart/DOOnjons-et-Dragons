@@ -1,4 +1,4 @@
-package Race;
+package Entity.Personnage.Race;
 
 public abstract class Race {
     static int m_baseSpeed;
@@ -13,7 +13,7 @@ public abstract class Race {
      * @param dex
      * @param initiative
      */
-    Race(int speed, int strength,int dex, int initiative){
+    public Race(int speed, int strength,int dex, int initiative){
         m_baseDex = dex;
         m_baseSpeed = speed;
         m_baseInitiative = initiative;

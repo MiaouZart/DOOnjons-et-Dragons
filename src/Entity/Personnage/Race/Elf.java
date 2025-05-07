@@ -1,11 +1,11 @@
-package Race;
+package Entity.Personnage.Race;
 
 public class Elf extends Race{
     static int defaultSpeed=0;
-    static int defaultDex=2;
+    static int defaultDex=6;
     static int defaultStrength=0;
     static int defaultInitiative=0;
-    Elf(){
+    public Elf(){
         super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 }

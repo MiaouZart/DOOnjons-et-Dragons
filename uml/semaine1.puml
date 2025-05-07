@@ -6,8 +6,8 @@ package Personnage{
         -nom : String
         -classe : Classe
         -inventaire : Equipment[*]
-        -Armor : Armor
-        -Weapons : Weapon
+        -armor : Armor
+        -weapons : Weapon
 
         -speed:Integer
         -strenght:Integer
@@ -35,35 +35,46 @@ package Personnage{
 package Equipment {
     Class Equipment{
         -name: String
+        +getName() : String
     }
 
     package Armor {
-        Interface Armor Extends Equipment.Equipment{
+        Abstract Armor Extends Equipment.Equipment{
             -class : Integer
+            -speed_modifier : Integer
+            + getClass() : Integer
+            + getSpeedModifier() : Integer
         }
-        Interface Heavy implements Armor{
+
+        Abstract Heavy implements Armor {
 
         }
-        Interface Light implements Armor{
+
+        Abstract Light implements Armor {
 
         }
+
+
     }
 
     package Weapon {
-        Interface Weapon Extends Equipment.Equipment {
+        Abstract Weapon Extends Equipment.Equipment {
             -damage : Dice
             -range : Integer
+
+            +getDamage() : Dice
+            +getRange() : Integer
         }
 
-        Interface Simple implements Weapon {
+        Abstract Simple implements Weapon {
 
         }
 
-        Interface Martial implements Weapon {
+        Abstract Martial implements Weapon {
 
         }
 
-        Interface Ranged implements Weapon {
+        Abstract Ranged implements Weapon {
 
         }
     }

@@ -100,7 +100,7 @@ package Entity
 }
 
 package Equipment {
-    Class Equipment{
+    Abstract Equipment{
         -name: String
         +getName() : String
     }

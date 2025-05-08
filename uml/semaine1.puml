@@ -123,20 +123,22 @@ package Equipment {
 
         }
 
-        Class ScaleMail Extends Light {
+        package Types {
+            Class ScaleMail Extends Equipment.Armor.Light {
 
-        }
+            }
 
-        Class HalfPlate Extends Light {
+            Class HalfPlate Extends Equipment.Armor.Light {
 
-        }
+            }
 
-        Class ChainMail Extends Heavy {
+            Class ChainMail Extends Equipment.Armor.Heavy {
 
-        }
+            }
 
-        Class Plate Extends Heavy {
+            Class Plate Extends Equipment.Armor.Heavy {
 
+            }
         }
     }
 
@@ -160,32 +162,35 @@ package Equipment {
 
         }
 
-        class Quarterstaff extends Simple {
+        package Types {
 
-        }
+            class Quarterstaff extends Equipment.Weapon.Simple {
 
-        class Mace extends Simple {
+            }
 
-        }
+            class Mace extends Equipment.Weapon.Simple {
 
-        class Longsword extends Martial {
+            }
 
-        }
+            class Longsword extends Equipment.Weapon.Martial {
 
-        class Rapier extends Martial {
+            }
 
-        }
+            class Rapier extends Equipment.Weapon.Martial {
 
-        class Crossbow extends Ranged {
+            }
 
-        }
+            class Crossbow extends Equipment.Weapon.Ranged {
 
-        class Sling extends Ranged {
+            }
 
-        }
+            class Sling extends Equipment.Weapon.Ranged {
 
-        class Shortbow extends Ranged {
+            }
 
+            class Shortbow extends Equipment.Weapon.Ranged {
+
+            }
         }
     }
 

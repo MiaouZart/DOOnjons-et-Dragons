@@ -38,9 +38,9 @@ package Entity
 
         Class Personnage extends Entity.Entity {
             -name : String
-            +<<create>>Monster(X:Integer,nom:String,race:Races,class:Class);
-            +<<create>> Personnage(nom:String,race:Races,class:Class)
-            +getClass():Class
+            +<<create>>Monster(X:Integer,nom:String,race:Races,charClass:CharClass);
+            +<<create>> Personnage(nom:String,race:Races,charClass:CharClass)
+            +getClass():ChrClass
             +getInventory():Equipment
             +getWeapon():Weapon
             +getArmor():Armor
@@ -49,21 +49,21 @@ package Entity
             +take(equipment:Equipment)
         }
 
-        package Class{
-            abstract Class Class{
+        package CharClass{
+            abstract Class CharClass{
                 -basHealth:Integer
-                +<<create>>Class()
+                +<<create>>CharClass()
                 +getHealth():Integer
                 +getBaseStuff():Equipment
             }
 
-            Class Clerc extends Class{
+            Class Clerc extends CharClass{
                 +<<create>>Clerc()
             }
-            Class Warrior extends Class{
+            Class Warrior extends CharClass{
                 +<<create>>Warrior()
             }
-            Class Wizard extends Class{
+            Class Wizard extends CharClass{
                +<<create>>Wizard()
             }
         }
@@ -102,14 +102,16 @@ package Entity
 package Equipment {
     Abstract Equipment{
         -name: String
+        +<<create>>Equipment(name:String);
         +getName() : String
     }
 
     package Armor {
         Abstract Armor Extends Equipment.Equipment{
-            -class : Integer
+            -classVal : Integer
             -speedModifier : Integer
-            + getClass() : Integer
+            +<<create>> Armor(name:String,classVal:Integer,speedModifier:Integer)
+            + getClassVal() : Integer
             + getSpeedModifier() : Integer
         }
 
@@ -140,7 +142,7 @@ package Equipment {
 
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
-            +<<create>>Weapon(range:Integer,damage:Dice);
+            +<<create>>Weapon(name:String,range:Integer,damage:Dice);
             -range : Integer
             +getRange() : Integer
             +getDamage(): Dice
@@ -206,13 +208,13 @@ package Donjon{
 }
 
 
-Entity.Personnage.Personnage "-class"*-up-> Entity.Personnage.Class.Class : "Est de classe > "
+Entity.Personnage.Personnage "-charClass"*-up-> Entity.Personnage.CharClass.CharClass : "Est de classe > "
 Entity.Personnage.Personnage "-inventory"*-> Equipment.Equipment : "A les équipements > "
 Entity.Personnage.Personnage "-weapon"*-> Equipment.Weapon.Weapon : "Armé équipes > "
 Entity.Personnage.Personnage "-armor"*--> Equipment.Armor.Armor : "Possède l'armure >"
 Entity.Personnage.Personnage "-race"*->Entity.Personnage.Race.Race : "est de race >"
 
-Entity.Personnage.Class.Class "-<<static>>baseStuff[*]" *----> Equipment.Equipment:"à pour stuff de base >"
+Entity.Personnage.CharClass.CharClass "-<<static>>baseStuff[*]" *----> Equipment.Equipment:"à pour stuff de base >"
 
 Equipment.Weapon.Weapon "-damageDice"*----> Dice.Dice : "Dés de dommages"
 

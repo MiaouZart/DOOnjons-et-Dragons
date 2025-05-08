@@ -1,9 +1,9 @@
 package Race;
 
-import Entity.Personnage.Race.Type.Dwarf;
-import Entity.Personnage.Race.Type.Elf;
-import Entity.Personnage.Race.Type.Halfelin;
-import Entity.Personnage.Race.Type.Human;
+import Entity.Personnage.Race.Types.Dwarf;
+import Entity.Personnage.Race.Types.Elf;
+import Entity.Personnage.Race.Types.Halfelin;
+import Entity.Personnage.Race.Types.Human;
 
 import static org.junit.jupiter.api.Assertions.*;
 

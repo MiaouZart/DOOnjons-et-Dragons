@@ -1,13 +1,13 @@
-package Entity.Personnage.Race.Type;
+package Entity.Personnage.Race.Types;
 
 import Entity.Personnage.Race.Race;
 
-public class Halfelin extends Race {
-    static int defaultSpeed=2;
-    static int defaultDex=4;
+public class Elf extends Race {
+    static int defaultSpeed=0;
+    static int defaultDex=6;
     static int defaultStrength=0;
     static int defaultInitiative=0;
-    public Halfelin(){
+    public Elf(){
         super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 }

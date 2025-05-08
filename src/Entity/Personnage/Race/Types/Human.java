@@ -1,4 +1,4 @@
-package Entity.Personnage.Race.Type;
+package Entity.Personnage.Race.Types;
 
 import Entity.Personnage.Race.Race;
 

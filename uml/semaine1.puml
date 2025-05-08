@@ -86,18 +86,19 @@ package Entity
                 +getBaseInitiative():Integer
 
             }
-
-            Class Human extends Race{
+            package Types{
+            Class Human extends Entity.Personnage.Race.Race{
                 +<<create>>Human()
             }
-            Class Dwarf extends Race{
+            Class Dwarf extends Entity.Personnage.Race.Race{
                 +<<create>>Dwarf()
             }
-            Class Elf extends Race{
+            Class Elf extends Entity.Personnage.Race.Race{
                 +<<create>>Elf()
             }
-            Class Halfelin extends Race{
+            Class Halfelin extends Entity.Personnage.Race.Race{
                 +<<create>>Halfelin()
+            }
             }
         }
 

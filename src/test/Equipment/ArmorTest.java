@@ -1,4 +1,4 @@
-package test;
+package test.Equipment;
 
 import Equipment.Armor.Armor;
 import Equipment.Armor.Types.*;

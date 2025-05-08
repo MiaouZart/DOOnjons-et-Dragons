@@ -38,8 +38,8 @@ package Entity
 
         Class Personnage extends Entity.Entity {
             -name : String
-            +<<create>>Monster(X:Integer,nom:String,race:Races,charClass:CharClass);
-            +<<create>> Personnage(nom:String,race:Races,charClass:CharClass)
+            +<<create>>Personnage(nom:String, X:Integer, Y:Integer, race:Races, charClass:CharClass);
+            +<<create>>Personnage(nom:String, race:Races, charClass:CharClass)
             +getClass():ChrClass
             +getInventory():Equipment
             +getWeapon():Weapon
@@ -51,20 +51,25 @@ package Entity
 
         package CharClass{
             abstract Class CharClass{
-                -basHealth:Integer
+                -baseHealth:Integer
                 +<<create>>CharClass()
                 +getHealth():Integer
                 +getBaseStuff():Equipment
             }
 
-            Class Clerc extends CharClass{
-                +<<create>>Clerc()
-            }
-            Class Warrior extends CharClass{
-                +<<create>>Warrior()
-            }
-            Class Wizard extends CharClass{
-               +<<create>>Wizard()
+            package Types {
+                Class Clerc extends Entity.Personnage.CharClass.CharClass {
+                    +<<create>>Clerc()
+                }
+                Class Warrior extends Entity.Personnage.CharClass.CharClass{
+                    +<<create>>Warrior()
+                }
+                Class Wizard extends Entity.Personnage.CharClass.CharClass{
+                   +<<create>>Wizard()
+                }
+                Class Rogue extends Entity.Personnage.CharClass.CharClass{
+                   +<<create>>Rogue()
+                }
             }
         }
 
@@ -110,6 +115,7 @@ package Equipment {
         Abstract Armor Extends Equipment.Equipment{
             -classVal : Integer
             -speedModifier : Integer
+            -name : String
             +<<create>> Armor(name:String,classVal:Integer,speedModifier:Integer)
             + getClassVal() : Integer
             + getSpeedModifier() : Integer
@@ -147,6 +153,7 @@ package Equipment {
             -range : Integer
             -speedModifier : Integer
             -strengthModifier : Integer
+            -name:String
             +<<create>>Weapon(name:String,range:Integer,damage:Dice);
             +getRange() : Integer
             +getDamage() : Dice

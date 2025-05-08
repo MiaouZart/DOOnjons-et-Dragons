@@ -144,10 +144,14 @@ package Equipment {
 
     package Weapon {
         Abstract Weapon Extends Equipment.Equipment {
-            +<<create>>Weapon(name:String,range:Integer,damage:Dice);
             -range : Integer
+            -speedModifier : Integer
+            -strengthModifier : Integer
+            +<<create>>Weapon(name:String,range:Integer,damage:Dice);
             +getRange() : Integer
-            +getDamage(): Dice
+            +getDamage() : Dice
+            +getSpeedModifier() : Integer
+            +getStrengthModifier() : Integer
         }
 
         Abstract Simple extends Weapon {

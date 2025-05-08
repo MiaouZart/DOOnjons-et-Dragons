@@ -1,7 +1,6 @@
 package Dice;
 import java.util.Objects;
 import java.util.Random;
-import java.util.ArrayList;
 
 public class Dice {
     private final int m_value;

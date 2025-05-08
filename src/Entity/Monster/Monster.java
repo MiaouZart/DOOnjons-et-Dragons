@@ -1,16 +1,23 @@
 package Entity.Monster;
 
+import Dice.Dice;
 import Entity.Entity;
 
 public class Monster extends Entity {
     private String m_specie;
     private int m_id;
-    private int atckRange;
-    public Monster(int X,int Y,int HP,int Strength,int Dex,int Speed,int Initiative){
+    private int m_atckRange;
+    private Dice m_atckDamage;
+    public Monster(int X,int Y,int HP,int Strength,int Dex,int Speed,int Initiative,String species,int id,int atckRange,Dice dice){
         super(X,Y,HP,Strength,Dex,Speed,Initiative);
+        m_specie = species;
+        m_id =id;
+        m_atckRange =atckRange;
+        m_atckDamage = dice;
+
     }
-    public Monster(int HP,int Strength,int Dex,int Speed,int Initiative){
-        super(HP,Strength,Dex,Speed,Initiative);
+    public Monster(int HP, int Strength, int Dex, int Speed, int Initiative, String specie, int id, int atckRange, Dice dice){
+        this(-1,-1,HP,Strength,Dex,Speed,Initiative,specie,id,atckRange,dice);
     }
 
 }

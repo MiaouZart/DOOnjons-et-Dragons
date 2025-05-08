@@ -1,6 +1,8 @@
-package Entity.Personnage.Race;
+package Entity.Personnage.Race.Type;
 
-public class Halfelin extends Race{
+import Entity.Personnage.Race.Race;
+
+public class Halfelin extends Race {
     static int defaultSpeed=2;
     static int defaultDex=4;
     static int defaultStrength=0;

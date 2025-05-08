@@ -1,6 +1,8 @@
-package Entity.Personnage.Race;
+package Entity.Personnage.Race.Type;
 
-public class Elf extends Race{
+import Entity.Personnage.Race.Race;
+
+public class Elf extends Race {
     static int defaultSpeed=0;
     static int defaultDex=6;
     static int defaultStrength=0;

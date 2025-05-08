@@ -1,4 +1,5 @@
 package Dice;
+import java.util.Objects;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -26,5 +27,17 @@ public class Dice {
     @Override
     public String toString() {
         return nb_Roll +"d"+m_value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Dice dice = (Dice) o;
+        return m_value == dice.m_value && nb_Roll == dice.nb_Roll;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m_value, nb_Roll);
     }
 }

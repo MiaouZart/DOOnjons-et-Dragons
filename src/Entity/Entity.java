@@ -52,4 +52,5 @@ public abstract class Entity {
     public int getSpeed(){
         return m_speed;
     }
+
 }

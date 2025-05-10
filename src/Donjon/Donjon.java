@@ -14,6 +14,7 @@ public class Donjon {
     private String m_title;
     private int m_cellWidth = 5;
     private int m_repeat;
+    private Personnage m_currentPlayer;
 
     public  Donjon(int size){
         if(size<15||size>25){
@@ -40,7 +41,7 @@ public class Donjon {
     protected void displayTitle(){
         System.out.println("*".repeat(m_repeat+3));
         System.out.printf("Donjon : %d\n",m_donjonNumber);
-        System.out.println();
+        System.out.printf("2%s\n",m_currentPlayer.toString());
         System.out.println();
         System.out.println("*".repeat(m_repeat+3));
     }

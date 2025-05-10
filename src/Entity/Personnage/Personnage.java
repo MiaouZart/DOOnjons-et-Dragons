@@ -107,4 +107,9 @@ public class Personnage extends Entity {
     public int getStrength() {
         return super.getStrength() + (m_weapon == null ? 0 : m_weapon.getStrengthModifier());
     }
+
+    @Override
+    public String toString() {
+        return this.m_name+" ( "+this.m_charClass+" )";
+    }
 }

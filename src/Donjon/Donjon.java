@@ -1,6 +1,8 @@
 package Donjon;
 
+import Dice.Dice;
 import Entity.Entity;
+import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ public class Donjon {
     private String[][] m_donjonGrid;
     private int m_turn= 0;
     private int m_donjonNumber;
-    private ArrayList<Entity> m_players;
+    private ArrayList<Entity> m_Entities;
     private int m_cellWidth = 5;
     private int m_repeat;
     private boolean m_setup =false;
@@ -30,8 +32,63 @@ public class Donjon {
             }
         }
         m_repeat = m_donjonSize * m_cellWidth;
-        m_players = Players;
+        m_Entities = Players;
         obstaclePosition();
+    }
+
+
+    private boolean checkEmptyCase(int x ,int y){
+        if (x < 0 || x >= m_donjonSize || y < 0 || y >= m_donjonSize) {
+            System.out.println("Coordonnées hors limites.");
+            return false;
+        }
+        if (m_donjonGrid[x][y].equals(" # ")) {
+            System.out.println("Il y a un obstacle ici.");
+            return false;
+        }
+        return true;
+    }
+    private int[] retrievGridPosition(String position){
+        if(position.isEmpty()){
+            return new int[]{-1,-1};
+        }
+        if (position.length() < 2 || position.length() > 3) {
+            System.out.println("Entrée invalide. Format attendu : Lettre+chiffre (ex: B3).");
+            return new int[]{-1,-1};
+        }
+
+        char colChar = position.charAt(0);
+        int row;
+        try {
+            row = Integer.parseInt(position.substring(1));
+        } catch (NumberFormatException e) {
+            System.out.println("Numéro de ligne invalide.");
+            return new int[]{-1,-1};
+        }
+
+        int col = colChar - 'A';
+
+        return new int[]{row,col};
+    }
+
+    private int retrievInt(String input){
+        int result=0;
+        try {
+            result = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Valeur Invalide.");
+            return -1;
+        }
+        return result;
+    }
+
+    private int promptInt(Scanner scanner, String label) {
+        int result = -1;
+        while (result == -1) {
+            System.out.print("Entrez " + label + " : ");
+            result = retrievInt(scanner.nextLine().trim());
+        }
+        return result;
     }
 
     private void obstaclePosition(){
@@ -45,53 +102,62 @@ public class Donjon {
             if (input.equals("FIN")) {
                 break;
             }
+            int[] pos = retrievGridPosition(input);
 
-            if (input.length() < 2 || input.length() > 3) {
-                System.out.println("Entrée invalide. Format attendu : Lettre+chiffre (ex: B3).");
-                continue;
+            if(checkEmptyCase(pos[0],pos[1])) {
+                m_donjonGrid[pos[0]][pos[1]] = " # ";
             }
-
-            char colChar = input.charAt(0);
-            int row;
-            try {
-                row = Integer.parseInt(input.substring(1));
-            } catch (NumberFormatException e) {
-                System.out.println("Numéro de ligne invalide.");
-                continue;
-            }
-
-            int col = colChar - 'A';
-
-            if (row < 0 || row >= m_donjonSize || col < 0 || col >= m_donjonSize) {
-                System.out.println("Coordonnées hors limites.");
-                continue;
-            }
-
-            if (m_donjonGrid[row][col].equals(" # ")) {
-                System.out.println("Il y a déjà un obstacle ici.");
-                continue;
-            }
-
-            m_donjonGrid[row][col] = " # ";
         }
-
-        m_setup = true;
+        monsterCreation();
     }
 
+    private void monsterCreation() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            displayTitle("Maître du jeu : Créez vos Monstres");
+            refreshDisplay();
+            System.out.print("Entrez le nom du monstre ou 'fin' : ");
+            String input = scanner.nextLine().trim();
 
+            if (input.equalsIgnoreCase("FIN")) break;
+
+            String monsterName = input;
+            System.out.print("Entrez la race du monstre : ");
+            String monsterSpecie = scanner.nextLine().trim();
+            int hp = promptInt(scanner,"Vie");
+            int dex = promptInt(scanner, "Dexterité");
+            int speed = promptInt(scanner, "Vitesse");
+            int strength = promptInt(scanner, "Force");
+            int id = promptInt(scanner, "ID");
+            int atckRange = promptInt(scanner, "Portée d'attaque");
+
+            int nbDice = promptInt(scanner, "Nombre de dés d'attaque");
+            int faceDice = promptInt(scanner, "Nombre de faces par dé");
+            Dice dice = new Dice(nbDice, faceDice);
+
+            System.out.print("Entrez la position du monstre (ex: A5) : ");
+            String position = scanner.nextLine().trim().toUpperCase();
+            int[] pos = retrievGridPosition(position);
+
+            if (checkEmptyCase(pos[0], pos[1])) {
+                Monster newMonster = new Monster(pos[0], pos[1],hp,strength,dex, speed,monsterSpecie, id, atckRange, dice);
+                m_donjonGrid[pos[0]][pos[1]] = " M ";
+                m_Entities.add(newMonster);
+            } else {
+                System.out.println("Position invalide. Monstre non placé.");
+            }
+        }
+    }
     private void equipmentPosition(){
 
     }
 
-    private  void monsterCreation(){
-
-    }
 
 
 
     public void refreshDisplay(){
         if(m_setup){
-            displayTitle(m_players.getFirst().toString());
+            displayTitle(m_Entities.getFirst().toString());
         }
         displayTurn();
         displayGrid();
@@ -105,7 +171,7 @@ public class Donjon {
     protected void displayTitle(String message){
         System.out.println("*".repeat(m_repeat+3));
         System.out.printf("Donjon : %d\n",m_donjonNumber);
-        if(!m_players.isEmpty()) {
+        if(!m_Entities.isEmpty()) {
             System.out.printf(" ".repeat(m_repeat / 3) + "%2s\n", message);
         }
         System.out.println();

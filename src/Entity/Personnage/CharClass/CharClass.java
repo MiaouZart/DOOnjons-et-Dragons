@@ -38,4 +38,9 @@ public abstract class CharClass {
     public int hashCode() {
         return Objects.hashCode(m_name);
     }
+
+    @Override
+    public String toString() {
+        return m_name ;
+    }
 }

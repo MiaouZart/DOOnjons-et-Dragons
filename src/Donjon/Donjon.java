@@ -16,7 +16,7 @@ public class Donjon {
     private int m_repeat;
     private Personnage m_currentPlayer;
 
-    public  Donjon(int size){
+    public  Donjon(int size,ArrayList<Personnage> Players){
         if(size<15||size>25){
             throw new IllegalArgumentException("Grid Size is to small or to large");
         }
@@ -28,6 +28,9 @@ public class Donjon {
             }
         }
         m_repeat = m_donjonSize * m_cellWidth;
+
+        m_players = Players;
+        m_currentPlayer = m_players.getFirst();
     }
 
 
@@ -41,7 +44,7 @@ public class Donjon {
     protected void displayTitle(){
         System.out.println("*".repeat(m_repeat+3));
         System.out.printf("Donjon : %d\n",m_donjonNumber);
-        System.out.printf("2%s\n",m_currentPlayer.toString());
+        System.out.printf(" ".repeat(m_repeat/3)+"%2s\n",m_currentPlayer.toString());
         System.out.println();
         System.out.println("*".repeat(m_repeat+3));
     }

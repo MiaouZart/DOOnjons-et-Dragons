@@ -220,6 +220,8 @@ package Dice{
 
 package Donjon{
     Class Donjon{
+        -donjonSize : Integer
+        -donjonGrid : String[donjonSize][donjonSize]
         +<<create>>Donjon()
         +displayDonjon()
     }

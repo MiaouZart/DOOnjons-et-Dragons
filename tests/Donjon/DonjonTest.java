@@ -8,7 +8,7 @@ class DonjonTest {
 
     @Test
     void display() {
-        Donjon dn = new Donjon(16);
+        Donjon dn = new Donjon(20);
         dn.Display();
     }
 }

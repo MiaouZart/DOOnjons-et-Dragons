@@ -6,7 +6,7 @@ public class Dwarf extends Race{
     static int defaultStrength=6;
     static int defaultInitiative=0;
     public Dwarf(){
-       super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
+       super("Dwarf", defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 
 }

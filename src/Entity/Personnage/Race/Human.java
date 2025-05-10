@@ -6,6 +6,6 @@ public class Human extends Race{
     static int defaultStrength=2;
     static int defaultInitiative=2;
     public Human(){
-        super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
+        super("Human",defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 }

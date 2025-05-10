@@ -79,6 +79,7 @@ package Entity
                 -baseDex:Integer
                 -baseStrength:Integer
                 -baseInitiative:Integer
+                -name:String
 
                 +getBaseSpeed():Integer
                 +getBaseStrength():Integer

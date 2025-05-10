@@ -2,6 +2,8 @@ package Entity.Personnage.CharClass;
 
 import Equipment.Equipment;
 
+import java.util.Objects;
+
 public abstract class CharClass {
     private final String m_name;
     private final int m_baseHealth;
@@ -23,5 +25,17 @@ public abstract class CharClass {
 
     public String getM_name() {
         return m_name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CharClass charClass = (CharClass) o;
+        return Objects.equals(m_name, charClass.m_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(m_name);
     }
 }

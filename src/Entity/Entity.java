@@ -21,16 +21,13 @@ public abstract class Entity {
     }
 
     public Entity(int HP,int Strength,int Dex,int Speed,int Initiative){
-        this(-1,-1,HP,Strength,Dex,Speed,Initiative);//Si création sans position alors on place l'entité en dehors de la girlle
+        this(-1,-1,HP,Strength,Dex,Speed,Initiative);  // Si création sans position alors on place l'entité en dehors de la grille
     }
 
     public void setX_Y(int X,int Y){
         m_posX = X;
         m_posY = Y;
     }
-
-
-
 
     public int getPosX(){
         return m_posX;
@@ -55,8 +52,4 @@ public abstract class Entity {
     public int getSpeed(){
         return m_speed;
     }
-
-
-
-
 }

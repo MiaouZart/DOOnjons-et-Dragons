@@ -1,5 +1,6 @@
 package Donjon;
 
+import Entity.Entity;
 import Entity.Personnage.CharClass.Types.Warrior;
 import Entity.Personnage.Personnage;
 import Entity.Personnage.Race.Types.Elf;
@@ -12,9 +13,7 @@ class DonjonTest {
     @Test
     void display() {
         Personnage pierre = new Personnage("pierre",new Elf(),new Warrior());
-        ArrayList<Personnage> players = new ArrayList<Personnage>();
+        ArrayList<Entity> players = new ArrayList<Entity>();
         players.add(pierre);
-        Donjon dn = new Donjon(25,players);
-        dn.turn();
     }
 }

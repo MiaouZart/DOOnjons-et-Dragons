@@ -1,7 +1,4 @@
 package Entity.Personnage.Race;
-
-import Entity.Personnage.CharClass.CharClass;
-
 import java.util.Objects;
 
 public abstract class Race {

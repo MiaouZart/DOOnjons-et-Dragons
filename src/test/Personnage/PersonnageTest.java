@@ -2,7 +2,7 @@ package test.Personnage;
 
 import Entity.Personnage.CharClass.Types.*;
 import Entity.Personnage.Personnage;
-import Entity.Personnage.Race.*;
+import Entity.Personnage.Race.Types.*;
 import Equipment.Weapon.Types.*;
 import Equipment.Armor.Types.*;
 

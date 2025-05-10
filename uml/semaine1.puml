@@ -45,7 +45,7 @@ package Entity
             +getWeapon():Weapon
             +getArmor():Armor
             +getRace():Race
-            +equip(weapon:Weapon)
+            +equip(equipment:Equipment)
             +take(equipment:Equipment)
         }
 

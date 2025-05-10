@@ -8,6 +8,6 @@ public class Elf extends Race {
     static int defaultStrength=0;
     static int defaultInitiative=0;
     public Elf(){
-        super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
+        super("Elf",defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 }

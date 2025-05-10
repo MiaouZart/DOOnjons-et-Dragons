@@ -3,10 +3,11 @@ package test.Equipment;
 import Dice.Dice;
 import Equipment.Weapon.Types.*;
 import Equipment.Weapon.Weapon;
+import org.junit.jupiter.api.Test;
 
 class WeaponTest {
-    @org.junit.jupiter.api.Test
-    void CrossbowTest() {
+    @Test
+    void Crossbow() {
         Weapon weapon = new Crossbow();
         assert weapon.getName().equals("Arbalète");
         assert weapon.getDamageDice().equals(new Dice(1, 8));
@@ -15,8 +16,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 0;
     }
 
-    @org.junit.jupiter.api.Test
-    void LongswordTest() {
+    @Test
+    void Longsword() {
         Weapon weapon = new Longsword();
         assert weapon.getName().equals("Épée Longue");
         assert weapon.getDamageDice().equals(new Dice(1, 8));
@@ -25,8 +26,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 4;
     }
 
-    @org.junit.jupiter.api.Test
-    void MaceTest() {
+    @Test
+    void Mace() {
         Weapon weapon = new Mace();
         assert weapon.getName().equals("Masse d'Armes");
         assert weapon.getDamageDice().equals(new Dice(1, 6));
@@ -35,8 +36,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 0;
     }
 
-    @org.junit.jupiter.api.Test
-    void QuarterstaffTest() {
+    @Test
+    void Quarterstaff() {
         Weapon weapon = new Quarterstaff();
         assert weapon.getName().equals("Bâton");
         assert weapon.getDamageDice().equals(new Dice(1, 6));
@@ -45,8 +46,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 0;
     }
 
-    @org.junit.jupiter.api.Test
-    void RapierTest() {
+    @Test
+    void Rapier() {
         Weapon weapon = new Rapier();
         assert weapon.getName().equals("Rapière");
         assert weapon.getDamageDice().equals(new Dice(1, 8));
@@ -55,8 +56,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 4;
     }
 
-    @org.junit.jupiter.api.Test
-    void ShortbowTest() {
+    @Test
+    void Shortbow() {
         Weapon weapon = new Shortbow();
         assert weapon.getName().equals("Arc Court");
         assert weapon.getDamageDice().equals(new Dice(1, 6));
@@ -65,8 +66,8 @@ class WeaponTest {
         assert weapon.getStrengthModifier() == 0;
     }
 
-    @org.junit.jupiter.api.Test
-    void SlingTest() {
+    @Test
+    void Sling() {
         Weapon weapon = new Sling();
         assert weapon.getName().equals("Fronde");
         assert weapon.getDamageDice().equals(new Dice(1, 4));

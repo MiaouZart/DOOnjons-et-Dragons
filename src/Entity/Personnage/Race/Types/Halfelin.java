@@ -8,6 +8,6 @@ public class Halfelin extends Race {
     static int defaultStrength=0;
     static int defaultInitiative=0;
     public Halfelin(){
-        super(defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
+        super("Halfelin",defaultSpeed,defaultStrength,defaultDex,defaultInitiative);
     }
 }

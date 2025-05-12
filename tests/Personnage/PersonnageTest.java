@@ -1,4 +1,4 @@
-package test.Personnage;
+package Personnage;
 
 import Entity.Personnage.CharClass.Types.*;
 import Entity.Personnage.Personnage;

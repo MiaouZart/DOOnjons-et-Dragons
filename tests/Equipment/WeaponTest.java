@@ -1,4 +1,4 @@
-package test.Equipment;
+package Equipment;
 
 import Dice.Dice;
 import Equipment.Weapon.Types.*;

@@ -1,4 +1,4 @@
-package test.Monster;
+package Monster;
 
 import Dice.Dice;
 import Entity.Entity;

@@ -5,7 +5,6 @@ import Entity.Entity;
 import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -40,6 +39,7 @@ public class Donjon {
             }
         }
         obstaclePosition();
+        promptContext();
     }
 
     private boolean checkEmptyCase(int x ,int y){
@@ -150,17 +150,18 @@ public class Donjon {
         }
     }
     private void equipmentPosition(){
-
     }
 
-
-
+    private void promptContext() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Début du donjon...\nSaisissez le contexte : ");
+        scanner.nextLine();
+    }
 
     public void refreshDisplay(){
         displayTurn();
         displayGrid();
     }
-
 
     private void displayTurn(){
         System.out.println("Tour "+m_turn);

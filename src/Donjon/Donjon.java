@@ -6,6 +6,8 @@ import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Donjon {
@@ -14,11 +16,11 @@ public class Donjon {
     private String[][] m_donjonGrid;
     private int m_turn= 0;
     private int m_donjonNumber;
-    private ArrayList<Entity> m_Entities;
     private int m_cellWidth = 5;
     private int m_repeat;
     private boolean m_setup =false;
     private Personnage m_currentPlayer;
+    private HashMap<Entity,int[]> m_Entities;
 
     public  Donjon(int size,ArrayList<Entity> Players){
         if(size<15||size>25){
@@ -32,7 +34,9 @@ public class Donjon {
             }
         }
         m_repeat = m_donjonSize * m_cellWidth;
-        m_Entities = Players;
+        for (int i = 0; i < Players.size(); i++) {
+            m_Entities.put(Players.get(i),new int[]{-1,-1});//mettre par défault les player en dehors de la grille;
+        }
         obstaclePosition();
     }
 
@@ -135,11 +139,10 @@ public class Donjon {
             System.out.print("Entrez la position du monstre (ex: A5) : ");
             String position = scanner.nextLine().trim().toUpperCase();
             int[] pos = retrievGridPosition(position);
-
             if (checkEmptyCase(pos[0], pos[1])) {
-                Monster newMonster = new Monster(pos[0], pos[1],hp,strength,dex, speed,monsterSpecie, id, atckRange, dice);
+                Monster newMonster = new Monster(hp,strength,dex, speed,monsterSpecie, id, atckRange, dice);
                 m_donjonGrid[pos[0]][pos[1]] = " M ";
-                m_Entities.add(newMonster);
+                m_Entities.put(newMonster ,new int[]{pos[0],pos[1]});
             } else {
                 System.out.println("Position invalide. Monstre non placé.");
             }
@@ -153,9 +156,6 @@ public class Donjon {
 
 
     public void refreshDisplay(){
-        if(m_setup){
-            displayTitle(m_Entities.getFirst().toString());
-        }
         displayTurn();
         displayGrid();
     }

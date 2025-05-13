@@ -4,6 +4,14 @@ import Dice.Dice;
 import Entity.Entity;
 import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
+import Equipment.Armor.Armor;
+import Equipment.Armor.Types.ChainMail;
+import Equipment.Armor.Types.HalfPlate;
+import Equipment.Armor.Types.Plate;
+import Equipment.Armor.Types.ScaleMail;
+import Equipment.Equipment;
+import Equipment.Weapon.Types.*;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -19,6 +27,7 @@ public class Donjon {
     private int m_repeat;
     private boolean m_setup =false;
     private Personnage m_currentPlayer;
+    private HashMap<Equipment,int[]>m_Equipments;
     private HashMap<Entity,int[]> m_Entities;
 
     public  Donjon(int size,ArrayList<Entity> Players){
@@ -34,6 +43,7 @@ public class Donjon {
         }
         m_repeat = m_donjonSize * m_cellWidth;
         m_Entities = new HashMap<Entity,int[]>();
+        m_Equipments = new HashMap<Equipment,int[]>();
         if(Players!=null){
             for (int i = 0; i < Players.size(); i++) {
                 m_Entities.put(Players.get(i),new int[]{-1,-1});//mettre par défault les player en dehors de la grille;
@@ -107,8 +117,8 @@ public class Donjon {
             if (input.equals("FIN")) {
                 break;
             }
-            int[] pos = retrievGridPosition(input);
 
+            int[] pos = retrievGridPosition(input);
             if(checkEmptyCase(pos[0],pos[1])) {
                 m_donjonGrid[pos[0]][pos[1]] = " # ";
             }
@@ -125,7 +135,7 @@ public class Donjon {
             String input = scanner.nextLine().trim();
             if (input.equalsIgnoreCase("FIN")) break;
 
-            String monsterSpecie = scanner.nextLine().trim();
+            String monsterSpecie = input;
             int hp = promptInt(scanner,"Vie");
             int dex = promptInt(scanner, "Dexterité");
             int speed = promptInt(scanner, "Vitesse");
@@ -148,9 +158,57 @@ public class Donjon {
                 System.out.println("Position invalide. Monstre non placé.");
             }
         }
+        equipmentPosition();
     }
     private void equipmentPosition(){
-
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            displayTitle("Maître du jeu : Créez vos Monstres");
+            refreshDisplay();
+            System.out.print("continuez ou 'fin' : ");
+            String input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("FIN")) break;
+            int type = promptInt(scanner,"[0] Armure ; [1] Armes (ex:1)");
+            Equipment newEquipment =null;
+            while (type>1||type<0){
+                type = promptInt(scanner,"[0] Armure ; [1] Armes (ex:1)");
+            }
+            if(type==0) {
+                System.out.println("Création d'une Armure : ");
+                do {
+                    type = promptInt(scanner, "[0] Côtte de mailles ; [1] Demi-plate  ; [2] Armure d'écailles ; [3] Harnois (ex:2)");
+                } while (type > 3 || type < 0);
+                newEquipment = switch (type) {
+                    case 0 -> new ChainMail();
+                    case 1 -> new HalfPlate();
+                    case 2 -> new ScaleMail();
+                    case 3 -> new Plate();
+                    default -> newEquipment;
+                };
+            }else {
+                System.out.println("Création d'une Armes : ");
+                do {
+                    type = promptInt(scanner, "[0] Arbalète ; [1] Bâton  ; [2] Masse d'armes ; [3] Épée longue  ; [4] Rapière ; [5] Fronde ; [6] Arc court (ex:2)");
+                } while (type > 6 || type < 0);
+                newEquipment = switch (type) {
+                    case 0 -> new Crossbow();
+                    case 1 -> new Quarterstaff();
+                    case 2 -> new Mace();
+                    case 3 -> new Rapier();
+                    case 4 -> new Sling();
+                    case 5 -> new Shortbow();
+                    case 6 -> new Longsword();
+                    default -> newEquipment;
+                };
+            }
+                System.out.print("Entrez la position de l'équipement (ex: A5) : ");
+                String position = scanner.nextLine().trim().toUpperCase();
+                int[] pos = retrievGridPosition(position);
+                if(checkEmptyCase(pos[0],pos[1])) {
+                    m_Equipments.put(newEquipment,pos);
+                    m_donjonGrid[pos[0]][pos[1]] = " E ";
+                }
+        }
     }
 
 

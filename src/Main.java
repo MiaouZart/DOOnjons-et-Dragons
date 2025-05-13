@@ -13,5 +13,6 @@ public class Main {
         ArrayList<Entity> players = new ArrayList<Entity>();
         players.add(pierre);
         Donjon dn = new Donjon(25,players);
+        dn.setupDonjon();
     }
 }

@@ -116,13 +116,10 @@ public class Donjon {
         while (true) {
             displayTitle("Maître du jeu : Créez vos Monstres");
             refreshDisplay();
-            System.out.print("Entrez le nom du monstre ou 'fin' : ");
+            System.out.print("Entrez la race du monstre ou 'fin' : ");
             String input = scanner.nextLine().trim();
-
             if (input.equalsIgnoreCase("FIN")) break;
 
-            String monsterName = input;
-            System.out.print("Entrez la race du monstre : ");
             String monsterSpecie = scanner.nextLine().trim();
             int hp = promptInt(scanner,"Vie");
             int dex = promptInt(scanner, "Dexterité");

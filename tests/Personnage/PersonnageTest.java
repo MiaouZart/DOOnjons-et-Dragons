@@ -6,6 +6,7 @@ import Entity.Personnage.Race.Types.*;
 import Equipment.Weapon.Types.*;
 import Equipment.Armor.Types.*;
 
+import Equipment.Weapon.Weapon;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -56,7 +57,7 @@ class PersonnageTest {
         personnage.equip(new Longsword());
         assert personnage.getWeapon().equals(new Shortbow());
         assert personnage.getArmor() == null;
-        personnage.equip(null);
+        personnage.equip((Weapon) null);
         assert personnage.getWeapon() == null;
         assert personnage.getArmor() == null;
         personnage.equip(new Plate());

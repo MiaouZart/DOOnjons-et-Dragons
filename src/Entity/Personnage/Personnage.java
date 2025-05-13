@@ -27,7 +27,7 @@ public class Personnage extends Entity {
         m_name = name;
         m_race = race;
         m_charClass = charClass;
-        m_inventory = charClass.getBaseStuff();;
+        m_inventory = charClass.getBaseStuff();
 
     }
 
@@ -63,33 +63,31 @@ public class Personnage extends Entity {
         return m_race;
     }
 
-    public void equip(Equipment equipment) {
-        if (equipment == null) {
-            m_weapon = null;
+    public void equip(Armor armor) {
+        if (armor == null) {
             m_armor = null;
             return;
         }
 
-        if (Weapon.class.isAssignableFrom(equipment.getClass())) {
-            for (Equipment e : m_inventory) {
-                if (Weapon.class.isAssignableFrom(e.getClass())) {
-                    if (((Weapon)equipment).equals((Weapon)e)) {
-                        m_weapon = (Weapon) equipment;
-                        return;
-                    }
-                }
-            }
+        for (Equipment e : m_inventory) {
+            if (!Armor.class.isAssignableFrom(e.getClass())) continue;
+            if (!armor.equals(e)) continue;
+            m_armor = armor;
             return;
         }
-        if (Armor.class.isAssignableFrom(equipment.getClass())) {
-            for (Equipment e : m_inventory) {
-                if (Armor.class.isAssignableFrom(e.getClass())) {
-                    if (((Armor)equipment).equals((Armor) e)) {
-                        m_armor = (Armor) equipment;
-                        return;
-                    }
-                }
-            }
+    }
+
+    public void equip(Weapon weapon) {
+        if (weapon == null) {
+            m_weapon = null;
+            return;
+        }
+
+        for (Equipment e : m_inventory) {
+            if (!Weapon.class.isAssignableFrom(e.getClass())) continue;
+            if (!weapon.equals(e)) continue;
+            m_weapon = weapon;
+            return;
         }
     }
 

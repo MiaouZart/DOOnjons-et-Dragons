@@ -34,8 +34,11 @@ public class Donjon {
             }
         }
         m_repeat = m_donjonSize * m_cellWidth;
-        for (int i = 0; i < Players.size(); i++) {
-            m_Entities.put(Players.get(i),new int[]{-1,-1});//mettre par défault les player en dehors de la grille;
+        m_Entities = new HashMap<Entity,int[]>();
+        if(Players!=null){
+            for (int i = 0; i < Players.size(); i++) {
+                m_Entities.put(Players.get(i),new int[]{-1,-1});//mettre par défault les player en dehors de la grille;
+            }
         }
         obstaclePosition();
     }

@@ -18,19 +18,6 @@ public class Personnage extends Entity {
     private Weapon m_weapon;
     private Armor m_armor;
 
-    public Personnage(int X, int Y, String name, Race race, CharClass charClass) {
-        super(X, Y, charClass.getBaseHealth(),
-                Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getStrenght(),
-                Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getDex(),
-                Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getSpeed(),
-                Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getInitiative());
-        m_name = name;
-        m_race = race;
-        m_charClass = charClass;
-        m_inventory = charClass.getBaseStuff();
-
-    }
-
     public Personnage(String name, Race race, CharClass charClass) {
         super(charClass.getBaseHealth(),
                 Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getStrenght(),

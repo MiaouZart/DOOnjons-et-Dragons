@@ -4,7 +4,6 @@ import Dice.Dice;
 import Entity.Entity;
 import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
-
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -42,7 +41,6 @@ public class Donjon {
         }
         obstaclePosition();
     }
-
 
     private boolean checkEmptyCase(int x ,int y){
         if (x < 0 || x >= m_donjonSize || y < 0 || y >= m_donjonSize) {
@@ -201,7 +199,4 @@ public class Donjon {
         }
         System.out.println("  \\" + "-".repeat(m_repeat) + "/");
     }
-
-
-
 }

@@ -1,4 +1,3 @@
-// DonjonDisplay.java
 package Donjon;
 
 public class DonjonDisplay {

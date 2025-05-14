@@ -16,7 +16,7 @@ public class Donjon {
     protected boolean m_setup = false;
     protected HashMap<Equipment, int[]> m_equipments;
     protected HashMap<Entity, int[]> m_entities;
-    protected DonjonDisplay m_display;
+    protected Display m_display;
 
     public Donjon(int size, HashMap<Entity, int[]> players) {
 
@@ -27,7 +27,7 @@ public class Donjon {
 
         m_entities = Objects.requireNonNullElseGet(players, () -> new HashMap<Entity, int[]>());
 
-        m_display = new DonjonDisplay(this);
+        m_display = new Display(this);
     }
 
     private void initializeGrid() {
@@ -153,7 +153,6 @@ public class Donjon {
         }
     }
 
-
     public void moveEntity(Entity entity) {
         int remainingMove = entity.getSpeed();
         int moveSpeed = 1;
@@ -205,12 +204,6 @@ public class Donjon {
 
         System.out.println("Fin du déplacement.");
     }
-
-
-
-
-
-
 
     public void nextTurn() {
         m_turn++;

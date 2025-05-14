@@ -1,11 +1,11 @@
 package Donjon;
 
-public class DonjonDisplay {
+public class Display {
     private Donjon m_donjon;
     private int m_cellWidth = 5;
     private int m_repeat;
 
-    public DonjonDisplay(Donjon donjon) {
+    public Display(Donjon donjon) {
         m_donjon = donjon;
         m_repeat = m_donjon.getDonjonSize() * m_cellWidth;
     }

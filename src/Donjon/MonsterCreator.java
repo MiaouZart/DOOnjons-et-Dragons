@@ -9,7 +9,7 @@ import java.util.Scanner;
 import static Donjon.Donjon.*;
 
 public class MonsterCreator {
-    protected static void bulkCreate(DonjonDisplay display, String[][] grid, HashMap<Entity, int[]> entities) {
+    protected static void bulkCreate(Display display, String[][] grid, HashMap<Entity, int[]> entities) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             display.displayTitle("Maître du jeu : Créez vos Monstres");

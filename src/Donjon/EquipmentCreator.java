@@ -14,7 +14,7 @@ import static Donjon.Donjon.*;
 
 public class EquipmentCreator {
 
-    public static void create(DonjonDisplay display, String[][] grid, HashMap<Equipment, int[]> equipments) {
+    public static void create(Display display, String[][] grid, HashMap<Equipment, int[]> equipments) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             display.displayTitle("Maître du jeu : Ajouter un équipement");

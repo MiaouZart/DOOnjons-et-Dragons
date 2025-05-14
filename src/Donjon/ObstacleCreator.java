@@ -7,7 +7,7 @@ import static Donjon.Donjon.retrieveGridPosition;
 
 public class ObstacleCreator {
 
-    public static void bulkCreate(DonjonDisplay display, String[][] grid) {
+    public static void bulkCreate(Display display, String[][] grid) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             display.displayTitle("Maitre du jeu Positionnez vos obstacle");

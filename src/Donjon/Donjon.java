@@ -2,7 +2,6 @@ package Donjon;
 
 import Dice.Dice;
 import Entity.Entity;
-import Entity.Personnage.Personnage;
 import Equipment.Equipment;
 
 import java.util.HashMap;
@@ -15,7 +14,6 @@ public class Donjon {
     protected int m_turn = 0;
     protected int m_donjonNumber;
     protected boolean m_setup = false;
-    protected Personnage m_currentPlayer;
     protected HashMap<Equipment, int[]> m_equipments;
     protected HashMap<Entity, int[]> m_entities;
     protected DonjonDisplay m_display;
@@ -27,11 +25,7 @@ public class Donjon {
         initializeGrid();
         m_equipments = new HashMap<Equipment, int[]>();
 
-        if (players != null) {
-            m_entities = players;
-        }else{
-            m_entities = new HashMap<Entity, int[]>();
-        }
+        m_entities = Objects.requireNonNullElseGet(players, () -> new HashMap<Entity, int[]>());
 
         m_display = new DonjonDisplay(this);
     }
@@ -45,7 +39,7 @@ public class Donjon {
     }
 
     public void setupDonjon() {
-        obstaclePosition();
+        ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
         playerPosition();
         MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
         EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
@@ -96,7 +90,7 @@ public class Donjon {
     }
 
     protected static int retrieveInt(String input) {
-        int result = 0;
+        int result;
         try {
             result = Integer.parseInt(input);
         } catch (NumberFormatException e) {
@@ -115,25 +109,6 @@ public class Donjon {
         return result;
     }
 
-    private void obstaclePosition() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            m_display.displayTitle("Maitre du jeu Positionnez vos obstacle");
-            m_display.refreshDisplay();
-            System.out.print("Entrez la position d'un obstacle (ex: A5) ou 'fin' : ");
-            String input = scanner.nextLine().trim().toUpperCase();
-
-            if (input.equals("FIN")) {
-                break;
-            }
-
-            int[] pos = retrieveGridPosition(input);
-            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                m_donjonGrid[pos[0]][pos[1]] = " # ";
-            }
-        }
-    }
-
     private void playerPosition() {
         Scanner scanner = new Scanner(System.in);
 
@@ -147,10 +122,6 @@ public class Donjon {
                 String input = scanner.nextLine().trim().toUpperCase();
 
                 int[] pos = retrieveGridPosition(input);
-                if (pos == null) {
-                    System.out.println("Format invalide. Veuillez réessayer.");
-                    continue;
-                }
 
                 if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                     m_donjonGrid[pos[0]][pos[1]] = " P ";
@@ -173,7 +144,7 @@ public class Donjon {
         Dice initiativeDice = new Dice(1,20);
         Scanner scan = new Scanner(System.in);
         for(Entity entity : m_entities.keySet()){
-            m_display.displayTitle(entity.toString()+" : Faite votre jetté de dées : ");
+            m_display.displayTitle(entity.toString()+" : Faite votre jetté de dés : ");
             scan.nextLine();
             int lancer = initiativeDice.roll()[0];
             System.out.println("Vous avez tirez un "+lancer);
@@ -198,7 +169,7 @@ public class Donjon {
                 break;
             }
 
-            int direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+            int direction = -1;
             while (direction > 7 || direction < 0) {
                 direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
             }

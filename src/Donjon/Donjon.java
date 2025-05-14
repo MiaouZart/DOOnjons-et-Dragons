@@ -7,7 +7,6 @@ import Entity.Personnage.Personnage;
 import Equipment.Armor.Types.*;
 import Equipment.Equipment;
 import Equipment.Weapon.Types.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -29,14 +28,12 @@ public class Donjon {
         m_donjonSize = size;
         m_donjonGrid = new String[m_donjonSize][m_donjonSize];
         initializeGrid();
-
-        m_Entities = new HashMap<Entity, int[]>();
         m_Equipments = new HashMap<Equipment, int[]>();
 
         if (players != null) {
-            for (Entity player : players) {
-                m_Entities.put(player, new int[]{-1, -1});
-            }
+            m_Entities = players;
+        }else{
+            m_Entities = new HashMap<Entity, int[]>();
         }
 
         m_display = new DonjonDisplay(this);
@@ -56,6 +53,7 @@ public class Donjon {
         monsterCreation();
         equipmentPosition();
         promptContext();
+        initiativeInit();
         m_setup = true;
     }
 
@@ -274,6 +272,23 @@ public class Donjon {
         System.out.print("Début du donjon...\nSaisissez le contexte : ");
         scanner.nextLine();
     }
+
+    private void initiativeInit(){
+        Dice initiativeDice = new Dice(1,20);
+        Scanner scan = new Scanner(System.in);
+        for(Entity entity : m_Entities.keySet()){
+            m_display.displayTitle(entity.toString()+" : Faite votre jetté de dées : ");
+            scan.nextLine();
+            int lancer = initiativeDice.roll()[0];
+            System.out.println("Vous avez tirez un "+lancer);
+            entity.addInitiative(lancer);
+            System.out.println("Vous avez donc maintenant "+entity.getInitiative()+" d'initiative");
+        }
+    }
+
+
+
+
 
     public void nextTurn() {
         m_turn++;

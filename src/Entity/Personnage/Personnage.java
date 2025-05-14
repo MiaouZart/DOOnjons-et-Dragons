@@ -23,7 +23,7 @@ public class Personnage extends Entity {
                 Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getStrenght(),
                 Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getDex(),
                 Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getSpeed(),
-                Arrays.stream(new Dice(4, 4).roll()).sum() + 3 + race.getInitiative());
+                race.getInitiative());
         m_name = name;
         m_race = race;
         m_charClass = charClass;

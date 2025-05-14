@@ -59,6 +59,7 @@ public class Personnage extends Entity {
         for (Equipment e : m_inventory) {
             if (!Armor.class.isAssignableFrom(e.getClass())) continue;
             if (!armor.equals(e)) continue;
+
             m_armor = armor;
             return;
         }

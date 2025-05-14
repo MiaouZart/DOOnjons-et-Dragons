@@ -11,6 +11,10 @@ import static Donjon.Donjon.promptInt;
 
 public class CharacterCreator {
 
+    public CharacterCreator(){
+
+    }
+
     protected static Personnage Create() {
         Scanner scanner = new Scanner(System.in);
         return new Personnage(promptName(scanner), promptRace(scanner), promptClass(scanner));

@@ -17,4 +17,8 @@ public class Monster extends Entity {
         m_atckDamage = dice;
     }
 
+    @Override
+    public String toString() {
+        return this.m_specie+"-"+this.m_id;
+    }
 }

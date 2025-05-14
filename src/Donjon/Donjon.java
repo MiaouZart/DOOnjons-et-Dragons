@@ -9,7 +9,6 @@ import Equipment.Equipment;
 import Equipment.Weapon.Types.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Donjon {
@@ -23,7 +22,7 @@ public class Donjon {
     protected HashMap<Entity, int[]> m_Entities;
     protected DonjonDisplay m_display;
 
-    public Donjon(int size, ArrayList<Entity> players) {
+    public Donjon(int size, HashMap<Entity, int[]> players) {
         if (size < 15 || size > 25) {
             throw new IllegalArgumentException("La Grille est trop petite ou trop grande ");
         }

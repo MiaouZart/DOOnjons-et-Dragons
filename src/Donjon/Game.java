@@ -22,7 +22,7 @@ public class Game {
         m_playerOrder = new ArrayList<Entity>();
         for (int i = 0; i < nbPlayer; i++) {
             System.out.println("Création du personnage " + (i + 1));
-            Personnage p = CharacterCreator.Create();
+            Personnage p = CharacterCreator.create();
             m_Entities.put(p, new int[]{0, 0});
         }
         System.out.print("Taille de la grille : ");

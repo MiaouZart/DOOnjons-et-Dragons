@@ -15,7 +15,7 @@ public class CharacterCreator {
 
     }
 
-    protected static Personnage Create() {
+    protected static Personnage create() {
         Scanner scanner = new Scanner(System.in);
         return new Personnage(promptName(scanner), promptRace(scanner), promptClass(scanner));
     }
@@ -52,7 +52,7 @@ public class CharacterCreator {
 //        System.out.println("Veuillez saisir une classe : ");
         while (!(0 <= classType && classType <= 3)) {
             classType = promptInt(scanner,
-                    "[0] Nain ; [1] Elfe ; [2] Halfelin ; [3] Humain (ex:2)");
+                    "[0] Clerc ; [1] Guerrier ; [2] Magicien ; [3] Roublard (ex:2)");
         }
         return switch (classType) {
             case 0 -> new Clerc();

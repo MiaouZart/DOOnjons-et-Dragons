@@ -49,6 +49,7 @@ public class Donjon {
 
     public void setupDonjon() {
         obstaclePosition();
+        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_Entities);
         playerPosition();
         monsterCreation();
         equipmentPosition();
@@ -57,19 +58,26 @@ public class Donjon {
         m_setup = true;
     }
 
-    protected boolean checkEmptyCase(int x, int y) {
-        if (x < 0 || x >= m_donjonSize || y < 0 || y >= m_donjonSize) {
+    protected static boolean checkEmptyCase(int x, int y, String[][] donjonGrid, int donjonSize) {
+        if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
             System.out.println("Coordonnées hors limites.");
             return false;
         }
-        if (!m_donjonGrid[x][y].equals(" . ")) {
+        if (!donjonGrid[x][y].equals(" . ")) {
             System.out.println("Il y a un obstacle ici.");
             return false;
         }
         return true;
     }
 
-    protected int[] retrieveGridPosition(String position) {
+    protected static boolean checkEmptyCaseNonVerbose(int x, int y, String[][] donjonGrid, int donjonSize) {
+        if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
+            return false;
+        }
+        return !donjonGrid[x][y].equals(" # ");
+    }
+
+    protected static int[] retrieveGridPosition(String position) {
         if (position.isEmpty()) {
             return new int[]{-1, -1};
         }
@@ -124,7 +132,7 @@ public class Donjon {
             }
 
             int[] pos = retrieveGridPosition(input);
-            if (checkEmptyCase(pos[0], pos[1])) {
+            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                 m_donjonGrid[pos[0]][pos[1]] = " # ";
             }
         }
@@ -142,13 +150,13 @@ public class Donjon {
                 System.out.print("Entrez la position du joueur " + playerName + " (ex: A5) : ");
                 String input = scanner.nextLine().trim().toUpperCase();
 
-                int[] pos = retrievGridPosition(input);
+                int[] pos = retrieveGridPosition(input);
                 if (pos == null) {
                     System.out.println("Format invalide. Veuillez réessayer.");
                     continue;
                 }
 
-                if (checkEmptyCase(pos[0], pos[1])) {
+                if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                     m_donjonGrid[pos[0]][pos[1]] = " P ";
                     m_Entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
@@ -186,7 +194,7 @@ public class Donjon {
             System.out.print("Entrez la position du monstre (ex: A5) : ");
             String position = scanner.nextLine().trim().toUpperCase();
             int[] pos = retrieveGridPosition(position);
-            if (checkEmptyCase(pos[0], pos[1])) {
+            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                 Monster newMonster = new Monster(hp, strength, dex, speed, monsterSpecie, id, atckRange, dice);
                 m_donjonGrid[pos[0]][pos[1]] = " M ";
                 m_Entities.put(newMonster, new int[]{pos[0], pos[1]});
@@ -216,7 +224,7 @@ public class Donjon {
                 System.out.print("Entrez la position de l'équipement (ex: A5) : ");
                 String position = scanner.nextLine().trim().toUpperCase();
                 int[] pos = retrieveGridPosition(position);
-                if (checkEmptyCase(pos[0], pos[1])) {
+                if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                     m_Equipments.put(newEquipment, pos);
                     m_donjonGrid[pos[0]][pos[1]] = " E ";
                 }

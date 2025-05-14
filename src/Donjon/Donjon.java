@@ -8,6 +8,7 @@ import Equipment.Armor.Types.*;
 import Equipment.Equipment;
 import Equipment.Weapon.Types.*;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Donjon {
@@ -49,9 +50,8 @@ public class Donjon {
 
     public void setupDonjon() {
         obstaclePosition();
-        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_Entities);
         playerPosition();
-        monsterCreation();
+        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_Entities);
         equipmentPosition();
         promptContext();
         initiativeInit();
@@ -169,41 +169,6 @@ public class Donjon {
 
 
 
-
-    private void monsterCreation() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            m_display.displayTitle("Maître du jeu : Créez vos Monstres");
-            m_display.refreshDisplay();
-            System.out.print("Entrez la race du monstre ou 'fin' : ");
-            String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("FIN")) break;
-
-            String monsterSpecie = input;
-            int hp = promptInt(scanner, "Vie");
-            int dex = promptInt(scanner, "Dexterité");
-            int speed = promptInt(scanner, "Vitesse");
-            int strength = promptInt(scanner, "Force");
-            int id = promptInt(scanner, "ID");
-            int atckRange = promptInt(scanner, "Portée d'attaque");
-
-            int nbDice = promptInt(scanner, "Nombre de dés d'attaque");
-            int faceDice = promptInt(scanner, "Nombre de faces par dé");
-            Dice dice = new Dice(nbDice, faceDice);
-
-            System.out.print("Entrez la position du monstre (ex: A5) : ");
-            String position = scanner.nextLine().trim().toUpperCase();
-            int[] pos = retrieveGridPosition(position);
-            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                Monster newMonster = new Monster(hp, strength, dex, speed, monsterSpecie, id, atckRange, dice);
-                m_donjonGrid[pos[0]][pos[1]] = " M ";
-                m_Entities.put(newMonster, new int[]{pos[0], pos[1]});
-            } else {
-                System.out.println("Position invalide. Monstre non placé.");
-            }
-        }
-    }
-
     private void equipmentPosition() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -295,32 +260,58 @@ public class Donjon {
     }
 
 
-    public void mooveEntity(Entity entity){
-        int maxMoove = entity.getSpeed();
+    public void mooveEntity(Entity entity) {
+        int remainingMoove = entity.getSpeed();
+        int mooveSpeed = 1;
         Scanner scan = new Scanner(System.in);
-        int mooveSpeed = promptInt(scan,"Combien de case voulez vous vous déplacer : ");
-        while(maxMoove< mooveSpeed){
-           mooveSpeed=  promptInt(scan,"Combien de case voulez vous vous déplacer : ");
-        };
-        int direction = promptInt(scan,"Vers oû [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
-        while(direction>7||direction<0){
-            direction = promptInt(scan,"Vers oû [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
-        };
 
-        int[] mooveFactor = switch (direction) {
-            case 0 -> new int[]{0,mooveSpeed};
-            case 1 -> new int[]{0,-mooveSpeed};
-            case 2 -> new int[]{mooveSpeed,0};
-            case 3 -> new int[]{-mooveSpeed,0};
-            case 4 -> new int[]{mooveSpeed,mooveSpeed};
-            case 5 -> new int[]{mooveSpeed,-mooveSpeed};
-            case 6 -> new int[]{-mooveSpeed,-mooveSpeed};
-            case 7 -> new int[]{-mooveSpeed,mooveSpeed};
-            default -> new  int[]{0,0};
-        };
-        int[] newPos = new int[]{m_Entities.get(entity)[0]+mooveFactor[0],m_Entities.get(entity)[1]+mooveFactor[1]};
-        m_Entities.replace(entity,newPos);
+        while (remainingMoove > 0) {
+            m_display.refreshDisplay();
+            System.out.println("Vous avez " + remainingMoove + " points de déplacement restants.");
+            System.out.print("Combien de cases voulez-vous vous déplacer (ou 'fin' pour terminer) : ");
+
+            String input = scan.nextLine();
+            if (input.equalsIgnoreCase("fin")) {
+                break;
+            }
+
+            int direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+            while (direction > 7 || direction < 0) {
+                direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+            }
+
+            int[] mooveFactor = switch (direction) {
+                case 0 -> new int[]{-mooveSpeed, 0};
+                case 1 -> new int[]{mooveSpeed, 0};
+                case 2 -> new int[]{0, mooveSpeed};
+                case 3 -> new int[]{0, -mooveSpeed};
+                case 4 -> new int[]{-mooveSpeed, mooveSpeed};
+                case 5 -> new int[]{mooveSpeed, mooveSpeed};
+                case 6 -> new int[]{mooveSpeed, -mooveSpeed};
+                case 7 -> new int[]{-mooveSpeed, -mooveSpeed};
+                default -> new int[]{0, 0};
+            };
+
+            int[] oldPos = m_Entities.get(entity);
+            int newX = oldPos[0] + mooveFactor[0];
+            int newY = oldPos[1] + mooveFactor[1];
+
+            if(newX<0||newX>m_donjonSize||newY<0||newY>m_donjonSize|| !Objects.equals(m_donjonGrid[newX][newY], " . ")){
+                System.out.println("Vous n'avez pas le droit");
+                continue;
+            }
+
+            // Mise à jour de la grille
+            m_donjonGrid[oldPos[0]][oldPos[1]] = " . ";
+            m_donjonGrid[newX][newY] = " P ";
+            int[] newPos = new int[]{newX, newY};
+            m_Entities.replace(entity, newPos);
+            remainingMoove -= mooveSpeed;
+        }
+
+        System.out.println("Fin du déplacement.");
     }
+
 
 
 

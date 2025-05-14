@@ -56,7 +56,10 @@ public class Game {
     }
 
     private void game(){
-
+        for(Entity entity : m_Entities.keySet()){
+            m_donjon.mooveEntity(entity);
+            m_donjon.m_display.refreshDisplay();
+        }
     }
 
     private void playerTurn(){

@@ -295,6 +295,32 @@ public class Donjon {
     }
 
 
+    public void mooveEntity(Entity entity){
+        int maxMoove = entity.getSpeed();
+        Scanner scan = new Scanner(System.in);
+        int mooveSpeed = promptInt(scan,"Combien de case voulez vous vous déplacer : ");
+        while(maxMoove< mooveSpeed){
+           mooveSpeed=  promptInt(scan,"Combien de case voulez vous vous déplacer : ");
+        };
+        int direction = promptInt(scan,"Vers oû [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+        while(direction>7||direction<0){
+            direction = promptInt(scan,"Vers oû [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+        };
+
+        int[] mooveFactor = switch (direction) {
+            case 0 -> new int[]{0,mooveSpeed};
+            case 1 -> new int[]{0,-mooveSpeed};
+            case 2 -> new int[]{mooveSpeed,0};
+            case 3 -> new int[]{-mooveSpeed,0};
+            case 4 -> new int[]{mooveSpeed,mooveSpeed};
+            case 5 -> new int[]{mooveSpeed,-mooveSpeed};
+            case 6 -> new int[]{-mooveSpeed,-mooveSpeed};
+            case 7 -> new int[]{-mooveSpeed,mooveSpeed};
+            default -> new  int[]{0,0};
+        };
+        int[] newPos = new int[]{m_Entities.get(entity)[0]+mooveFactor[0],m_Entities.get(entity)[1]+mooveFactor[1]};
+        m_Entities.replace(entity,newPos);
+    }
 
 
 

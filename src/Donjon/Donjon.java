@@ -190,7 +190,7 @@ public class Donjon {
             int newX = oldPos[0] + moveFactor[0];
             int newY = oldPos[1] + moveFactor[1];
 
-            if(newX<0||newX>m_donjonSize||newY<0||newY>m_donjonSize|| !Objects.equals(m_donjonGrid[newX][newY], " . ")){
+            if(newX<0||newX>m_donjonSize||newY<0||newY>m_donjonSize|| !(Objects.equals(m_donjonGrid[newX][newY], " . ")||(Objects.equals(m_donjonGrid[newX][newY], " E ")))){
                 System.out.println("Vous n'avez pas le droit");
                 continue;
             }
@@ -205,6 +205,9 @@ public class Donjon {
 
         System.out.println("Fin du déplacement.");
     }
+
+
+
 
 
 

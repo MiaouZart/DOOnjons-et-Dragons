@@ -2,11 +2,9 @@ package Donjon;
 
 import Dice.Dice;
 import Entity.Entity;
-import Entity.Monster.Monster;
 import Entity.Personnage.Personnage;
-import Equipment.Armor.Types.*;
 import Equipment.Equipment;
-import Equipment.Weapon.Types.*;
+
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
@@ -18,23 +16,21 @@ public class Donjon {
     protected int m_donjonNumber;
     protected boolean m_setup = false;
     protected Personnage m_currentPlayer;
-    protected HashMap<Equipment, int[]> m_Equipments;
-    protected HashMap<Entity, int[]> m_Entities;
+    protected HashMap<Equipment, int[]> m_equipments;
+    protected HashMap<Entity, int[]> m_entities;
     protected DonjonDisplay m_display;
 
     public Donjon(int size, HashMap<Entity, int[]> players) {
-        if (size < 15 || size > 25) {
-            throw new IllegalArgumentException("La Grille est trop petite ou trop grande ");
-        }
+
         m_donjonSize = size;
         m_donjonGrid = new String[m_donjonSize][m_donjonSize];
         initializeGrid();
-        m_Equipments = new HashMap<Equipment, int[]>();
+        m_equipments = new HashMap<Equipment, int[]>();
 
         if (players != null) {
-            m_Entities = players;
+            m_entities = players;
         }else{
-            m_Entities = new HashMap<Entity, int[]>();
+            m_entities = new HashMap<Entity, int[]>();
         }
 
         m_display = new DonjonDisplay(this);
@@ -51,8 +47,8 @@ public class Donjon {
     public void setupDonjon() {
         obstaclePosition();
         playerPosition();
-        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_Entities);
-        equipmentPosition();
+        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
+        EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
         promptContext();
         initiativeInit();
         m_setup = true;
@@ -99,7 +95,7 @@ public class Donjon {
         return new int[]{row, col};
     }
 
-    protected static int retrievInt(String input) {
+    protected static int retrieveInt(String input) {
         int result = 0;
         try {
             result = Integer.parseInt(input);
@@ -114,7 +110,7 @@ public class Donjon {
         int result = -1;
         while (result == -1) {
             System.out.print("Entrez " + label + " : ");
-            result = retrievInt(scanner.nextLine().trim());
+            result = retrieveInt(scanner.nextLine().trim());
         }
         return result;
     }
@@ -141,7 +137,7 @@ public class Donjon {
     private void playerPosition() {
         Scanner scanner = new Scanner(System.in);
 
-        for (Entity playerName : m_Entities.keySet()) {
+        for (Entity playerName : m_entities.keySet()) {
             boolean positionOk = false;
             while (!positionOk) {
                 m_display.displayTitle("Maître du jeu - Positionnez vos Joueurs");
@@ -158,86 +154,13 @@ public class Donjon {
 
                 if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                     m_donjonGrid[pos[0]][pos[1]] = " P ";
-                    m_Entities.replace(playerName, new int[]{pos[0], pos[1]});
+                    m_entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
                 } else {
                     System.out.println("Position déjà occupée. Veuillez réessayer.");
                 }
             }
         }
-    }
-
-
-
-    private void equipmentPosition() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            m_display.displayTitle("Maître du jeu : Positionnez les équipements");
-            m_display.refreshDisplay();
-            System.out.print("Placez un nouvelle élement ou 'fin' : ");
-            String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("FIN")) break;
-
-            int type = promptInt(scanner, "[0] Armure ; [1] Armes (ex:1)");
-            while (type > 1 || type < 0) {
-                type = promptInt(scanner, "[0] Armure ; [1] Armes (ex:1)");
-            }
-
-            Equipment newEquipment = createEquipment(scanner, type);
-
-            if (newEquipment != null) {
-                System.out.print("Entrez la position de l'équipement (ex: A5) : ");
-                String position = scanner.nextLine().trim().toUpperCase();
-                int[] pos = retrieveGridPosition(position);
-                if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                    m_Equipments.put(newEquipment, pos);
-                    m_donjonGrid[pos[0]][pos[1]] = " E ";
-                }
-            }
-        }
-    }
-
-    private Equipment createEquipment(Scanner scanner, int type) {
-        Equipment newEquipment = null;
-        if (type == 0) {
-            System.out.println("Création d'une Armure : ");
-            int armorType = promptInt(scanner,
-                    "[0] Côtte de mailles ; [1] Demi-plate ; [2] Armure d'écailles ; [3] Harnois (ex:2)");
-            while (armorType > 3 || armorType < 0) {
-                armorType = promptInt(scanner,
-                        "[0] Côtte de mailles ; [1] Demi-plate ; [2] Armure d'écailles ; [3] Harnois (ex:2)");
-            }
-
-            newEquipment = switch (armorType) {
-                case 0 -> new ChainMail();
-                case 1 -> new HalfPlate();
-                case 2 -> new ScaleMail();
-                case 3 -> new Plate();
-                default -> newEquipment;
-            };
-        } else {
-            System.out.println("Création d'une Arme : ");
-            int weaponType = promptInt(scanner,
-                    "[0] Arbalète ; [1] Bâton ; [2] Masse d'armes ; [3] Épée longue ; " +
-                            "[4] Rapière ; [5] Fronde ; [6] Arc court (ex:2)");
-            while (weaponType > 6 || weaponType < 0) {
-                weaponType = promptInt(scanner,
-                        "[0] Arbalète ; [1] Bâton ; [2] Masse d'armes ; [3] Épée longue ; " +
-                                "[4] Rapière ; [5] Fronde ; [6] Arc court (ex:2)");
-            }
-
-            newEquipment = switch (weaponType) {
-                case 0 -> new Crossbow();
-                case 1 -> new Quarterstaff();
-                case 2 -> new Mace();
-                case 3 -> new Longsword();
-                case 4 -> new Rapier();
-                case 5 -> new Sling();
-                case 6 -> new Shortbow();
-                default -> newEquipment;
-            };
-        }
-        return newEquipment;
     }
 
     private void promptContext() {
@@ -249,7 +172,7 @@ public class Donjon {
     private void initiativeInit(){
         Dice initiativeDice = new Dice(1,20);
         Scanner scan = new Scanner(System.in);
-        for(Entity entity : m_Entities.keySet()){
+        for(Entity entity : m_entities.keySet()){
             m_display.displayTitle(entity.toString()+" : Faite votre jetté de dées : ");
             scan.nextLine();
             int lancer = initiativeDice.roll()[0];
@@ -260,14 +183,14 @@ public class Donjon {
     }
 
 
-    public void mooveEntity(Entity entity) {
-        int remainingMoove = entity.getSpeed();
-        int mooveSpeed = 1;
+    public void moveEntity(Entity entity) {
+        int remainingMove = entity.getSpeed();
+        int moveSpeed = 1;
         Scanner scan = new Scanner(System.in);
 
-        while (remainingMoove > 0) {
+        while (remainingMove > 0) {
             m_display.refreshDisplay();
-            System.out.println("Vous avez " + remainingMoove + " points de déplacement restants.");
+            System.out.println("Vous avez " + remainingMove + " points de déplacement restants.");
             System.out.print("Combien de cases voulez-vous vous déplacer (ou 'fin' pour terminer) : ");
 
             String input = scan.nextLine();
@@ -280,21 +203,21 @@ public class Donjon {
                 direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
             }
 
-            int[] mooveFactor = switch (direction) {
-                case 0 -> new int[]{-mooveSpeed, 0};
-                case 1 -> new int[]{mooveSpeed, 0};
-                case 2 -> new int[]{0, mooveSpeed};
-                case 3 -> new int[]{0, -mooveSpeed};
-                case 4 -> new int[]{-mooveSpeed, mooveSpeed};
-                case 5 -> new int[]{mooveSpeed, mooveSpeed};
-                case 6 -> new int[]{mooveSpeed, -mooveSpeed};
-                case 7 -> new int[]{-mooveSpeed, -mooveSpeed};
+            int[] moveFactor = switch (direction) {
+                case 0 -> new int[]{-moveSpeed, 0};
+                case 1 -> new int[]{moveSpeed, 0};
+                case 2 -> new int[]{0, moveSpeed};
+                case 3 -> new int[]{0, -moveSpeed};
+                case 4 -> new int[]{-moveSpeed, moveSpeed};
+                case 5 -> new int[]{moveSpeed, moveSpeed};
+                case 6 -> new int[]{moveSpeed, -moveSpeed};
+                case 7 -> new int[]{-moveSpeed, -moveSpeed};
                 default -> new int[]{0, 0};
             };
 
-            int[] oldPos = m_Entities.get(entity);
-            int newX = oldPos[0] + mooveFactor[0];
-            int newY = oldPos[1] + mooveFactor[1];
+            int[] oldPos = m_entities.get(entity);
+            int newX = oldPos[0] + moveFactor[0];
+            int newY = oldPos[1] + moveFactor[1];
 
             if(newX<0||newX>m_donjonSize||newY<0||newY>m_donjonSize|| !Objects.equals(m_donjonGrid[newX][newY], " . ")){
                 System.out.println("Vous n'avez pas le droit");
@@ -305,8 +228,8 @@ public class Donjon {
             m_donjonGrid[oldPos[0]][oldPos[1]] = " . ";
             m_donjonGrid[newX][newY] = " P ";
             int[] newPos = new int[]{newX, newY};
-            m_Entities.replace(entity, newPos);
-            remainingMoove -= mooveSpeed;
+            m_entities.replace(entity, newPos);
+            remainingMove -= moveSpeed;
         }
 
         System.out.println("Fin du déplacement.");
@@ -324,5 +247,5 @@ public class Donjon {
     public int getDonjonSize() { return m_donjonSize; }
     public String[][] getDonjonGrid() { return m_donjonGrid; }
     public int getTurn() { return m_turn; }
-    public HashMap<Entity, int[]> getEntities() { return m_Entities; }
+    public HashMap<Entity, int[]> getEntities() { return m_entities; }
 }

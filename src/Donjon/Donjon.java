@@ -70,7 +70,7 @@ public class Donjon {
         return true;
     }
 
-    protected int[] retrievGridPosition(String position) {
+    protected int[] retrieveGridPosition(String position) {
         if (position.isEmpty()) {
             return new int[]{-1, -1};
         }
@@ -124,7 +124,7 @@ public class Donjon {
                 break;
             }
 
-            int[] pos = retrievGridPosition(input);
+            int[] pos = retrieveGridPosition(input);
             if (checkEmptyCase(pos[0], pos[1])) {
                 m_donjonGrid[pos[0]][pos[1]] = " # ";
             }
@@ -154,7 +154,7 @@ public class Donjon {
 
             System.out.print("Entrez la position du monstre (ex: A5) : ");
             String position = scanner.nextLine().trim().toUpperCase();
-            int[] pos = retrievGridPosition(position);
+            int[] pos = retrieveGridPosition(position);
             if (checkEmptyCase(pos[0], pos[1])) {
                 Monster newMonster = new Monster(hp, strength, dex, speed, monsterSpecie, id, atckRange, dice);
                 m_donjonGrid[pos[0]][pos[1]] = " M ";
@@ -184,7 +184,7 @@ public class Donjon {
             if (newEquipment != null) {
                 System.out.print("Entrez la position de l'équipement (ex: A5) : ");
                 String position = scanner.nextLine().trim().toUpperCase();
-                int[] pos = retrievGridPosition(position);
+                int[] pos = retrieveGridPosition(position);
                 if (checkEmptyCase(pos[0], pos[1])) {
                     m_Equipments.put(newEquipment, pos);
                     m_donjonGrid[pos[0]][pos[1]] = " E ";

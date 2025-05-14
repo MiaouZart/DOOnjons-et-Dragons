@@ -94,7 +94,7 @@ public class Donjon {
         return new int[]{row, col};
     }
 
-    protected int retrievInt(String input) {
+    protected static int retrievInt(String input) {
         int result = 0;
         try {
             result = Integer.parseInt(input);
@@ -105,7 +105,7 @@ public class Donjon {
         return result;
     }
 
-    protected int promptInt(Scanner scanner, String label) {
+    protected static int promptInt(Scanner scanner, String label) {
         int result = -1;
         while (result == -1) {
             System.out.print("Entrez " + label + " : ");

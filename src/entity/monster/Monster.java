@@ -2,6 +2,8 @@ package entity.monster;
 
 import dice.Dice;
 import entity.Entity;
+import entity.EnumEntity;
+import entity.personnage.Personnage;
 
 public class Monster extends Entity {
     private final String m_specie;
@@ -15,6 +17,7 @@ public class Monster extends Entity {
         m_id =id;
         m_atkRange =atkRange;
         m_atkDamage = dice;
+        m_enemy = EnumEntity.PERSONNAGE;
     }
 
     @Override

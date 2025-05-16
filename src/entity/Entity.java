@@ -7,6 +7,8 @@ public abstract class Entity {
     private final int m_speed;
     private int m_initiative;
 
+    protected EnumEntity m_enemy;
+
 
     public Entity(int HP, int Strength, int Dex, int Speed, int Initiative){
         m_hp = HP;
@@ -21,6 +23,7 @@ public abstract class Entity {
         m_dex = Dex;
         m_strength = Strength;
     }
+
 
     public int getHp(){
         return m_hp;
@@ -42,6 +45,10 @@ public abstract class Entity {
     }
     public void addInitiative(int initiative){
         m_initiative += initiative;
+    }
+
+    public EnumEntity getEnemy(){
+        return m_enemy;
     }
 
 }

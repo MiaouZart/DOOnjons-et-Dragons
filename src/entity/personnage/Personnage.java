@@ -2,6 +2,7 @@ package entity.personnage;
 
 import dice.Dice;
 import entity.Entity;
+import entity.EnumEntity;
 import entity.personnage.charclass.CharClass;
 import entity.personnage.race.Race;
 import equipment.armor.Armor;
@@ -28,6 +29,7 @@ public class Personnage extends Entity {
         m_race = race;
         m_charClass = charClass;
         m_inventory = charClass.getBaseStuff();
+        m_enemy = EnumEntity.MONSTER;
     }
 
     public CharClass getCharClass() {

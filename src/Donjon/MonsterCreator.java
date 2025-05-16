@@ -6,6 +6,7 @@ import Entity.Monster.Monster;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import static Donjon.Display.promptInt;
 import static Donjon.Donjon.*;
 
 public class MonsterCreator {

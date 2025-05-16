@@ -1,5 +1,9 @@
 package Donjon;
 
+import java.util.Scanner;
+
+import static Donjon.Donjon.retrieveInt;
+
 public class Display {
     private Donjon m_donjon;
     private int m_cellWidth = 5;
@@ -30,7 +34,7 @@ public class Display {
     }
 
     protected void displayGrid() {
-        int asciiA = (int) 'A';
+        int asciiA = 'A';
         int rows = 0;
 
         // En-tête des colonnes (A, B, C...)
@@ -55,4 +59,14 @@ public class Display {
         }
         System.out.println("  \\" + "-".repeat(m_repeat) + "/");
     }
+
+    protected static int promptInt(Scanner scanner, String label) {
+        int result = -1;
+        while (result == -1) {
+            System.out.print("Entrez " + label + " : ");
+            result = retrieveInt(scanner.nextLine().trim());
+        }
+        return result;
+    }
+
 }

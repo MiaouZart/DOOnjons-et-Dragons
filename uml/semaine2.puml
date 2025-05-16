@@ -296,8 +296,10 @@ package donjon{
 
 class Main {
     +{static}<<create>>Main(args:String[])
+    game:Game
 }
 
+Main "1" *-->"game" Game : <<use>>
 
 entity.personnage.Personnage "-charClass"*-up-> entity.personnage.charclass.CharClass : "Est de classe > "
 entity.personnage.Personnage "-inventory"*-> equipment.Equipment : "A les équipements > "
@@ -312,127 +314,25 @@ equipment.weapon.Weapon "-damageDice"*----> dice.Dice : "Dés de dommages"
 
 entity.monster.Monster "\n-atkDamageDice"*---->dice.Dice : "Dés de dommages"
 
-'Armor             -[#595959,dashed]->  Armor
-'Armor             -[#000082,plain]-^  Equipment
-'ChainMail         -[#000082,plain]-^  Heavy
-'CharClass         -[#595959,dashed]->  CharClass
-'CharClass        "1" *-[#595959,plain]-> "m_baseStuff\n*" Equipment
-'CharacterCreator  -[#595959,dashed]->  CharClass
-'CharacterCreator  -[#595959,dashed]->  CharacterCreator
-'CharacterCreator  -[#595959,dashed]->  Clerc            : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Display
-'CharacterCreator  -[#595959,dashed]->  Dwarf            : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Elf              : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Halfelin         : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Human            : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Personnage       : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Race
-'CharacterCreator  -[#595959,dashed]->  Rogue            : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Warrior          : "«create»"
-'CharacterCreator  -[#595959,dashed]->  Wizard           : "«create»"
-'Clerc             -[#000082,plain]-^  CharClass
-'Clerc             -[#595959,dashed]->  Crossbow         : "«create»"
-'Clerc             -[#595959,dashed]->  Equipment        : "«create»"
-'Clerc             -[#595959,dashed]->  Mace             : "«create»"
-'Clerc             -[#595959,dashed]->  ScaleMail        : "«create»"
-'Crossbow          -[#595959,dashed]->  Dice             : "«create»"
-'Crossbow          -[#000082,plain]-^  Ranged
-'Dice              -[#595959,dashed]->  Dice
-'Display           -[#595959,dashed]->  Display
-'Display          "1" *-[#595959,plain]-> "m_donjon\n1" Donjon
-'Donjon            -[#595959,dashed]->  Dice             : "«create»"
-'Donjon           "1" *-[#595959,plain]-> "m_display\n1" Display
-'Donjon            -[#595959,dashed]->  Display          : "«create»"
-'Donjon            -[#595959,dashed]->  Donjon
-'Donjon           "1" *-[#595959,plain]-> "m_entities\n*" Entity
-'Donjon           "1" *-[#595959,plain]-> "m_equipments\n*" Equipment
-'Donjon            -[#595959,dashed]->  EquipmentCreator
-'Donjon            -[#595959,dashed]->  MonsterCreator
-'Donjon            -[#595959,dashed]->  ObstacleCreator
-'Dwarf             -[#000082,plain]-^  Race
-'Elf               -[#000082,plain]-^  Race
-'EquipmentCreator  -[#595959,dashed]->  ChainMail        : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Crossbow         : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Display
-'EquipmentCreator  -[#595959,dashed]->  Donjon
-'EquipmentCreator  -[#595959,dashed]->  Equipment
-'EquipmentCreator  -[#595959,dashed]->  EquipmentCreator
-'EquipmentCreator  -[#595959,dashed]->  HalfPlate        : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Longsword        : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Mace             : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Plate            : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Quarterstaff     : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Rapier           : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  ScaleMail        : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Shortbow         : "«create»"
-'EquipmentCreator  -[#595959,dashed]->  Sling            : "«create»"
-'Game              -[#595959,dashed]->  CharacterCreator
-'Game              -[#595959,dashed]->  Display
-'Game              -[#595959,dashed]->  Donjon           : "«create»"
-'Game             "1" *-[#595959,plain]-> "m_donjon\n1" Donjon
-'Game             "1" *-[#595959,plain]-> "m_entities\n*" Entity
-'Game              -[#595959,dashed]->  Game
-'Game              -[#595959,dashed]->  Personnage
-'HalfPlate         -[#000082,plain]-^  Light
-'Halfelin          -[#000082,plain]-^  Race
-'Heavy             -[#000082,plain]-^  Armor
-'Human             -[#000082,plain]-^  Race
-'Light             -[#000082,plain]-^  Armor
-'Longsword         -[#595959,dashed]->  Dice             : "«create»"
-'Longsword         -[#000082,plain]-^  Martial
-'Mace              -[#595959,dashed]->  Dice             : "«create»"
-'Mace              -[#000082,plain]-^  Simple
-'Main              -[#595959,dashed]->  Game             : "«create»"
-'Martial           -[#595959,dashed]->  Dice
-'Martial           -[#000082,plain]-^  Weapon
-'Monster          "1" *-[#595959,plain]-> "m_atkDamage\n1" Dice
-'Monster           -[#000082,plain]-^  Entity
-'MonsterCreator    -[#595959,dashed]->  Dice             : "«create»"
-'MonsterCreator    -[#595959,dashed]->  Display
-'MonsterCreator    -[#595959,dashed]->  Donjon
-'MonsterCreator    -[#595959,dashed]->  Entity
-'MonsterCreator    -[#595959,dashed]->  Monster          : "«create»"
-'MonsterCreator    -[#595959,dashed]->  MonsterCreator
-'ObstacleCreator   -[#595959,dashed]->  Display
-'ObstacleCreator   -[#595959,dashed]->  Donjon
-'ObstacleCreator   -[#595959,dashed]->  ObstacleCreator
-'Personnage       "1" *-[#595959,plain]-> "m_armor\n1" Armor
-'Personnage       "1" *-[#595959,plain]-> "m_charClass\n1" CharClass
-'Personnage        -[#595959,dashed]->  Dice             : "«create»"
-'Personnage        -[#000082,plain]-^  Entity
-'Personnage       "1" *-[#595959,plain]-> "m_inventory\n*" Equipment
-'Personnage       "1" *-[#595959,plain]-> "m_race\n1" Race
-'Personnage       "1" *-[#595959,plain]-> "m_weapon\n1" Weapon
-'Plate             -[#000082,plain]-^  Heavy
-'Quarterstaff      -[#595959,dashed]->  Dice             : "«create»"
-'Quarterstaff      -[#000082,plain]-^  Simple
-'Race              -[#595959,dashed]->  Race
-'Ranged            -[#595959,dashed]->  Dice
-'Ranged            -[#000082,plain]-^  Weapon
-'Rapier            -[#595959,dashed]->  Dice             : "«create»"
-'Rapier            -[#000082,plain]-^  Martial
-'Rogue             -[#000082,plain]-^  CharClass
-'Rogue             -[#595959,dashed]->  Equipment        : "«create»"
-'Rogue             -[#595959,dashed]->  Rapier           : "«create»"
-'Rogue             -[#595959,dashed]->  Shortbow         : "«create»"
-'ScaleMail         -[#000082,plain]-^  Light
-'Shortbow          -[#595959,dashed]->  Dice             : "«create»"
-'Shortbow          -[#000082,plain]-^  Ranged
-'Simple            -[#595959,dashed]->  Dice
-'Simple            -[#000082,plain]-^  Weapon
-'Sling             -[#595959,dashed]->  Dice             : "«create»"
-'Sling             -[#000082,plain]-^  Ranged
-'Warrior           -[#595959,dashed]->  ChainMail        : "«create»"
-'Warrior           -[#000082,plain]-^  CharClass
-'Warrior           -[#595959,dashed]->  Crossbow         : "«create»"
-'Warrior           -[#595959,dashed]->  Equipment        : "«create»"
-'Warrior           -[#595959,dashed]->  Longsword        : "«create»"
-'Weapon           "1" *-[#595959,plain]-> "m_damageDice\n1" Dice
-'Weapon            -[#000082,plain]-^  Equipment
-'Weapon            -[#595959,dashed]->  Weapon
-'Wizard            -[#000082,plain]-^  CharClass
-'Wizard            -[#595959,dashed]->  Equipment        : "«create»"
-'Wizard            -[#595959,dashed]->  Quarterstaff     : "«create»"
-'Wizard            -[#595959,dashed]->  Sling            : "«create»"
+Donjon           "1" *--> "m_display\n1" Display
+Donjon           "1" *--> "m_entities\n*" Entity
+Donjon           "1" *--> "m_equipments\n*" Equipment
+Donjon            -->  EquipmentCreator : <<use>>
+Donjon            -->  MonsterCreator : <<use>>
+Donjon            -->  ObstacleCreator :<<use>>
+EquipmentCreator  -->  Equipment : <<create>>
+Game              -->  CharacterCreator : <<use>>
+Game              -->  Donjon           : "«create»"
+Game             "1" *--> "m_donjon\n1" Donjon
+Game             "1" *--> "m_entities\n*" Entity
+Game              -->  Personnage
+Monster          "1" *--> "m_atkDamage\n1" Dice
+MonsterCreator    -[#595959,dashed]->  Monster          : "«create»"
+ObstacleCreator   -[#595959,dashed]->  Display
+ObstacleCreator   -[#595959,dashed]->  Donjon
+
+CharacterCreator  --> Personnage : "«create»"
+CharacterCreator  --> Race : <<use>>
+CharacterCreator  --> CharClass : <<use>>
 
 @enduml

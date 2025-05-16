@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static Donjon.Display.promptInt;
+
 public class Donjon {
     protected int m_donjonSize;
     protected String[][] m_donjonGrid;
@@ -100,14 +102,6 @@ public class Donjon {
         return result;
     }
 
-    protected static int promptInt(Scanner scanner, String label) {
-        int result = -1;
-        while (result == -1) {
-            System.out.print("Entrez " + label + " : ");
-            result = retrieveInt(scanner.nextLine().trim());
-        }
-        return result;
-    }
 
     private void playerPosition() {
         Scanner scanner = new Scanner(System.in);

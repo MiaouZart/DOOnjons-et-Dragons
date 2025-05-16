@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import static Donjon.Donjon.promptInt;
+import static Donjon.Display.promptInt;
 
 public class Game {
 
@@ -71,7 +71,7 @@ public class Game {
     }
     private void monsterTurn(){
 
-    };
+    }
 
 
 

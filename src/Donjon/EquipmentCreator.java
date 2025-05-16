@@ -10,6 +10,7 @@ import Equipment.Weapon.Types.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import static Donjon.Display.promptInt;
 import static Donjon.Donjon.*;
 
 public class EquipmentCreator {

@@ -6,7 +6,8 @@ import Entity.Personnage.Personnage;
 import Entity.Personnage.Race.Types.*;
 import Entity.Personnage.Race.Race;
 import java.util.Scanner;
-import static Donjon.Donjon.promptInt;
+
+import static Donjon.Display.promptInt;
 
 
 public class CharacterCreator {

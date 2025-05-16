@@ -1,0 +1,46 @@
+package entity.personnage.charclass;
+
+import equipment.Equipment;
+
+import java.util.Objects;
+
+public abstract class CharClass {
+    private final String m_name;
+    private final int m_baseHealth;
+    private final Equipment[] m_baseStuff;
+
+    public CharClass(String name, int baseHealth, Equipment[] baseStuff) {
+        m_baseHealth = baseHealth;
+        m_baseStuff = baseStuff;
+        m_name = name;
+    }
+
+    public int getBaseHealth() {
+        return m_baseHealth;
+    }
+
+    public Equipment[] getBaseStuff() {
+        return m_baseStuff;
+    }
+
+    public String getM_name() {
+        return m_name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CharClass charClass = (CharClass) o;
+        return Objects.equals(m_name, charClass.m_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(m_name);
+    }
+
+    @Override
+    public String toString() {
+        return m_name ;
+    }
+}

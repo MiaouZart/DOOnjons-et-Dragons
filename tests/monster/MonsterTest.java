@@ -1,0 +1,5 @@
+package monster;
+
+class MonsterTest {
+
+}

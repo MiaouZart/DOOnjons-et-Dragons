@@ -2,11 +2,16 @@ package Donjon;
 
 import Dice.Dice;
 import Entity.Entity;
+import Entity.Monster.Monster;
+import Entity.Personnage.Personnage;
 import Equipment.Equipment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
+
+import static Dice.Dice.someUp;
 
 public class Donjon {
     protected int m_donjonSize;
@@ -202,13 +207,49 @@ public class Donjon {
             m_entities.replace(entity, newPos);
             remainingMove -= moveSpeed;
         }
+        System.out.println("Fin du déplacement.");
+    }
+    public void playerAttack(Personnage player) {
+
+        if(player.getWeapon()==null) {
+            System.out.println("Pas d'armes équiper ");
+            return;
+        }
+
+        int atkRange = player.getWeapon().getRange();
+        Dice atcDice = player.getWeapon().getDamageDice();
+        ArrayList<Monster> attackable = new ArrayList<Entity>();
+        for(Entity entity : m_entities.keySet()){
+            if(entity.getClass() != Monster.class){
+                continue;
+            }
+            int[] MonsterPos = m_entities.get(entity);
+            int[] PlayerPos = m_entities.get(player);
+            int xDif = Math.abs(MonsterPos[0]-PlayerPos[0]);
+            int yDif = Math.abs(MonsterPos[1]-PlayerPos[1]);
+            if(xDif>atkRange||yDif>atkRange){
+                continue;
+            }
+            attackable.add((Monster) entity);
+        }
+        if(!attackable.isEmpty()){
+            System.out.println("Selectionnez votre cible : ");
+            for(int i =0;i<attackable.size();i++){
+                System.out.println("["+i+"] "+attackable.get(i));
+            }
+            int selected = -1;
+            Scanner scan = new Scanner(System.in);
+            while (selected > 7 || selected < 0) {
+                selected = promptInt(scan, "Entrez la cible ");
+            }
+            int damage = someUp(atcDice.roll());
+            attackable.get(selected);
+
+        }
+
 
         System.out.println("Fin du déplacement.");
     }
-
-
-
-
 
 
 

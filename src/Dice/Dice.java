@@ -1,7 +1,6 @@
 package Dice;
 import java.util.Objects;
 import java.util.Random;
-import java.util.ArrayList;
 
 public class Dice {
     private final int m_value;
@@ -21,6 +20,14 @@ public class Dice {
             rolls[i] = rand.nextInt(m_value)+1;
         }
         return rolls;
+    }
+
+    static public int someUp(int[] dices){
+        int summ = 0;
+        for(int i : dices){
+            summ+=i;
+        }
+        return  summ;
     }
 
 

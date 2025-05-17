@@ -206,7 +206,7 @@ En cas de victoire, les personnages regagnent l'intégralité de leur vie et pas
 
 ```console
 ********************************************************************************
-Donjon 2:
+donjon 2:
                                     Caelynn (Elfe magicienne)              
 
 ********************************************************************************
@@ -324,7 +324,7 @@ Veillez :
 ## Quelques conseils
 
 - N'essayez pas d'implémenter toutes les fonctionnalités en une seule fois. Commencez par un programme simple mais fonctionnel et intégrez progressivement les fonctionnalités.
-- Il s'agit d'une version très simplifiée de Donjon et Dragon. Il peut être tentant d'améliorer le projet et d'intégrer beaucoup de fonctionnalités et règles du jeu originel. Cependant cela ne vous permettra pas d'augmenter votre note. Ne négligez pas le projet de base ni les projets des autres modules. Vous aurez tout le loisir d'améliorer le projet durant votre été.
+- Il s'agit d'une version très simplifiée de donjon et Dragon. Il peut être tentant d'améliorer le projet et d'intégrer beaucoup de fonctionnalités et règles du jeu originel. Cependant cela ne vous permettra pas d'augmenter votre note. Ne négligez pas le projet de base ni les projets des autres modules. Vous aurez tout le loisir d'améliorer le projet durant votre été.
 - Faites des commits réguliers sur vos branches de travail.
 - Concevez votre code de façon à ce qu'il soit facile à modifier et à étendre avec de nouvelles fonctionnalités, notamment en prévision de la phase 2.
 - La qualité de la conception et du code produit est plus importante que le nombre de fonctionnalités intégrées.

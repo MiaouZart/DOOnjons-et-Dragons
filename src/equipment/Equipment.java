@@ -1,7 +1,10 @@
 package equipment;
 
+import equipment.weapon.EnumWeaponType;
+
 public abstract class Equipment {
     private final String m_name;
+
 
     public Equipment(String name) {
         m_name = name;
@@ -10,4 +13,6 @@ public abstract class Equipment {
     public String getName() {
         return m_name;
     }
+
+
 }

@@ -29,7 +29,7 @@ public class Personnage extends Entity {
         m_race = race;
         m_charClass = charClass;
         m_inventory = charClass.getBaseStuff();
-        m_enemy = EnumEntity.MONSTER;
+        m_type = EnumEntity.MONSTER;
     }
 
     public CharClass getCharClass() {
@@ -84,6 +84,15 @@ public class Personnage extends Entity {
     public void take(Equipment equipment) {
         m_inventory = Arrays.copyOf(m_inventory, m_inventory.length+1);
         m_inventory[m_inventory.length-1] = equipment;
+    }
+
+    public int getRangePoint(){
+        return this.getWeapon().getRange();
+    }
+
+    @Override
+    public int getArmorPoint() {
+        return this.getArmor().getClassVal();
     }
 
     @Override

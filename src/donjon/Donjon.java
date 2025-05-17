@@ -2,6 +2,7 @@ package donjon;
 
 import dice.Dice;
 import entity.Entity;
+import entity.EnumEntity;
 import equipment.Equipment;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.Scanner;
 
 import static donjon.Display.promptInt;
 
-import static Dice.Dice.someUp;
 
 public class Donjon {
     protected final int m_donjonSize;
@@ -200,46 +200,53 @@ public class Donjon {
         }
         System.out.println("Fin du déplacement.");
     }
-    public void playerAttack(Personnage player) {
 
-        if(player.getWeapon()==null) {
-            System.out.println("Pas d'armes équiper ");
-            return;
-        }
+    private int distance(Entity entity1, Entity entity2) {
+        int x1 = m_entities.get(entity1)[0];
+        int y1 = m_entities.get(entity1)[1];
+        int x2 = m_entities.get(entity2)[0];
+        int y2 = m_entities.get(entity2)[1];
+        return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+    }
 
-        int atkRange = player.getWeapon().getRange();
-        Dice atcDice = player.getWeapon().getDamageDice();
-        ArrayList<Monster> attackable = new ArrayList<Entity>();
-        for(Entity entity : m_entities.keySet()){
-            if(entity.getClass() != Monster.class){
+
+
+    public void playerAttack(Entity entity) {
+        EnumEntity entityType = entity.getType();
+        ArrayList<Entity> entitiesThatCanBeAttacked = new ArrayList<Entity>();
+        int range = entity.getRangePoint();
+        for (Entity enemy : m_entities.keySet()) {
+            if(enemy.getType()==entityType){//si on a le même type alors pourquoi s'attaquer ???
                 continue;
             }
-            int[] MonsterPos = m_entities.get(entity);
-            int[] PlayerPos = m_entities.get(player);
-            int xDif = Math.abs(MonsterPos[0]-PlayerPos[0]);
-            int yDif = Math.abs(MonsterPos[1]-PlayerPos[1]);
-            if(xDif>atkRange||yDif>atkRange){
-                continue;
+            int distance = distance(entity,enemy);
+            if(distance<=range){
+                entitiesThatCanBeAttacked.add(enemy);
             }
-            attackable.add((Monster) entity);
-        }
-        if(!attackable.isEmpty()){
-            System.out.println("Selectionnez votre cible : ");
-            for(int i =0;i<attackable.size();i++){
-                System.out.println("["+i+"] "+attackable.get(i));
-            }
-            int selected = -1;
-            Scanner scan = new Scanner(System.in);
-            while (selected > 7 || selected < 0) {
-                selected = promptInt(scan, "Entrez la cible ");
-            }
-            int damage = someUp(atcDice.roll());
-            attackable.get(selected);
-
         }
 
-
-        System.out.println("Fin du déplacement.");
+        if(entitiesThatCanBeAttacked.isEmpty()){
+            System.out.println("Personne à attaquer");
+            return ;
+        }
+        System.out.println("Vous pouvez attaquer : ");
+        for (int i = 0; i < entitiesThatCanBeAttacked.size(); i++) {
+            System.out.println("["+i+"]"+entitiesThatCanBeAttacked.get(i));
+        }
+        Scanner scan = new Scanner(System.in);
+        int cible = -1;
+        while (cible<0||cible>=entitiesThatCanBeAttacked.size()){
+            cible = promptInt(scan,"Choisisez votre cible :");
+        }
+        Entity chose = entitiesThatCanBeAttacked.get(cible);
+        boolean toucher = chose.getAttacked(entity);
+        if(toucher){
+            System.out.println("Bravo vous avez toucher votre cible");
+            if(chose.getDead()){
+                System.out.println("Et Vous l'avez tuer");
+                m_entities.remove(chose);
+            }
+        }
     }
 
     public void nextTurn() {

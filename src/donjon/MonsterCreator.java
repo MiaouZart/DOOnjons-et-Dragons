@@ -33,12 +33,13 @@ public class MonsterCreator {
         int strength = promptInt(scanner, "Force");
         int id = promptInt(scanner, "ID");
         int atkRange = promptInt(scanner, "Portée d'attaque");
+        int armor = promptInt(scanner, "Point d'armure");
 
         int nbDice = promptInt(scanner, "Nombre de dés d'attaque");
         int faceDice = promptInt(scanner, "Nombre de faces par dé");
         Dice dice = new Dice(nbDice, faceDice);
 
-        return new Monster(hp, strength, dex, speed, specie, id, atkRange, dice);
+        return new Monster(hp, strength, dex, speed, specie, id, atkRange,armor, dice);
     }
 
     protected static int[] promptPos(Scanner scanner, String[][] grid) {

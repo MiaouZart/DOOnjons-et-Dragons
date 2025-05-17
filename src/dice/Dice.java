@@ -22,7 +22,7 @@ public class Dice {
         return rolls;
     }
 
-    static public int someUp(int[] dices){
+    static public int sumUp(int[] dices){
         int summ = 0;
         for(int i : dices){
             summ+=i;

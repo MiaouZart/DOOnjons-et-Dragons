@@ -10,6 +10,7 @@ public abstract class Weapon extends Equipment {
     private final Dice m_damageDice;
     private final int m_speedModifier;
     private final int m_strengthModifier;
+    protected EnumWeaponType m_type;
 
     public Weapon(String name, int range, Dice damage, int speedModifier, int strengthModifier) {
         super(name);
@@ -46,5 +47,9 @@ public abstract class Weapon extends Equipment {
     @Override
     public int hashCode() {
         return Objects.hash(m_range, m_damageDice, m_speedModifier, m_strengthModifier, m_name);
+    }
+
+    public EnumWeaponType getType(){
+        return m_type;
     }
 }

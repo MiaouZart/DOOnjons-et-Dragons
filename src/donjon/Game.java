@@ -118,8 +118,12 @@ public class Game {
             for (int i = 0; i < actions.size(); i++) {
                     System.out.println("[" + i + "] " + actions.get(i));
             }
+            if (entity.getType() == EnumEntity.PERSONNAGE) {
+                weapon = ((Personnage) entity).getWeapon();
+                inventory = ((Personnage) entity).getInventory();
+            }
 
-            if(weapon ==null){
+            if(weapon ==null&&(entity.getType() == EnumEntity.PERSONNAGE)){
                 possibleChoices.remove(0);
             }
 

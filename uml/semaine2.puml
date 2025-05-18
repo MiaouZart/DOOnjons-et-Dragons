@@ -275,24 +275,46 @@ package dice{
 }
 
 package donjon{
-    class Donjon{
-        # donjonSize : Integer
-        # donjonGrid : String[donjonSize][donjonSize]
-        # turn: Integer
-        +<<create>>Donjon(size:Integer, players:HashMap<Entity, Integer[]>)
-        - playerPosition(): Void
-        + nextTurn(): Void
-        # {static}checkEmptyCase(x:Integer, y:Integer, donjonGrid:String[][], donjonSize:Integer): Boolean
-        # {static}checkEmptyCaseNonVerbose(x:Integer, y:Integer, donjonGrid:String[][], donjonSize:Integer): Boolean
-        - initializeGrid(): Void
-        # {static}retrieveInt(String): Integer
-        - promptContext(): Void
-        # {static}retrieveGridPosition(position:String): Integer[]
-        + moveEntity(entity:Entity): Void
-        + setupDonjon(): Void
-        - initiativeInit(): Void
-        entities: HashMap<Entity, Integer[]>
-    }
+
+class Donjon {
+    - m_donjonSize: int
+    - m_donjonGrid: String[][]
+    - m_turn: int
+    - m_donjonNumber: int
+    - m_setup: boolean
+    - m_equipments: HashMap<Equipment, int[]>
+    - m_entities: HashMap<Entity, int[]>
+    - m_display: Display
+    - m_donjonWin: boolean
+    - m_donjonLoose: boolean
+    - m_monsterNumber: int
+    - m_playerNumber: int
+
+    + Donjon(size: int, players: HashMap<Entity, int[]>)
+    + setupDonjon(): void
+    - initializeGrid(): void
+    - playerPosition(): void
+    - promptContext(): void
+    - initiativeInit(): void
+    + moveEntity(entity: Entity): void
+    + playerAttack(entity: Entity): void
+    - distance(entity1: Entity, entity2: Entity): int
+    + nextTurn(): void
+    - checkWin(): void
+    + getWin(): boolean
+    + getLoose(): boolean
+    + getDonjonSize(): int
+    + getDonjonGrid(): String[][]
+    + getTurn(): int
+    + getEntities(): HashMap<Entity, int[]>
+
+    {static} + checkEmptyCase(x: int, y: int, donjonGrid: String[][], donjonSize: int): boolean
+    {static} + checkEmptyCaseNonVerbose(x: int, y: int, donjonGrid: String[][], donjonSize: int): boolean
+    {static} + retrieveGridPosition(position: String): int[]
+    {static} + retrieveInt(input: String): int
+}
+
+
 
     class CharacterCreator {
         + CharacterCreator()
@@ -349,8 +371,9 @@ class Game {
         class defaul2{
                     +defaul2(entity: Entity[])
          }
-    game"1"--> defaulDonjon:<<use>>
+
     }
+     Game"1"--> defaulDonjon:<<use>>
 }
 
 class Main {

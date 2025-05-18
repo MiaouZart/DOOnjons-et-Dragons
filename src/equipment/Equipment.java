@@ -14,5 +14,8 @@ public abstract class Equipment {
         return m_name;
     }
 
-
+    @Override
+    public String toString() {
+        return m_name;
+    }
 }

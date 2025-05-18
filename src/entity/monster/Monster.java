@@ -5,6 +5,8 @@ import entity.Entity;
 import entity.EnumEntity;
 import entity.personnage.Personnage;
 
+import static dice.Dice.sumUp;
+
 public class Monster extends Entity {
     private final String m_specie;
     private final int m_id;
@@ -19,7 +21,7 @@ public class Monster extends Entity {
         m_atkRange =atkRange;
         m_atkDamage = dice;
         m_armor = armor;
-        m_type = EnumEntity.PERSONNAGE;
+        m_type = EnumEntity.MONSTER;
     }
 
     @Override
@@ -35,6 +37,12 @@ public class Monster extends Entity {
     public int getArmorPoint() {
         return m_armor;
     }
+
+    @Override
+    public int attack() {
+        return sumUp(m_atkDamage.roll());
+    }
+
 
 
 }

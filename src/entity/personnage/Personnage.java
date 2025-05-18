@@ -29,7 +29,9 @@ public class Personnage extends Entity {
         m_race = race;
         m_charClass = charClass;
         m_inventory = charClass.getBaseStuff();
-        m_type = EnumEntity.MONSTER;
+        System.out.println(m_inventory.length);
+        m_type = EnumEntity.PERSONNAGE;
+        m_armor = null;
     }
 
     public CharClass getCharClass() {
@@ -86,6 +88,25 @@ public class Personnage extends Entity {
         m_inventory[m_inventory.length-1] = equipment;
     }
 
+
+    public String getInventoryString(){
+        if (m_inventory == null || m_inventory.length == 0) {
+            return "(aucune)";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < m_inventory.length; i++) {
+            sb.append("[").append(i).append("]");
+            sb.append(m_inventory[i] != null ? m_inventory[i].toString() : "(vide)");
+            if (i < m_inventory.length - 1) {
+                sb.append(" ; ");
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+
     public int getRangePoint(){
         return this.getWeapon().getRange();
     }
@@ -93,6 +114,11 @@ public class Personnage extends Entity {
     @Override
     public int getArmorPoint() {
         return this.getArmor().getClassVal();
+    }
+
+    @Override
+    public int attack() {
+        return this.m_weapon.attack();
     }
 
     @Override

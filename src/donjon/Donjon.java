@@ -158,7 +158,7 @@ public class Donjon {
         while (remainingMove > 0) {
             m_display.refreshDisplay();
             System.out.println("Vous avez " + remainingMove + " points de déplacement restants.");
-            System.out.print("Combien de cases voulez-vous vous déplacer (ou 'fin' pour terminer) : ");
+            System.out.print("voulez-vous vous déplacer (ou 'fin' pour terminer) : ");
 
             String input = scan.nextLine();
             if (input.equalsIgnoreCase("fin")) {

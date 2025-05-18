@@ -1,7 +1,11 @@
 package donjon;
 
 import entity.Entity;
+import entity.EnumEntity;
 import entity.personnage.Personnage;
+import equipment.Equipment;
+import equipment.armor.Armor;
+import equipment.weapon.Weapon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,15 +66,52 @@ public class Game {
 
     private void game(){
         for(Entity entity : m_entities.keySet()){
-            m_donjon.moveEntity(entity);
+            entityTurn((entity));
         }
     }
 
-    private void playerTurn(){
+    private  void entityTurn(Entity entity){
 
-    }
-    private void monsterTurn(){
+        int health = entity.getHp();
+        Armor armor = null;
+        Weapon weapon = null;
+        Equipment[] inventory = null;
+        int strength = entity.getStrength();
+        int dex = entity.getDex();
+        int speed = entity.getSpeed();
+        if(entity.getType() == EnumEntity.PERSONNAGE) {
+            armor = ((Personnage) entity).getArmor();
+            weapon = ((Personnage) entity).getWeapon();
+            inventory = ((Personnage) entity).getInventory();
+        }
+        System.out.println(entity);
+        System.out.println("    Vie : "+health);
+        System.out.println("    Armure : " + (armor != null ? armor : "(aucune)"));
+        System.out.println("    Arme : " + (weapon != null ? weapon : "(aucune)"));
+        System.out.print("    Inventaire : ");
+        if (inventory != null){
+           System.out.println(((Personnage) entity).getInventoryString());
+        }else {
+            System.out.println("(aucun)");
+        }
+        System.out.println("    Force : "+strength);
+        System.out.println("    Dextérité : "+dex);
+        System.out.println("    Vitesse : "+speed);
 
+
+
+        ArrayList<Integer> PossibleChoice = new ArrayList<Integer>();
+        int nbAction = 0;
+        Scanner scan = new Scanner(System.in);
+        while (nbAction <= 3) {
+            System.out.println("Vous avez " + (3-nbAction) + " actions restantes.");
+            System.out.print("voulez-vous vous faire une action (ou 'fin' pour terminer) : ");
+
+            String input = scan.nextLine();
+            if (input.equalsIgnoreCase("fin")) {
+                break;
+            }
+        }
     }
 
 

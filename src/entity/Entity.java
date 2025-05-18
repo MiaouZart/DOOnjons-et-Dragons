@@ -1,8 +1,10 @@
 package entity;
 
 import dice.Dice;
+import entity.monster.Monster;
 import entity.personnage.Personnage;
 import equipment.weapon.EnumWeaponType;
+import equipment.weapon.Weapon;
 
 import static dice.Dice.sumUp;
 
@@ -65,19 +67,32 @@ public abstract class Entity {
         return m_type;
     }
 
+    public  abstract int attack();
+
     public boolean getAttacked(Entity entity){
         Dice dice = new Dice(1,20);
-        int resultat = sumUp(dice.roll());
+        int roll = sumUp(dice.roll());
+        System.out.println("Faite votre lancer : (appuyer sur n'imporque quelle touche)");
+        System.out.print("Vous avez fait : " + roll);
+        int resultat = roll;
         if(entity.getRangePoint()>1){
             resultat+=entity.getDex();
+            System.out.println(" + "+entity.getDex()+"(Dex) ");
         }else {
             resultat+=entity.getStrength();
+            System.out.println(" + "+entity.getStrength()+"(Force) ");
         }
+
+        System.out.println(" = "+resultat);
 
         int armor = this.getArmorPoint();
 
         if(armor<resultat){
-            this.takeDamage(resultat);
+            int damage = 0;
+            System.out.println("Votre attaque Transperce l'armure de "+this+" ("+armor+")");
+            System.out.println("Lancer votre dée"+0+" d'attaque (appuyer sur n'imporque quelle touche)");
+            damage =  entity.attack();
+            this.takeDamage(damage);
             return true;
         }
         return false;
@@ -90,5 +105,6 @@ public abstract class Entity {
             this.m_dead =true;
         }
     }
+
 
 }

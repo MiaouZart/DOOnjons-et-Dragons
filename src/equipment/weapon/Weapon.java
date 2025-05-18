@@ -4,6 +4,8 @@ import equipment.Equipment;
 
 import java.util.Objects;
 
+import static dice.Dice.sumUp;
+
 public abstract class Weapon extends Equipment {
     private final String m_name;
     private final int m_range;
@@ -52,4 +54,9 @@ public abstract class Weapon extends Equipment {
     public EnumWeaponType getType(){
         return m_type;
     }
+
+    public int attack(){
+        return sumUp(m_damageDice.roll());
+    }
+
 }

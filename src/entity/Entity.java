@@ -6,6 +6,8 @@ import entity.personnage.Personnage;
 import equipment.weapon.EnumWeaponType;
 import equipment.weapon.Weapon;
 
+import java.util.Scanner;
+
 import static dice.Dice.sumUp;
 
 public abstract class Entity {
@@ -80,17 +82,23 @@ public abstract class Entity {
             System.out.println(" + "+entity.getDex()+"(Dex) ");
         }else {
             resultat+=entity.getStrength();
-            System.out.println(" + "+entity.getStrength()+"(Force) ");
+            System.out.print(" + "+entity.getStrength()+"(Force) ");
         }
 
         System.out.println(" = "+resultat);
-
-        int armor = this.getArmorPoint();
+        int armor=0;
+        try {
+            armor = this.getArmorPoint();
+        }catch (Exception e){
+            armor=0;
+        }
 
         if(armor<resultat){
             int damage = 0;
             System.out.println("Votre attaque Transperce l'armure de "+this+" ("+armor+")");
-            System.out.println("Lancer votre dée"+0+" d'attaque (appuyer sur n'imporque quelle touche)");
+            System.out.println("Lancer votre dée "+entity.getDice()+" d'attaque (appuyer sur n'imporque quelle touche)");
+            Scanner sca = new Scanner(System.in);
+            sca.nextLine();
             damage =  entity.attack();
             this.takeDamage(damage);
             return true;
@@ -105,6 +113,10 @@ public abstract class Entity {
             this.m_dead =true;
         }
     }
+
+    public  abstract Dice getDice();
+
+    public abstract String getSprite();
 
 
 }

@@ -22,6 +22,10 @@ public class Donjon {
     protected final HashMap<Equipment, int[]> m_equipments;
     protected final HashMap<Entity, int[]> m_entities;
     protected Display m_display;
+    protected boolean m_donjonWin=false;
+    protected boolean m_donjonLoose = false;
+    private int m_monsterNumber=0;
+    private int m_playerNumber=0;
 
     public Donjon(int size, HashMap<Entity, int[]> players) {
 
@@ -46,7 +50,7 @@ public class Donjon {
     public void setupDonjon() {
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
         playerPosition();
-        MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
+        m_monsterNumber= MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
         EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
         promptContext();
         initiativeInit();
@@ -128,6 +132,7 @@ public class Donjon {
                     System.out.println("Position déjà occupée. Veuillez réessayer.");
                 }
             }
+            m_playerNumber++;
         }
     }
 
@@ -158,7 +163,7 @@ public class Donjon {
         while (remainingMove > 0) {
             m_display.refreshDisplay();
             System.out.println("Vous avez " + remainingMove + " points de déplacement restants.");
-            System.out.print("voulez-vous vous déplacer (ou 'fin' pour terminer) : ");
+            System.out.print("voulez-vous vous continuer ou 'fin' pour terminer) : ");
 
             String input = scan.nextLine();
             if (input.equalsIgnoreCase("fin")) {
@@ -167,7 +172,7 @@ public class Donjon {
 
             int direction = -1;
             while (direction > 7 || direction < 0) {
-                direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ : ");
+                direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ ");
             }
 
             int[] moveFactor = switch (direction) {
@@ -193,7 +198,7 @@ public class Donjon {
 
             // Mise à jour de la grille
             m_donjonGrid[oldPos[0]][oldPos[1]] = " . ";
-            m_donjonGrid[newX][newY] = " P ";
+            m_donjonGrid[newX][newY] = entity.getSprite();
             int[] newPos = new int[]{newX, newY};
             m_entities.replace(entity, newPos);
             remainingMove -= moveSpeed;
@@ -245,6 +250,7 @@ public class Donjon {
             if(chose.getDead()){
                 System.out.println("Et Vous l'avez tuer");
                 m_entities.remove(chose);
+                checkWin();
             }
         }
     }
@@ -253,6 +259,25 @@ public class Donjon {
         m_turn++;
         m_display.refreshDisplay();
     }
+
+
+    private void checkWin(){
+        if(m_playerNumber==0){
+            m_donjonLoose=true;
+        }
+        if(m_monsterNumber==0){
+            m_donjonWin=true;
+        }
+    }
+
+    public boolean getWin(){
+        return m_donjonWin;
+    }
+    public boolean getLoose(){
+        return m_donjonLoose;
+    }
+
+
 
     // Getters pour DonjonDisplay
     public int getDonjonSize() { return m_donjonSize; }

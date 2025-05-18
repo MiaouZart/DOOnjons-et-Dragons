@@ -1,5 +1,8 @@
 package donjon;
 
+import donjon.defaultDonjon.Default1;
+import donjon.defaultDonjon.Default2;
+import donjon.defaultDonjon.Default3;
 import entity.Entity;
 import entity.EnumEntity;
 import entity.personnage.Personnage;
@@ -12,31 +15,60 @@ import java.util.*;
 import static donjon.Display.promptInt;
 
 public class Game {
-    public static final String GRAY = "\u001B[90m";//deux variable qui sert vraiment que pour de l'affichage jolie
-    public static final String RESET = "\u001B[0m";
     private Donjon m_donjon;
     private HashMap<Entity,int[]> m_entities;
     private ArrayList<Entity> m_playerOrder;
 
 
     public Game() {
+
         Scanner scanner = new Scanner(System.in);
-        int nbPlayer = promptInt(scanner, "Nombre de personnages");
-        m_entities = new HashMap<>();
-        m_playerOrder = new ArrayList<>();
-        for (int i = 0; i < nbPlayer; i++) {
-            System.out.println("Création du personnage " + (i + 1));
-            Personnage p = CharacterCreator.create();
-            m_entities.put(p, new int[]{0, 0});
+
+        System.out.println("Tapez 0-1-2 si vous voulez utilisez un donjon par défault ou 3 si création Manuelle");
+        int choice = -1;
+        while (choice<0||choice>3){
+            choice = promptInt(scanner,"Choix ");
         }
-        int size = 0;
-        while (size < 15 || size > 25) {
-            System.out.print("Taille de la grille (comprise entre 15 et 25) : ");
-            size = scanner.nextInt();
+        m_playerOrder = new ArrayList<>();
+        m_entities = new HashMap<>();
+        if(choice==0){
+            Default1 default1 = new Default1(m_entities);
+            m_donjon = default1.getDonjon();
+            retrievePlayerOrder();
+            game();
+        }
+        if(choice==1){
+            Default2 default2 = new Default2(m_entities);
+            m_donjon = default2.getDonjon();
+            retrievePlayerOrder();
+            game();
+        }
+        if(choice==2){
+            Default3 default3 = new Default3(m_entities);
+            m_donjon = default3.getDonjon();
+            retrievePlayerOrder();
+            game();
         }
 
-        m_donjon = new Donjon(size, m_entities);
-        setUp();
+        if(choice ==3) {
+            int nbPlayer = promptInt(scanner, "Nombre de personnages");
+            m_entities = new HashMap<>();
+            m_playerOrder = new ArrayList<>();
+            for (int i = 0; i < nbPlayer; i++) {
+                System.out.println("Création du personnage " + (i + 1));
+                Personnage p = CharacterCreator.create();
+                m_entities.put(p, new int[]{0, 0});
+            }
+
+            int size = 0;
+            while (size < 15 || size > 25) {
+                System.out.print("Taille de la grille (comprise entre 15 et 25) : ");
+                size = scanner.nextInt();
+            }
+
+            m_donjon = new Donjon(size, m_entities);
+            setUp();
+        }
     }
 
     private void retrievePlayerOrder(){
@@ -63,11 +95,25 @@ public class Game {
         game();
     }
 
-    private void game(){
-        for(Entity entity : m_entities.keySet()){
-            entityTurn((entity));
+    private void game() {
+        while (!m_donjon.getLoose() && !m_donjon.getWin()) {
+            for (Entity entity : m_playerOrder) {
+                if (m_donjon.getLoose() || m_donjon.getWin()) {
+                    break;
+                }
+                m_donjon.m_display.refreshDisplay();
+                entityTurn(entity);
+            }
         }
+
+        if(m_donjon.getLoose()){
+            System.out.println("Vous avez perdu");
+        }else{
+            System.out.println("Vous avez gagnez");
+        }
+
     }
+
 
     private void entityTurn(Entity entity) {
         int health = entity.getHp();
@@ -85,16 +131,6 @@ public class Game {
         }
 
         // Affichage stats
-        System.out.println(entity);
-        System.out.println("    Vie : " + health);
-        System.out.println("    Armure : " + (armor != null ? armor : "(aucune)"));
-        System.out.println("    Arme : " + (weapon != null ? weapon : "(aucune)"));
-        System.out.print("    Inventaire : ");
-        System.out.println(inventory != null ? ((Personnage) entity).getInventoryString() : "(aucun)");
-        System.out.println("    Force : " + strength);
-        System.out.println("    Dextérité : " + dex);
-        System.out.println("    Vitesse : " + speed);
-
         List<String> actions = Arrays.asList(
                 "attaquer",
                 "se déplacer",
@@ -111,6 +147,17 @@ public class Game {
         }
 
         while (nbAction < 3) {
+            m_donjon.m_display.refreshDisplay();
+            System.out.println(entity);
+            System.out.println("    Vie : " + health);
+            System.out.println("    Armure : " + (armor != null ? armor : "(aucune)"));
+            System.out.println("    Arme : " + (weapon != null ? weapon : "(aucune)"));
+            System.out.print("    Inventaire : ");
+            System.out.println(inventory != null ? ((Personnage) entity).getInventoryString() : "(aucun)");
+            System.out.println("    Force : " + strength);
+            System.out.println("    Dextérité : " + dex);
+            System.out.println("    Vitesse : " + speed);
+
             possibleChoices = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
             System.out.println("\n--- Tour de " + entity + " ---");
             System.out.println("Vous avez " + (3 - nbAction) + " actions restantes.");

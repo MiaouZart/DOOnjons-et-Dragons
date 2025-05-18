@@ -327,14 +327,18 @@ package donjon{
       + {static}bulkCreate(display:Display, grid:String[][]): void
       - {static}create(input:String, grid:String[][]): void
     }
-    class Game {
-      + <<create>> Game()
-      - playerTurn(): Void
-      - setUp(): Void
-      - monsterTurn(): Void
-      - retrievePlayerOrder(): Void
-      - game(): Void
-    }
+class Game {
+    - Donjon m_donjon
+    - HashMap<Entity, int[]> m_entities
+    - ArrayList<Entity> m_playerOrder
+
+    + Game()
+    - retrievePlayerOrder(): void
+    - setUp(): void
+    - game(): void
+    - entityTurn(entity: Entity): void
+    + commenter(entity: Entity): void
+}
     package defaulDonjon{
         class defaul1{
             +defaul1(entity: Entity[])

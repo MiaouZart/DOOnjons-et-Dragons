@@ -4,42 +4,85 @@ skinparam linetype ortho
 
 package entity
     {
-    Abstract Entity {
-        +<<create>>Entity(HP:Integer,Strength:Integer,Dex:Integer,Speed:Integer,Initiative:Integer)
-        +<<create>>Entity(HP:Integer,Strength:Integer,Dex:Integer,Speed:Integer)
-        + addInitiative(initiative:Integer): Void
-        -hp:Integer
-        -strength:Integer
-        -dex:Integer
-        -initiative:Integer
-        -speed:Integer
-    }
+        abstract class Entity {
+            - m_hp : Integer
+            - m_strength : Integer
+            - m_dex : Integer
+            - m_initiative : Integer
+            - m_speed : Integer
+            - m_dead : Boolean
+            - m_type : EnumEntity
 
-    package monster {
-        class Monster extends entity.Entity {
-            +<<create>>Monster(hp:Integer,strength:Integer,dex:Integer,speed:Integer,id:Integer,atkRange:Integer,atkDamage:Dice);
-            -species:String
-            -id:Integer
-            -atkRange:Integer
-            -atkDamage:Dice
-            +toString(): String
+            + <<create>> Entity(HP: Integer, Strength: Integer, Dex: Integer, Speed: Integer, Initiative: Integer)
+            + <<create>> Entity(HP: Integer, Strength: Integer, Dex: Integer, Speed: Integer)
+
+            + getHp() : Integer
+            + getStrength() : Integer
+            + getDex() : Integer
+            + getSpeed() : Integer
+            + getInitiative() : Integer
+            + setInitiative(initiative: Integer) : void
+            + addInitiative(initiative: Integer) : void
+            + getDead() : Boolean
+            + getType() : EnumEntity
+
+            + abstract getRangePoint() : Integer
+            + abstract getArmorPoint() : Integer
+            + abstract attack() : Integer
+            + getAttacked(entity: Entity) : Boolean
+
+            - takeDamage(damage: Integer) : void
         }
-    }
 
-    package personnage{
-        class Personnage extends entity.Entity {
-            -speed: Integer
-            -strength: Integer
-            -armor: Armor
-            -race: Race
-            -charClass: CharClass
-            -weapon: Weapon
-            -inventory: Equipment[]
-            +<<create>>Personnage(nom:String, race:Races, charClass:CharClass)
-            + equip(Weapon): Void
-            + take(Equipment): Void
-            + toString(): String
-            + equip(Armor): Void
+        enum EnumEntity <<enumeration>> {
+          PERSONNAGE
+          MONSTER
+        }
+
+    Entity "1".-->EnumEntity : type;
+
+
+         package monster {
+             class Monster extends entity.Entity {
+                 - m_specie : String
+                 - m_id : Integer
+                 - m_atkRange : Integer
+                 - m_atkDamage : Dice
+                 - m_armor : Integer
+
+                 + <<create>> Monster(HP: Integer, Strength: Integer, Dex: Integer, Speed: Integer, species: String, id: Integer, atkRange: Integer, armor: Integer, dice: Dice)
+                 + toString() : String
+                 + getRangePoint() : Integer
+                 + getArmorPoint() : Integer
+                 + attack() : Integer
+             }
+         }
+
+        package personnage {
+            class Personnage extends entity.Entity {
+                - m_name : String
+                - m_race : Race
+                - m_charClass : CharClass
+                - m_inventory : Equipment[]
+                - m_weapon : Weapon
+                - m_armor : Armor
+                + <<create>> Personnage(name: String, race: Race, charClass: CharClass)
+                + equip(equipment: Equipment) : void
+                + equip(weapon: Weapon) : void
+                + equip(armor: Armor) : void
+                + take(equipment: Equipment) : void
+                + getInventoryString() : String
+                + getRangePoint() : Integer
+                + getArmorPoint() : Integer
+                + attack() : Integer
+                + getSpeed() : Integer
+                + getStrength() : Integer
+                + toString() : String
+                + getCharClass() : CharClass
+                + getInventory() : Equipment[]
+                + getWeapon() : Weapon
+                + getArmor() : Armor
+                +
         }
 
         package charclass {
@@ -251,7 +294,7 @@ package donjon{
         entities: HashMap<Entity, Integer[]>
     }
 
-    class CharacterCreator() {
+    class CharacterCreator {
         + CharacterCreator()
         - {static}promptRace(Scanner): Race
         - {static}promptClass(Scanner): CharClass
@@ -321,18 +364,18 @@ Donjon            -->  EquipmentCreator : <<use>>
 Donjon            -->  MonsterCreator : <<use>>
 Donjon            -->  ObstacleCreator :<<use>>
 EquipmentCreator  -->  Equipment : <<create>>
-Game              -->  CharacterCreator : <<use>>
+Game "1"--> donjon.CharacterCreator : <<use>>
 Game              -->  Donjon           : "«create»"
 Game             "1" *--> "m_donjon\n1" Donjon
 Game             "1" *--> "m_entities\n*" Entity
 Game              -->  Personnage
 Monster          "1" *--> "m_atkDamage\n1" Dice
-MonsterCreator    -[#595959,dashed]->  Monster          : "«create»"
-ObstacleCreator   -[#595959,dashed]->  Display
-ObstacleCreator   -[#595959,dashed]->  Donjon
+MonsterCreator    -->  Monster          : "«create»"
+ObstacleCreator   -->  Display
+ObstacleCreator   -->  Donjon
 
-CharacterCreator  --> Personnage : "«create»"
-CharacterCreator  --> Race : <<use>>
-CharacterCreator  --> CharClass : <<use>>
+CharacterCreator  --> entity.personnage.Personnage : "«create»"
+CharacterCreator  --> entity.personnage.race.Race : <<use>>
+CharacterCreator  --> entity.personnage.charclass.CharClass : <<use>>
 
 @enduml

@@ -111,6 +111,8 @@ public class Game {
             if (input.equalsIgnoreCase("fin")) {
                 break;
             }
+            nbAction++;
+
         }
     }
 

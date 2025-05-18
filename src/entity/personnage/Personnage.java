@@ -54,6 +54,16 @@ public class Personnage extends Entity {
         return m_race;
     }
 
+
+    public void equip(Equipment equipment){
+        if(equipment instanceof Armor){
+            equip((Armor)equipment);
+        }
+        if(equipment instanceof Weapon){
+            equip((Weapon) equipment);
+        }
+    }
+
     public void equip(Armor armor) {
         if (armor == null) {
             m_armor = null;

@@ -22,6 +22,14 @@ public class Dice {
         return rolls;
     }
 
+    static public int sumUp(int[] dices){
+        int summ = 0;
+        for(int i : dices){
+            summ+=i;
+        }
+        return  summ;
+    }
+
 
     @Override
     public String toString() {

@@ -2,6 +2,7 @@ package entity.personnage;
 
 import dice.Dice;
 import entity.Entity;
+import entity.EnumEntity;
 import entity.personnage.charclass.CharClass;
 import entity.personnage.race.Race;
 import equipment.armor.Armor;
@@ -28,6 +29,9 @@ public class Personnage extends Entity {
         m_race = race;
         m_charClass = charClass;
         m_inventory = charClass.getBaseStuff();
+        System.out.println(m_inventory.length);
+        m_type = EnumEntity.PERSONNAGE;
+        m_armor = null;
     }
 
     public CharClass getCharClass() {
@@ -48,6 +52,16 @@ public class Personnage extends Entity {
 
     public Race getRace() {
         return m_race;
+    }
+
+
+    public void equip(Equipment equipment){
+        if(equipment instanceof Armor){
+            equip((Armor)equipment);
+        }
+        if(equipment instanceof Weapon){
+            equip((Weapon) equipment);
+        }
     }
 
     public void equip(Armor armor) {
@@ -82,6 +96,39 @@ public class Personnage extends Entity {
     public void take(Equipment equipment) {
         m_inventory = Arrays.copyOf(m_inventory, m_inventory.length+1);
         m_inventory[m_inventory.length-1] = equipment;
+    }
+
+
+    public String getInventoryString(){
+        if (m_inventory == null || m_inventory.length == 0) {
+            return "(aucune)";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < m_inventory.length; i++) {
+            sb.append("[").append(i).append("]");
+            sb.append(m_inventory[i] != null ? m_inventory[i].toString() : "(vide)");
+            if (i < m_inventory.length - 1) {
+                sb.append(" ; ");
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+
+    public int getRangePoint(){
+        return this.getWeapon().getRange();
+    }
+
+    @Override
+    public int getArmorPoint() {
+        return this.getArmor().getClassVal();
+    }
+
+    @Override
+    public int attack() {
+        return this.m_weapon.attack();
     }
 
     @Override

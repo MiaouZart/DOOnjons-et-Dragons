@@ -10,8 +10,9 @@ import static donjon.Display.promptInt;
 import static donjon.Donjon.*;
 
 public class MonsterCreator {
-    protected static void bulkCreate(Display display, String[][] grid, HashMap<Entity, int[]> entities) {
+    protected static int bulkCreate(Display display, String[][] grid, HashMap<Entity, int[]> entities) {
         Scanner scanner = new Scanner(System.in);
+        int i = 0;
         while (true) {
             display.displayTitle("Maître du jeu : Créez vos Monstres");
             display.refreshDisplay();
@@ -24,6 +25,7 @@ public class MonsterCreator {
             grid[pos[0]][pos[1]] = " M ";
             entities.put(monster, new int[]{pos[0], pos[1]});
         }
+        return  i;
     }
 
     protected static Monster create(Scanner scanner, String specie) {

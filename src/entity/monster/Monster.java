@@ -43,6 +43,15 @@ public class Monster extends Entity {
         return sumUp(m_atkDamage.roll());
     }
 
+    @Override
+    public Dice getDice() {
+        return  m_atkDamage;
+    }
+
+    @Override
+    public String getSprite() {
+        return this.m_specie.trim().substring(0,3).toUpperCase();
+    }
 
 
 }

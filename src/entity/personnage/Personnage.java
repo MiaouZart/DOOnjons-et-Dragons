@@ -132,6 +132,16 @@ public class Personnage extends Entity {
     }
 
     @Override
+    public Dice getDice() {
+        return m_weapon.getDamageDice();
+    }
+
+    @Override
+    public String getSprite() {
+        return this.m_name.trim().substring(0,3).toUpperCase();
+    }
+
+    @Override
     public int getSpeed() {
         return super.getSpeed() - (m_weapon == null ? 0 : m_weapon.getSpeedModifier() - (m_armor == null ? 0 : m_armor.getSpeedModifier()));
     }

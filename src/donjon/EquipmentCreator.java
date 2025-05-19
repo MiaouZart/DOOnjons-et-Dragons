@@ -62,10 +62,10 @@ public class EquipmentCreator {
         } else {
             System.out.println("Création d'une Arme : ");
             int weaponType = -1;
-            while (weaponType > 6 || weaponType < 0) {
+            while (weaponType > 7 || weaponType < 0) {
                 weaponType = promptInt(scanner,
                         "[0] Arbalète ; [1] Bâton ; [2] Masse d'armes ; [3] Épée longue ; " +
-                                "[4] Rapière ; [5] Fronde ; [6] Arc court (ex:2)");
+                                "[4] Rapière ; [5] Fronde ; [6] Arc court ; [7] Épée à Deux Mains (ex:2)");
             }
 
             return switch (weaponType) {
@@ -76,6 +76,7 @@ public class EquipmentCreator {
                 case 4 -> new Rapier();
                 case 5 -> new Sling();
                 case 6 -> new Shortbow();
+                case 7 -> new Greatsword();
                 default -> throw new IllegalStateException("Unexpected value: " + weaponType);
             };
         }

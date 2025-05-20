@@ -33,7 +33,7 @@ public class GameMaster {
         say("Entrez l'indice du joueur à déplacer");
 
         int res = Display.promptInt(scan,"",0,entityiyeiseysyeiyses.size());
-        
+
     }
 
 

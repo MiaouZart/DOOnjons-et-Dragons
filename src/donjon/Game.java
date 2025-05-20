@@ -227,7 +227,7 @@ public class Game {
     public void commenter(Entity entity){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Saisissez votre commentaire : ");
-        System.out.println(entity+"-"+scanner.nextLine());
+        entity.say(scanner.nextLine());
     }
 
 

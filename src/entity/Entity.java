@@ -1,10 +1,6 @@
 package entity;
 
 import dice.Dice;
-import entity.monster.Monster;
-import entity.personnage.Personnage;
-import equipment.weapon.EnumWeaponType;
-import equipment.weapon.Weapon;
 
 import java.util.Scanner;
 
@@ -115,8 +111,8 @@ public abstract class Entity {
     }
 
 
-    public String say(){
-        return this+"- ";
+    public String say(String s){
+        return this+"- "+s;
     }
 
     public  abstract Dice getDice();

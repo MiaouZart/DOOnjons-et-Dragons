@@ -75,4 +75,14 @@ class WeaponTest {
         assert weapon.getSpeedModifier() == 0;
         assert weapon.getStrengthModifier() == 0;
     }
+
+    @Test
+    void Greatsword() {
+        Weapon weapon = new Greatsword();
+        assert weapon.getName().equals("Épée à Deux Mains");
+        assert weapon.getDamageDice().equals(new Dice(2,6));
+        assert weapon.getRange() == 1;
+        assert weapon.getSpeedModifier() == 2;
+        assert weapon.getStrengthModifier() == 4;
+    }
 }

@@ -1,10 +1,6 @@
 package entity;
 
 import dice.Dice;
-import entity.monster.Monster;
-import entity.personnage.Personnage;
-import equipment.weapon.EnumWeaponType;
-import equipment.weapon.Weapon;
 
 import java.util.Scanner;
 
@@ -12,6 +8,7 @@ import static dice.Dice.sumUp;
 
 public abstract class Entity {
     private int m_hp;
+    private final int m_hpMax;
     private final int m_strength;
     private final int m_dex;
     private final int m_speed;
@@ -21,18 +18,16 @@ public abstract class Entity {
     protected EnumEntity m_type;
 
 
-    public Entity(int HP, int Strength, int Dex, int Speed, int Initiative){
-        m_hp = HP;
-        m_speed= Speed;
-        m_dex = Dex;
-        m_strength = Strength;
-        m_initiative = Initiative;
+    public Entity(int hp, int strength, int dex, int speed, int initiative){
+        this(hp, strength, dex, speed);
+        m_initiative = initiative;
     }
-    public Entity(int HP, int Strength, int Dex, int Speed){
-        m_hp = HP;
-        m_speed = Speed;
-        m_dex = Dex;
-        m_strength = Strength;
+    public Entity(int hp, int strength, int dex, int speed){
+        m_hp = hp;
+        m_hpMax = hp;
+        m_dex = dex;
+        m_strength = strength;
+        m_speed = speed;
     }
 
 
@@ -69,7 +64,10 @@ public abstract class Entity {
         return m_type;
     }
 
-    public  abstract int attack();
+    public abstract int damage();
+    public int attackBonus() {
+        return 0;
+    }
 
     public boolean getAttacked(Entity entity){
         Dice dice = new Dice(1,20);
@@ -77,7 +75,8 @@ public abstract class Entity {
         System.out.println("Faite votre lancer : (appuyer sur n'imporque quelle touche)");
         System.out.print("Vous avez fait : " + roll);
         int resultat = roll;
-        if(entity.getRangePoint()>1){
+        resultat += entity.attackBonus();
+        if(entity.getRangePoint() > 1){
             resultat+=entity.getDex();
             System.out.println(" + "+entity.getDex()+"(Dex) ");
         }else {
@@ -93,13 +92,13 @@ public abstract class Entity {
             armor=0;
         }
 
-        if(armor<resultat){
+        if(armor < resultat){
             int damage = 0;
             System.out.println("Votre attaque Transperce l'armure de "+this+" ("+armor+")");
-            System.out.println("Lancer votre dée "+entity.getDice()+" d'attaque (appuyer sur n'imporque quelle touche)");
+            System.out.println("Lancer votre dé "+entity.getDice()+" d'attaque (appuyer sur n'imporque quelle touche)");
             Scanner sca = new Scanner(System.in);
             sca.nextLine();
-            damage =  entity.attack();
+            damage = entity.damage();
             this.takeDamage(damage);
             return true;
         }
@@ -107,7 +106,7 @@ public abstract class Entity {
 
 
     }
-    private void takeDamage(int damage) {
+    public void takeDamage(int damage) {
         this.m_hp-=damage;
         if(m_hp<=0){
             this.m_dead =true;
@@ -118,5 +117,11 @@ public abstract class Entity {
 
     public abstract String getSprite();
 
+    public int getMaxHp() {
+        return m_hpMax;
+    }
 
+    public void takeHeal(int heal) {
+        m_hp = Math.min(m_hp+heal, m_hpMax);
+    }
 }

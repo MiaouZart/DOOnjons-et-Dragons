@@ -60,9 +60,18 @@ public class Display {
         System.out.println("  \\" + "-".repeat(m_repeat) + "/");
     }
 
-    protected static int promptInt(Scanner scanner, String label) {
+    public static int promptInt(Scanner scanner, String label) {
         int result = -1;
         while (result == -1) {
+            System.out.print("Entrez " + label + " : ");
+            result = retrieveInt(scanner.nextLine().trim());
+        }
+        return result;
+    }
+
+    public static int promptInt(Scanner scanner, String label, int min, int max) {
+        int result = -1;
+        while (result == -1 || !(min <= result && result < max)) {
             System.out.print("Entrez " + label + " : ");
             result = retrieveInt(scanner.nextLine().trim());
         }

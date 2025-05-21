@@ -18,9 +18,12 @@ public class Game {
     private Donjon m_donjon;
     private HashMap<Entity,int[]> m_entities;
     private ArrayList<Entity> m_playerOrder;
+    private GameMaster m_gameMaster;
 
 
     public Game() {
+
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -69,6 +72,7 @@ public class Game {
             m_donjon = new Donjon(size, m_entities);
             setUp();
         }
+        m_gameMaster = new GameMaster(m_donjon.m_entities,m_donjon);
     }
 
     private void retrievePlayerOrder(){
@@ -130,7 +134,6 @@ public class Game {
             inventory = ((Personnage) entity).getInventory();
         }
 
-        // Affichage stats
         List<String> actions = Arrays.asList(
                 "attaquer",
                 "se déplacer",

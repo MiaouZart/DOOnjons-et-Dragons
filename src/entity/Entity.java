@@ -103,7 +103,7 @@ public abstract class Entity {
 
 
     }
-    private void takeDamage(int damage) {
+    public void takeDamage(int damage) {
         this.m_hp-=damage;
         if(m_hp<=0){
             this.m_dead =true;

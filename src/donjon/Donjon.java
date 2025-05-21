@@ -57,6 +57,10 @@ public class Donjon {
         m_setup = true;
     }
 
+    public void createObstacle(){
+        ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
+    }
+
     protected static boolean checkEmptyCase(int x, int y, String[][] donjonGrid, int donjonSize) {
         if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
             System.out.println("Coordonnées hors limites.");
@@ -137,7 +141,7 @@ public class Donjon {
     }
 
 
-    private void EntityPosition(Entity entity) {
+    public void EntityPosition(Entity entity) {
         Scanner scanner = new Scanner(System.in);
         boolean positionOk = false;
         while (!positionOk) {
@@ -150,7 +154,8 @@ public class Donjon {
             int[] pos = retrieveGridPosition(input);
 
             if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                m_donjonGrid[pos[0]][pos[1]] = " P ";
+                m_donjonGrid[m_entities.get(entity)[0]][m_entities.get(entity)[1]]="  ";
+                m_donjonGrid[pos[0]][pos[1]] =entity.getSprite();
                 m_entities.replace(entity, new int[]{pos[0], pos[1]});
                 positionOk = true;
             } else {

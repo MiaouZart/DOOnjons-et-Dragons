@@ -38,19 +38,16 @@ public class Game {
             Default1 default1 = new Default1(m_entities);
             m_donjon = default1.getDonjon();
             retrievePlayerOrder();
-            game();
         }
         if(choice==1){
             Default2 default2 = new Default2(m_entities);
             m_donjon = default2.getDonjon();
             retrievePlayerOrder();
-            game();
         }
         if(choice==2){
             Default3 default3 = new Default3(m_entities);
             m_donjon = default3.getDonjon();
             retrievePlayerOrder();
-            game();
         }
 
         if(choice ==3) {
@@ -73,6 +70,7 @@ public class Game {
             setUp();
         }
         m_gameMaster = new GameMaster(m_donjon.m_entities,m_donjon);
+        game();
     }
 
     private void retrievePlayerOrder(){
@@ -107,6 +105,7 @@ public class Game {
                 }
                 m_donjon.m_display.refreshDisplay();
                 entityTurn(entity);
+                m_gameMaster.gameMasterTurn();
             }
         }
 

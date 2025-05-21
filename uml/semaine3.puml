@@ -364,6 +364,21 @@ package donjon{
       - retrievePlayerOrder(): Void
       - game(): Void
     }
+
+    class GameMaster{
+          +GameMaster(entityHashMapCopy :[Entity;Interger[2]]
+          +say(phrase:String)
+          +gameMasterTurn()
+          +displayPlayer()
+          +changeEntityPos()
+          +inflictDamage()
+          +addObstacle()
+    }
+
+    Game "1 m_gameMaster"-->GameMaster:"à pour master >"
+    GameMaster "<<use>>"-->Display
+    GameMaster "m_donjon"-->Donjon :"gére le donjon >";
+
     package defaulDonjon{
         class defaul1{
             +defaul1(entity: Entity[])
@@ -374,7 +389,7 @@ package donjon{
         class defaul2{
                     +defaul2(entity: Entity[])
          }
-    game"1"--> defaulDonjon:<<use>>
+   Game"1"--> defaulDonjon:<<use>>
     }
 }
 

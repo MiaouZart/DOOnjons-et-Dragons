@@ -107,6 +107,7 @@ public class Game {
                 entityTurn(entity);
                 m_gameMaster.gameMasterTurn();
             }
+            m_donjon.nextTurn();
         }
 
         if(m_donjon.getLoose()){

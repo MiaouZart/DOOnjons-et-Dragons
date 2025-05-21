@@ -30,10 +30,6 @@ public abstract class CharClass {
         return m_baseStuff;
     }
 
-    public String getM_name() {
-        return m_name;
-    }
-
     public Spell[] getSpells() {
         return m_spells;
     }

@@ -8,6 +8,7 @@ import entity.personnage.race.Race;
 import equipment.armor.Armor;
 import equipment.Equipment;
 import equipment.weapon.Weapon;
+import spell.Spell;
 
 import java.util.Arrays;
 
@@ -29,7 +30,6 @@ public class Personnage extends Entity {
         m_race = race;
         m_charClass = charClass;
         m_inventory = charClass.getBaseStuff();
-        System.out.println(m_inventory.length);
         m_type = EnumEntity.PERSONNAGE;
         m_armor = null;
     }
@@ -54,12 +54,15 @@ public class Personnage extends Entity {
         return m_race;
     }
 
+    public Spell[] getSpells() {
+        return m_charClass.getSpells();
+    }
 
-    public void equip(Equipment equipment){
-        if(equipment instanceof Armor){
-            equip((Armor)equipment);
+    public void equip(Equipment equipment) {
+        if (equipment instanceof Armor) {
+            equip((Armor) equipment);
         }
-        if(equipment instanceof Weapon){
+        if (equipment instanceof Weapon) {
             equip((Weapon) equipment);
         }
     }
@@ -94,12 +97,12 @@ public class Personnage extends Entity {
     }
 
     public void take(Equipment equipment) {
-        m_inventory = Arrays.copyOf(m_inventory, m_inventory.length+1);
-        m_inventory[m_inventory.length-1] = equipment;
+        m_inventory = Arrays.copyOf(m_inventory, m_inventory.length + 1);
+        m_inventory[m_inventory.length - 1] = equipment;
     }
 
 
-    public String getInventoryString(){
+    public String getInventoryString() {
         if (m_inventory == null || m_inventory.length == 0) {
             return "(aucune)";
         }
@@ -116,8 +119,7 @@ public class Personnage extends Entity {
     }
 
 
-
-    public int getRangePoint(){
+    public int getRangePoint() {
         return this.getWeapon().getRange();
     }
 
@@ -127,8 +129,13 @@ public class Personnage extends Entity {
     }
 
     @Override
-    public int attack() {
-        return this.m_weapon.attack();
+    public int damage() {
+        return this.m_weapon.damage();
+    }
+
+    @Override
+    public int attackBonus() {
+        return this.m_weapon.getBonusAttack();
     }
 
     @Override

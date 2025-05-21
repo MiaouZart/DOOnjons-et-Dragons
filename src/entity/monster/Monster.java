@@ -3,7 +3,6 @@ package entity.monster;
 import dice.Dice;
 import entity.Entity;
 import entity.EnumEntity;
-import entity.personnage.Personnage;
 
 import static dice.Dice.sumUp;
 
@@ -39,7 +38,7 @@ public class Monster extends Entity {
     }
 
     @Override
-    public int attack() {
+    public int damage() {
         return sumUp(m_atkDamage.roll());
     }
 

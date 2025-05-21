@@ -1,5 +1,6 @@
 package equipment.armor;
 import equipment.Equipment;
+import equipment.EquipmentType;
 
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ public abstract class Armor extends Equipment {
     private final String m_name;
 
     public Armor(String name, int classVal, int speedModifier) {
-        super(name);
+        super(name, EquipmentType.ARMOR);
         m_name = name;
         this.m_classVal = classVal;
         this.m_speedModifier = speedModifier;

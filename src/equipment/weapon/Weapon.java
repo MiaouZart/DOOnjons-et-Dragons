@@ -1,6 +1,7 @@
 package equipment.weapon;
 import dice.Dice;
 import equipment.Equipment;
+import equipment.EquipmentType;
 
 import java.util.Objects;
 
@@ -13,9 +14,11 @@ public abstract class Weapon extends Equipment {
     private final int m_speedModifier;
     private final int m_strengthModifier;
     protected EnumWeaponType m_type;
+    private int m_bonusAtk = 0;
+    private int m_bonusDam = 0;
 
     public Weapon(String name, int range, Dice damage, int speedModifier, int strengthModifier) {
-        super(name);
+        super(name, EquipmentType.WEAPON);
         m_name = name;
         m_range = range;
         m_damageDice = damage;
@@ -55,8 +58,23 @@ public abstract class Weapon extends Equipment {
         return m_type;
     }
 
-    public int attack(){
-        return sumUp(m_damageDice.roll());
+    public int damage(){
+        return sumUp(m_damageDice.roll())+m_bonusDam;
     }
 
+    public void addBonusAttack(int a) {
+        m_bonusAtk += a;
+    }
+
+    public void addBonusDamage(int a) {
+        m_bonusDam += a;
+    }
+
+    public int getBonusAttack() {
+        return m_bonusAtk;
+    }
+
+    public int getBonusDamage() {
+        return m_bonusDam;
+    }
 }

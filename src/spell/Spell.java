@@ -1,0 +1,33 @@
+package spell;
+
+import entity.Entity;
+
+import java.util.HashMap;
+import java.util.Objects;
+
+public abstract class Spell {
+    private final String m_name;
+
+    public Spell(String name) {
+        m_name = name;
+    }
+
+    @Override
+    public String toString() {
+        return m_name;
+    }
+
+    public abstract void spell(HashMap<Entity, int[]> m_entities);
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Spell spell = (Spell) o;
+        return Objects.equals(m_name, spell.m_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(m_name);
+    }
+}

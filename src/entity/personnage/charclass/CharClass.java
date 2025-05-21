@@ -1,6 +1,7 @@
 package entity.personnage.charclass;
 
 import equipment.Equipment;
+import spell.Spell;
 
 import java.util.Objects;
 
@@ -8,11 +9,17 @@ public abstract class CharClass {
     private final String m_name;
     private final int m_baseHealth;
     private final Equipment[] m_baseStuff;
+    private final Spell[] m_spells;
 
     public CharClass(String name, int baseHealth, Equipment[] baseStuff) {
+        this(name, baseHealth, baseStuff, new Spell[0]);
+    }
+
+    public CharClass(String name, int baseHealth, Equipment[] baseStuff, Spell[] spells) {
         m_baseHealth = baseHealth;
         m_baseStuff = baseStuff;
         m_name = name;
+        m_spells = spells;
     }
 
     public int getBaseHealth() {
@@ -25,6 +32,10 @@ public abstract class CharClass {
 
     public String getM_name() {
         return m_name;
+    }
+
+    public Spell[] getSpells() {
+        return m_spells;
     }
 
     @Override

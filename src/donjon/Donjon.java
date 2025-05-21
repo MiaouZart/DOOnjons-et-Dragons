@@ -49,12 +49,16 @@ public class Donjon {
 
     public void setupDonjon() {
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
-        playerPosition();
+        EntityPosition();
         m_monsterNumber= MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
         EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
         promptContext();
         initiativeInit();
         m_setup = true;
+    }
+
+    public void createObstacle(){
+        ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
     }
 
     protected static boolean checkEmptyCase(int x, int y, String[][] donjonGrid, int donjonSize) {
@@ -110,7 +114,7 @@ public class Donjon {
     }
 
 
-    private void playerPosition() {
+    private void EntityPosition() {
         Scanner scanner = new Scanner(System.in);
 
         for (Entity playerName : m_entities.keySet()) {
@@ -135,6 +139,34 @@ public class Donjon {
             m_playerNumber++;
         }
     }
+
+
+    public void EntityPosition(Entity entity) {
+        Scanner scanner = new Scanner(System.in);
+        boolean positionOk = false;
+        while (!positionOk) {
+            m_display.displayTitle("Maître du jeu - Positionnez vos Joueurs");
+            m_display.refreshDisplay();
+
+            System.out.print("Entrez la position du joueur " + entity + " (ex: A5) : ");
+            String input = scanner.nextLine().trim().toUpperCase();
+
+            int[] pos = retrieveGridPosition(input);
+
+            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
+                m_donjonGrid[m_entities.get(entity)[0]][m_entities.get(entity)[1]]="  ";
+                m_donjonGrid[pos[0]][pos[1]] =entity.getSprite();
+                m_entities.replace(entity, new int[]{pos[0], pos[1]});
+                positionOk = true;
+            } else {
+                System.out.println("Position déjà occupée. Veuillez réessayer.");
+            }
+        }
+        m_playerNumber++;
+    }
+
+
+
 
     private void promptContext() {
         Scanner scanner = new Scanner(System.in);

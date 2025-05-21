@@ -18,9 +18,12 @@ public class Game {
     private Donjon m_donjon;
     private HashMap<Entity,int[]> m_entities;
     private ArrayList<Entity> m_playerOrder;
+    private GameMaster m_gameMaster;
 
 
     public Game() {
+
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -35,19 +38,16 @@ public class Game {
             Default1 default1 = new Default1(m_entities);
             m_donjon = default1.getDonjon();
             retrievePlayerOrder();
-            game();
         }
         if(choice==1){
             Default2 default2 = new Default2(m_entities);
             m_donjon = default2.getDonjon();
             retrievePlayerOrder();
-            game();
         }
         if(choice==2){
             Default3 default3 = new Default3(m_entities);
             m_donjon = default3.getDonjon();
             retrievePlayerOrder();
-            game();
         }
 
         if(choice ==3) {
@@ -69,6 +69,8 @@ public class Game {
             m_donjon = new Donjon(size, m_entities);
             setUp();
         }
+        m_gameMaster = new GameMaster(m_donjon.m_entities,m_donjon);
+        game();
     }
 
     private void retrievePlayerOrder(){
@@ -103,7 +105,9 @@ public class Game {
                 }
                 m_donjon.m_display.refreshDisplay();
                 entityTurn(entity);
+                m_gameMaster.gameMasterTurn();
             }
+            m_donjon.nextTurn();
         }
 
         if(m_donjon.getLoose()){
@@ -130,7 +134,6 @@ public class Game {
             inventory = ((Personnage) entity).getInventory();
         }
 
-        // Affichage stats
         List<String> actions = Arrays.asList(
                 "attaquer",
                 "se déplacer",
@@ -227,7 +230,7 @@ public class Game {
     public void commenter(Entity entity){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Saisissez votre commentaire : ");
-        System.out.println(entity+"-"+scanner.nextLine());
+        entity.say(scanner.nextLine());
     }
 
 

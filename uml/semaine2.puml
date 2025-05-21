@@ -335,17 +335,17 @@ package donjon{
       - retrievePlayerOrder(): Void
       - game(): Void
     }
-    package defaulDonjon{
-        class defaul1{
-            +defaul1(entity: Entity[])
+    package defaultDonjon{
+        class default1{
+            +default1(entity: Entity[])
         }
-        class defaul3{
-                    +defaul3(entity: Entity[])
+        class default3{
+                    +default3(entity: Entity[])
                 }
-        class defaul2{
-                    +defaul2(entity: Entity[])
+        class default2{
+                    +default2(entity: Entity[])
          }
-    game"1"--> defaulDonjon:<<use>>
+    Game"1"--> defaultDonjon:<<use>>
     }
 }
 

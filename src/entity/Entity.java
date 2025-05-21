@@ -113,6 +113,11 @@ public abstract class Entity {
         }
     }
 
+
+    public String say(String s){
+        return this+"- "+s;
+    }
+
     public  abstract Dice getDice();
 
     public abstract String getSprite();

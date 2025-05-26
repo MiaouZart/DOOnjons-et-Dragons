@@ -273,12 +273,12 @@ public class Donjon {
         Scanner scan = new Scanner(System.in);
         int cible = -1;
         while (cible<0||cible>=entitiesThatCanBeAttacked.size()){
-            cible = promptInt(scan,"Choisisez votre cible :");
+            cible = promptInt(scan,"Choisissez votre cible :");
         }
         Entity chose = entitiesThatCanBeAttacked.get(cible);
         boolean toucher = chose.getAttacked(entity);
         if(toucher){
-            System.out.println("Bravo vous avez toucher votre cible");
+            System.out.println("Bravo vous avez touché votre cible");
             if(chose.getDead()){
                 System.out.println("Et Vous l'avez tuer");
                 m_entities.remove(chose);

@@ -128,21 +128,28 @@ public class Game {
         int dex = entity.getDex();
         int speed = entity.getSpeed();
 
-        if (entity.getType() == EnumEntity.PERSONNAGE) {
-            armor = ((Personnage) entity).getArmor();
-            weapon = ((Personnage) entity).getWeapon();
-            inventory = ((Personnage) entity).getInventory();
-        }
-
-        List<String> actions = Arrays.asList(
+        List<String> actions = new ArrayList<>(Arrays.asList(
                 "attaquer",
                 "se déplacer",
                 "s'équiper",
                 "commenter action",
                 "maître du jeu commente"
-        );
+        ));
 
-        List<Integer> possibleChoices = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        if (entity.getType() == EnumEntity.PERSONNAGE) {
+            Personnage personnage = ((Personnage) entity);
+            armor = personnage.getArmor();
+            weapon = personnage.getWeapon();
+            inventory = personnage.getInventory();
+            if (personnage.getSpells().length > 0) {
+                actions.add("utiliser un sors");
+            }
+        }
+
+        List<Integer> possibleChoices = new ArrayList<>();
+        for (int i = 0; i < actions.size(); i++) {
+            possibleChoices.add(i);
+        }
         int nbAction = 0;
         Scanner scan = new Scanner(System.in);
         if(entity.getType() == EnumEntity.MONSTER){
@@ -161,7 +168,10 @@ public class Game {
             System.out.println("    Dextérité : " + dex);
             System.out.println("    Vitesse : " + speed);
 
-            possibleChoices = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+            possibleChoices = new ArrayList<>();
+            for (int i = 0; i < actions.size(); i++) {
+                possibleChoices.add(i);
+            }
             System.out.println("\n--- Tour de " + entity + " ---");
             System.out.println("Vous avez " + (3 - nbAction) + " actions restantes.");
 
@@ -177,7 +187,7 @@ public class Game {
                 possibleChoices.remove(0);
             }
 
-            System.out.print(entity + ", faire une aciton ou tapez 'fin' : ");
+            System.out.print(entity + ", faire une action ou tapez 'fin' : ");
             String input = scan.nextLine();
 
             if (input.equalsIgnoreCase("fin")) {
@@ -186,8 +196,9 @@ public class Game {
 
             int choix = -1;
             while (!possibleChoices.contains(choix)){
-                choix = promptInt(scan,"Choisisez votre action ");
+                choix = promptInt(scan,"Choisissez votre action ");
             }
+
             switch (choix) {
                 case 0:
                     m_donjon.playerAttack(entity);
@@ -204,7 +215,7 @@ public class Game {
                     System.out.println("Inventaire :");
                     System.out.println(((Personnage)entity).getInventoryString());
                     while (ivenChoix<0||ivenChoix>inventory.length){
-                        ivenChoix = promptInt(scan,"Choisisez votre action ");
+                        ivenChoix = promptInt(scan,"Choisissez votre action");
                     }
                     System.out.println("Vous avez choisi d'équiper : " + inventory[ivenChoix]);
                     ((Personnage)entity).equip(inventory[ivenChoix]);
@@ -214,6 +225,14 @@ public class Game {
                     break;
                 case 4:
                     commenter(entity);//à changer par la suite
+                    break;
+                case 5:
+                    Personnage personnage = ((Personnage) entity);
+                    for (int i = 0; i < personnage.getSpells().length; i++) {
+                        System.out.printf("[%d]\t\t%s\n", i, personnage.getSpells()[i]);
+                    }
+                    int choixSpell = promptInt(scan,"Choisissez votre sort", 0, personnage.getSpells().length);
+                    personnage.getSpells()[choixSpell].spell(m_entities);
                     break;
                 default:
                     System.out.println("Choix inconnu.");

@@ -80,22 +80,34 @@ public class Display {
         return result;
     }
 
-    public static int promptChoice(ArrayList<String> Choices) {
+    public static int promptChoice(ArrayList<String> Choices, boolean allowFin) {
         int nbChoice = Choices.size();
-        int res =-1;
+        int res = -1;
+
         for (int i = 0; i < nbChoice; i++) {
             System.out.println("[" + i + "] " + Choices.get(i));
         }
-        while (res<0) {
-            System.out.println("Faite votre choix ou 'fin'");
-            Scanner scan = new Scanner(System.in);
+
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            System.out.println("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " :");
             String Choice = scan.nextLine();
-            if (Objects.equals(Choice, "fin")) {
+
+            if (allowFin && Objects.equals(Choice, "fin")) {
+                res = -1; // Option "fin" permet de sortir
                 break;
             }
+
             res = retrieveInt(Choice);
+            if (res >= 0 && res < nbChoice) {
+                break;
+            } else {
+                System.out.println("Choix invalide. Veuillez réessayer.");
+            }
         }
+
         return res;
     }
+
 
 }

@@ -250,42 +250,42 @@ public class Donjon {
 
     public void playerAttack(Entity entity) {
         EnumEntity entityType = entity.getType();
-        ArrayList<Entity> entitiesThatCanBeAttacked = new ArrayList<Entity>();
+        ArrayList<Entity> entitiesThatCanBeAttacked = new ArrayList<>();
+        ArrayList<String> attackableNames = new ArrayList<>();
         int range = entity.getRangePoint();
+
         for (Entity enemy : m_entities.keySet()) {
-            if(enemy.getType()==entityType){//si on a le même type alors pourquoi s'attaquer ???
-                continue;
+            if (enemy.getType() == entityType) {
+                continue; // même camp
             }
-            int distance = distance(entity,enemy);
-            if(distance<=range){
+            int distance = distance(entity, enemy);
+            if (distance <= range) {
                 entitiesThatCanBeAttacked.add(enemy);
+                attackableNames.add(enemy.toString());
             }
         }
 
-        if(entitiesThatCanBeAttacked.isEmpty()){
+        if (entitiesThatCanBeAttacked.isEmpty()) {
             System.out.println("Personne à attaquer");
-            return ;
+            return;
         }
-        System.out.println("Vous pouvez attaquer : ");
-        for (int i = 0; i < entitiesThatCanBeAttacked.size(); i++) {
-            System.out.println("["+i+"]"+entitiesThatCanBeAttacked.get(i));
-        }
-        Scanner scan = new Scanner(System.in);
-        int cible = -1;
-        while (cible<0||cible>=entitiesThatCanBeAttacked.size()){
-            cible = promptInt(scan,"Choisissez votre cible :");
-        }
+
+        System.out.println("Vous pouvez attaquer :");
+        int cible = Display.promptChoice(attackableNames, true);
+
         Entity chose = entitiesThatCanBeAttacked.get(cible);
         boolean toucher = chose.getAttacked(entity);
-        if(toucher){
+
+        if (toucher) {
             System.out.println("Bravo vous avez touché votre cible");
-            if(chose.getDead()){
-                System.out.println("Et Vous l'avez tuer");
+            if (chose.getDead()) {
+                System.out.println("Et Vous l'avez tuée");
                 m_entities.remove(chose);
                 checkWin();
             }
         }
     }
+
 
     public void nextTurn() {
         m_turn++;

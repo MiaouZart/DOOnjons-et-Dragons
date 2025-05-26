@@ -7,10 +7,11 @@ import equipment.armor.types.ScaleMail;
 import equipment.Equipment;
 import equipment.weapon.types.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import static donjon.Display.promptInt;
+import static donjon.Display.promptChoice;
 import static donjon.Donjon.*;
 
 public class EquipmentCreator {
@@ -19,9 +20,12 @@ public class EquipmentCreator {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             display.displayTitle("Maître du jeu : Ajouter un équipement");
-            System.out.print("Continuez ou 'fin' : ");
-            String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("FIN")) break;
+            ArrayList<String> options = new ArrayList<>();
+            options.add("Continuer");
+            options.add("Terminer");
+
+            int choice = promptChoice(options, true);
+            if (choice == -1 || choice == 1) break;
 
             Equipment newEquipment = createEquipment(scanner);
             positionEquipment(newEquipment, grid, equipments, scanner);
@@ -29,28 +33,30 @@ public class EquipmentCreator {
     }
 
     private static void positionEquipment(Equipment equipment, String[][] grid, HashMap<Equipment, int[]> equipments, Scanner scanner) {
-            System.out.print("Entrez la position de l'équipement (ex: A5) : ");
-            String position = scanner.nextLine().trim().toUpperCase();
-            int[] pos = retrieveGridPosition(position);
-            if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {
-                equipments.put(equipment, pos);
-                grid[pos[0]][pos[1]] = " E ";
-            }
+        System.out.print("Entrez la position de l'équipement (ex: A5) : ");
+        String position = scanner.nextLine().trim().toUpperCase();
+        int[] pos = retrieveGridPosition(position);
+        if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {
+            equipments.put(equipment, pos);
+            grid[pos[0]][pos[1]] = " E ";
+        }
     }
 
     private static Equipment createEquipment(Scanner scanner) {
-        int type = -1;
-        while (type > 1 || type < 0) {
-            type = promptInt(scanner, "[0] Armure ; [1] Armes (ex:1)");
-        }
+        ArrayList<String> typeOptions = new ArrayList<>();
+        typeOptions.add("Armure");
+        typeOptions.add("Arme");
+
+        int type = promptChoice(typeOptions, false);
 
         if (type == 0) {
-            System.out.println("Création d'une Armure : ");
-            int armorType = -1;
-            while (armorType > 3 || armorType < 0) {
-                armorType = promptInt(scanner,
-                        "[0] Côtte de mailles ; [1] Demi-plate ; [2] Armure d'écailles ; [3] Harnois (ex:2)");
-            }
+            ArrayList<String> armorOptions = new ArrayList<>();
+            armorOptions.add("Cotte de mailles");
+            armorOptions.add("Demi-plate");
+            armorOptions.add("Armure d'écailles");
+            armorOptions.add("Harnois");
+
+            int armorType = promptChoice(armorOptions, false);
 
             return switch (armorType) {
                 case 0 -> new ChainMail();
@@ -60,13 +66,17 @@ public class EquipmentCreator {
                 default -> throw new IllegalStateException("Unexpected value: " + armorType);
             };
         } else {
-            System.out.println("Création d'une Arme : ");
-            int weaponType = -1;
-            while (weaponType > 7 || weaponType < 0) {
-                weaponType = promptInt(scanner,
-                        "[0] Arbalète ; [1] Bâton ; [2] Masse d'armes ; [3] Épée longue ; " +
-                                "[4] Rapière ; [5] Fronde ; [6] Arc court ; [7] Épée à Deux Mains (ex:2)");
-            }
+            ArrayList<String> weaponOptions = new ArrayList<>();
+            weaponOptions.add("Arbalète");
+            weaponOptions.add("Bâton");
+            weaponOptions.add("Masse d'armes");
+            weaponOptions.add("Épée longue");
+            weaponOptions.add("Rapière");
+            weaponOptions.add("Fronde");
+            weaponOptions.add("Arc court");
+            weaponOptions.add("Épée à deux mains");
+
+            int weaponType = promptChoice(weaponOptions, false);
 
             return switch (weaponType) {
                 case 0 -> new Crossbow();
@@ -81,5 +91,4 @@ public class EquipmentCreator {
             };
         }
     }
-
 }

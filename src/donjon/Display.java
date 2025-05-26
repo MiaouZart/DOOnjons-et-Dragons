@@ -1,5 +1,7 @@
 package donjon;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static donjon.Donjon.retrieveInt;
@@ -76,6 +78,24 @@ public class Display {
             result = retrieveInt(scanner.nextLine().trim());
         }
         return result;
+    }
+
+    public static int promptChoice(ArrayList<String> Choices) {
+        int nbChoice = Choices.size();
+        int res =-1;
+        for (int i = 0; i < nbChoice; i++) {
+            System.out.println("[" + i + "] " + Choices.get(i));
+        }
+        while (res<0) {
+            System.out.println("Faite votre choix ou 'fin'");
+            Scanner scan = new Scanner(System.in);
+            String Choice = scan.nextLine();
+            if (Objects.equals(Choice, "fin")) {
+                break;
+            }
+            res = retrieveInt(Choice);
+        }
+        return res;
     }
 
 }

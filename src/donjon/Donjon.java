@@ -5,11 +5,9 @@ import entity.Entity;
 import entity.EnumEntity;
 import equipment.Equipment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
+import static donjon.Display.promptChoice;
 import static donjon.Display.promptInt;
 
 
@@ -192,20 +190,22 @@ public class Donjon {
         int moveSpeed = 1;
         Scanner scan = new Scanner(System.in);
 
+        ArrayList<String> directions = new ArrayList<>(Arrays.asList(
+                "↑ Haut", "↓ Bas", "→ Droite", "← Gauche",
+                "↗ Haut-Droite", "↘ Bas-Droite", "↙ Bas-Gauche", "↖ Haut-Gauche"
+        ));
+
         while (remainingMove > 0) {
             m_display.refreshDisplay();
             System.out.println("Vous avez " + remainingMove + " points de déplacement restants.");
-            System.out.print("voulez-vous vous continuer ou 'fin' pour terminer) : ");
+            System.out.print("Voulez-vous continuer ou taper 'fin' pour terminer : ");
 
             String input = scan.nextLine();
             if (input.equalsIgnoreCase("fin")) {
                 break;
             }
 
-            int direction = -1;
-            while (direction > 7 || direction < 0) {
-                direction = promptInt(scan, "Vers où [0] ↑ [1] ↓ [2] → [3] ← [4] ↗ [5] ↘ [6] ↙ [7] ↖ ");
-            }
+            int direction = promptChoice(directions, false);
 
             int[] moveFactor = switch (direction) {
                 case 0 -> new int[]{-moveSpeed, 0};
@@ -223,20 +223,21 @@ public class Donjon {
             int newX = oldPos[0] + moveFactor[0];
             int newY = oldPos[1] + moveFactor[1];
 
-            if(newX<0||newX>m_donjonSize||newY<0||newY>m_donjonSize|| !(Objects.equals(m_donjonGrid[newX][newY], " . ")||(Objects.equals(m_donjonGrid[newX][newY], " E ")))){
+            if (newX < 0 || newX > m_donjonSize || newY < 0 || newY > m_donjonSize ||
+                    !(Objects.equals(m_donjonGrid[newX][newY], " . ") || Objects.equals(m_donjonGrid[newX][newY], " E "))) {
                 System.out.println("Vous n'avez pas le droit");
                 continue;
             }
 
-            // Mise à jour de la grille
             m_donjonGrid[oldPos[0]][oldPos[1]] = " . ";
             m_donjonGrid[newX][newY] = entity.getSprite();
-            int[] newPos = new int[]{newX, newY};
-            m_entities.replace(entity, newPos);
+            m_entities.replace(entity, new int[]{newX, newY});
             remainingMove -= moveSpeed;
         }
+
         System.out.println("Fin du déplacement.");
     }
+
 
     private int distance(Entity entity1, Entity entity2) {
         int x1 = m_entities.get(entity1)[0];
@@ -271,7 +272,7 @@ public class Donjon {
         }
 
         System.out.println("Vous pouvez attaquer :");
-        int cible = Display.promptChoice(attackableNames, true);
+        int cible = promptChoice(attackableNames, true);
 
         Entity chose = entitiesThatCanBeAttacked.get(cible);
         boolean toucher = chose.getAttacked(entity);

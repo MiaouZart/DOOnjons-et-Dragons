@@ -29,7 +29,6 @@ public class MonsterCreator {
 
             ArrayList<String> options = new ArrayList<>();
             options.add("Nouveau monstre");
-            options.add("Terminer");
 
             int choice = promptChoice(options, true);
             if (choice == -1 || choice == 1) break;

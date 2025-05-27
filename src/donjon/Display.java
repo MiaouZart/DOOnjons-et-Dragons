@@ -90,7 +90,7 @@ public class Display {
 
         Scanner scan = new Scanner(System.in);
         while (true) {
-            System.out.println("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " :");
+            System.out.print("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " :");
             String Choice = scan.nextLine();
 
             if (allowFin && Objects.equals(Choice, "fin")) {

@@ -95,7 +95,6 @@ public class Game {
     private void setUp(){
         m_donjon.setupDonjon();
         retrievePlayerOrder();
-        game();
     }
 
     private void game() {

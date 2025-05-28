@@ -7,6 +7,9 @@ import equipment.weapon.types.Crossbow;
 import equipment.Equipment;
 
 public class Warrior extends CharClass {
+    /**
+     * Constructeur Warrior
+     */
     public Warrior() {
         super("Guerrier", 20, new Equipment[]{new ChainMail(), new Longsword(), new Crossbow()});
     }

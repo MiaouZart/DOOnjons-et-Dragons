@@ -1,7 +1,6 @@
 package spell.type;
 
 import entity.Entity;
-import entity.EnumEntity;
 import spell.Spell;
 
 import java.util.HashMap;
@@ -10,6 +9,10 @@ import java.util.Scanner;
 import static donjon.Display.promptInt;
 
 public class BoogieWoogie extends Spell {
+
+    /**
+     * Constructeur du sort Boogie Woogie.
+     */
     public BoogieWoogie() {
         super("Boogie Woogie");
     }
@@ -19,7 +22,7 @@ public class BoogieWoogie extends Spell {
         int i;
         for (i = 0; i< entities.size(); i++) {
             Entity e = (Entity) entities.keySet().toArray()[i];
-            System.out.printf("[%d]\t\t[%d,%d] %s\n", i, entities.get(e)[0], entities.get(e)[1], e);
+            System.out.printf("[%d]\t\t[%d,%d]\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
         }
 
         int selected0 = promptInt(new Scanner(System.in), "Choix du premier personnage à déplacer", 0, i);
@@ -28,7 +31,7 @@ public class BoogieWoogie extends Spell {
             if (i == selected0)
                 continue;
             Entity e = (Entity) entities.keySet().toArray()[i];
-            System.out.printf("[%d]\t\t[%d,%d] %s\n", i, entities.get(e)[0], entities.get(e)[1], e);
+            System.out.printf("[%d]\t\t[%d,%d]\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
         }
 
         int selected1 = -1;

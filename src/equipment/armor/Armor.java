@@ -9,6 +9,12 @@ public abstract class Armor extends Equipment {
     private final int m_speedModifier;
     private final String m_name;
 
+    /**
+     * Constructeur de l'armure.
+     * @param name Nom de l'armure
+     * @param classVal Valeur de la classe d'amure (à battre pour faire des dégâts).
+     * @param speedModifier Modificateur de vitesse infligé par l'armure.
+     */
     public Armor(String name, int classVal, int speedModifier) {
         super(name, EquipmentType.ARMOR);
         m_name = name;
@@ -16,10 +22,18 @@ public abstract class Armor extends Equipment {
         this.m_speedModifier = speedModifier;
     }
 
+    /**
+     * Getter du modificateur de vitesse.
+     * @return Modificateur de vitesse infligé par l'armure.
+     */
     public int getSpeedModifier() {
         return m_speedModifier;
     }
 
+    /**
+     * Getter de la classe d'armure.
+     * @return Classe d'armure (à battre pour faire des dégâts).
+     */
     public int getClassVal() {
         return m_classVal;
     }

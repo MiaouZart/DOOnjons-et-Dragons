@@ -1,7 +1,6 @@
 package donjon.defaultDonjon;
 
 import dice.Dice;
-import donjon.Donjon;
 import entity.Entity;
 import entity.monster.Monster;
 import entity.personnage.Personnage;
@@ -12,40 +11,18 @@ import equipment.weapon.types.Longsword;
 
 import java.util.HashMap;
 
-public class Default3 {
-    private Donjon m_donjon;
-    private HashMap<Entity, int[]> m_entities;
+public class Default3 extends Default {
 
-    public Default3() {
-        int size = 25;
-        this.m_entities = new HashMap<>();
-        this.m_donjon = new Donjon(size, m_entities);
-        setupDefaultDonjon();
+    /**
+     * Constructeur pour générer un donjon par défaut.
+     * @param entities Liste des entités à déjà inclure.
+     */
+    public Default3(HashMap<Entity, int[]> entities) {
+        super(entities, 25);
     }
 
-    public Default3(HashMap<Entity, int[]> enti) {
-        int size = 25;
-        this.m_entities = enti;
-        this.m_donjon = new Donjon(size, m_entities);
-        setupDefaultDonjon();
-    }
-
-    private void setupDefaultDonjon() {
-        initializeDefaultGrid();
-        createDefaultPlayers();
-        createDefaultMonsters();
-    }
-
-    private void initializeDefaultGrid() {
-        String[][] grid = m_donjon.getDonjonGrid();
-        int size = m_donjon.getDonjonSize();
-
-        for (int i = 0; i < size; i++) {
-            grid[0][i] = " # ";
-            grid[size - 1][i] = " # ";
-            grid[i][0] = " # ";
-            grid[i][size - 1] = " # ";
-        }
+    protected void initializeDefaultGrid() {
+        String[][] grid = initialiseWalls(m_donjon);
 
         // Quelques murs internes
         for (int i = 8; i <= 16; i++) {
@@ -59,7 +36,7 @@ public class Default3 {
         grid[2][22] = " E ";
     }
 
-    private void createDefaultPlayers() {
+    protected void createDefaultPlayers() {
         String[][] grid = m_donjon.getDonjonGrid();
 
         Personnage player1 = new Personnage("Thorin", new Dwarf(), new Warrior());
@@ -81,7 +58,7 @@ public class Default3 {
         m_entities.put(player3, new int[]{23, 11});
     }
 
-    private void createDefaultMonsters() {
+    protected void createDefaultMonsters() {
         String[][] grid = m_donjon.getDonjonGrid();
 
         Monster goblin = new Monster(20, 12, 10, 4, "Goblin", 1, 1, 12, new Dice(1, 6));
@@ -96,9 +73,5 @@ public class Default3 {
 
         grid[10][10] = wraith.getSprite();
         m_entities.put(wraith, new int[]{10, 10});
-    }
-
-    public Donjon getDonjon() {
-        return m_donjon;
     }
 }

@@ -1,14 +1,10 @@
 package spell;
 
-import entity.Entity;
 import entity.personnage.Personnage;
 import entity.personnage.charclass.types.*;
 import entity.personnage.race.types.*;
 import org.junit.jupiter.api.Test;
 import spell.type.*;
-
-import java.io.ByteArrayInputStream;
-import java.util.HashMap;
 
 public class SpellTest {
     @Test

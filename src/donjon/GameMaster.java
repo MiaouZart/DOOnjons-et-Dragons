@@ -8,21 +8,32 @@ import java.util.*;
 import static donjon.Display.promptChoice;
 
 public class GameMaster {
-
     private final HashMap<Entity, int[]> m_entityHashMapCopy;
     private final Donjon m_donjon;
     private final Scanner scan;
 
+    /**
+     * Constructeur de la classe du Maître du jeu.
+     * @param entityHashMapCopy Map des entités - positions.
+     * @param donjon Donjon à utiliser.
+     */
     public GameMaster(HashMap<Entity, int[]> entityHashMapCopy, Donjon donjon) {
         this.m_entityHashMapCopy = entityHashMapCopy;
         this.m_donjon = donjon;
         this.scan = new Scanner(System.in);
     }
 
+    /**
+     * Faire le MJ dire une phrase.
+     * @param phrase Phrase à dire.
+     */
     public void say(String phrase) {
         System.out.println("Maître du jeu - " + phrase);
     }
 
+    /**
+     * Tour du maître du jeu.
+     */
     public void gameMasterTurn() {
         say("C'est votre tour :");
         say("Choisissez l'action à réaliser");
@@ -52,6 +63,9 @@ public class GameMaster {
         }
     }
 
+    /**
+     * Affiche la liste des entités.
+     */
     private void displayEntities() {
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
         ArrayList<String> entityNames = new ArrayList<>();
@@ -61,6 +75,9 @@ public class GameMaster {
         promptChoice(entityNames, false); // Affiche seulement la liste
     }
 
+    /**
+     * Demande où déplacer une des entités.
+     */
     public void changeEntityPos() {
         say("Choisissez l'entité à déplacer :");
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
@@ -75,9 +92,12 @@ public class GameMaster {
         if (choice == -1) return;
 
         Entity selected = entities.get(choice);
-        m_donjon.EntityPosition(selected);
+        m_donjon.entityPosition(selected);
     }
 
+    /**
+     * Permet au MJ d'affliger des dégâts arbitraires à une entité.
+     */
     public void inflictDamage() {
         say("Choisissez la cible pour les dégâts :");
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
@@ -110,6 +130,9 @@ public class GameMaster {
         selected.takeDamage(totalDamage);
     }
 
+    /**
+     * Méthode pour demander au MJ où créer un obstacle.
+     */
     public void addObstacle() {
         m_donjon.createObstacle();
     }

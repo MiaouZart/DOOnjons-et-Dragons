@@ -2,11 +2,15 @@ package donjon;
 
 import java.util.Scanner;
 
-import static donjon.Donjon.checkEmptyCase;
-import static donjon.Donjon.retrieveGridPosition;
+import static donjon.Display.checkEmptyCase;
+import static donjon.Display.retrieveGridPosition;
 
 public class ObstacleCreator {
-
+    /**
+     * Permet de créer autant d'obstacle que le MJ veut.
+     * @param display Display à utiliser relatif au donjon.
+     * @param grid Grille en cours, afin de voir s'il y a déjà quelque-chose, et placer le nouvel obstacle.
+     */
     public static void bulkCreate(Display display, String[][] grid) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -22,6 +26,12 @@ public class ObstacleCreator {
             create(input, grid);
         }
     }
+
+    /**
+     * Permet de créer un nouvel obstacle.
+     * @param input Position où placer le nouvel obstacle.
+     * @param grid Grille où placer le nouvel obstacle si l'emplacement est vide.
+     */
     private static void create(String input, String[][] grid) {
         int[] pos = retrieveGridPosition(input);
         if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {

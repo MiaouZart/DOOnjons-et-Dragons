@@ -8,7 +8,6 @@ import equipment.Equipment;
 import java.util.*;
 
 import static donjon.Display.promptChoice;
-import static donjon.Display.promptInt;
 
 
 public class Donjon {
@@ -19,12 +18,17 @@ public class Donjon {
     protected boolean m_setup = false;
     protected final HashMap<Equipment, int[]> m_equipments;
     protected final HashMap<Entity, int[]> m_entities;
-    protected Display m_display;
+    protected final Display m_display;
     protected boolean m_donjonWin=false;
     protected boolean m_donjonLoose = false;
     private int m_monsterNumber=0;
     private int m_playerNumber=0;
 
+    /**
+     * Constructeur du Donjon.
+     * @param size Taille de la grille (carré).
+     * @param players Dictionnaire de position - joueurs.
+     */
     public Donjon(int size, HashMap<Entity, int[]> players) {
 
         m_donjonSize = size;
@@ -37,17 +41,21 @@ public class Donjon {
         m_display = new Display(this);
     }
 
+    /**
+     * Initialise la grille.
+     */
     private void initializeGrid() {
-        for (int i = 0; i < m_donjonSize; i++) {
-            for (int j = 0; j < m_donjonSize; j++) {
+        for (int i = 0; i < m_donjonSize; i++)
+            for (int j = 0; j < m_donjonSize; j++)
                 m_donjonGrid[i][j] = " . ";
-            }
-        }
     }
 
+    /**
+     * Met en place le donjon.
+     */
     public void setupDonjon() {
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
-        EntityPosition();
+        entityPosition();
         m_monsterNumber= MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
         EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
         promptContext();
@@ -55,64 +63,17 @@ public class Donjon {
         m_setup = true;
     }
 
+    /**
+     * Demande au MJ des emplacements pour créer un nombre d'obstacles à sa convenience.
+     */
     public void createObstacle(){
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
     }
 
-    protected static boolean checkEmptyCase(int x, int y, String[][] donjonGrid, int donjonSize) {
-        if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
-            System.out.println("Coordonnées hors limites.");
-            return false;
-        }
-        if (!donjonGrid[x][y].equals(" . ")) {
-            System.out.println("Il y a un obstacle ici.");
-            return false;
-        }
-        return true;
-    }
-
-    protected static boolean checkEmptyCaseNonVerbose(int x, int y, String[][] donjonGrid, int donjonSize) {
-        if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
-            return false;
-        }
-        return !donjonGrid[x][y].equals(" # ");
-    }
-
-    protected static int[] retrieveGridPosition(String position) {
-        if (position.isEmpty()) {
-            return new int[]{-1, -1};
-        }
-        if (position.length() < 2 || position.length() > 3) {
-            System.out.println("Entrée invalide. Format attendu : Lettre+chiffre (ex: B3).");
-            return new int[]{-1, -1};
-        }
-
-        char colChar = position.charAt(0);
-        int row;
-        try {
-            row = Integer.parseInt(position.substring(1));
-        } catch (NumberFormatException e) {
-            System.out.println("Numéro de ligne invalide.");
-            return new int[]{-1, -1};
-        }
-
-        int col = colChar - 'A';
-        return new int[]{row, col};
-    }
-
-    protected static int retrieveInt(String input) {
-        int result;
-        try {
-            result = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Valeur Invalide.");
-            return -1;
-        }
-        return result;
-    }
-
-
-    private void EntityPosition() {
+    /**
+     * Setup la position de chaque entités, par le MJ.
+     */
+    private void entityPosition() {
         Scanner scanner = new Scanner(System.in);
 
         for (Entity playerName : m_entities.keySet()) {
@@ -124,9 +85,8 @@ public class Donjon {
                 System.out.print("Entrez la position du joueur " + playerName + " (ex: A5) : ");
                 String input = scanner.nextLine().trim().toUpperCase();
 
-                int[] pos = retrieveGridPosition(input);
-
-                if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
+                int[] pos = Display.retrieveGridPosition(input);
+                if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                     m_donjonGrid[pos[0]][pos[1]] = " P ";
                     m_entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
@@ -138,8 +98,11 @@ public class Donjon {
         }
     }
 
-
-    public void EntityPosition(Entity entity) {
+    /**
+     * Demande au MJ de déplacer une entité.
+     * @param entity Entité à déplacer.
+     */
+    public void entityPosition(Entity entity) {
         Scanner scanner = new Scanner(System.in);
         boolean positionOk = false;
         while (!positionOk) {
@@ -149,9 +112,9 @@ public class Donjon {
             System.out.print("Entrez la position du joueur " + entity + " (ex: A5) : ");
             String input = scanner.nextLine().trim().toUpperCase();
 
-            int[] pos = retrieveGridPosition(input);
+            int[] pos = Display.retrieveGridPosition(input);
 
-            if (checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
+            if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
                 m_donjonGrid[m_entities.get(entity)[0]][m_entities.get(entity)[1]]="  ";
                 m_donjonGrid[pos[0]][pos[1]] =entity.getSprite();
                 m_entities.replace(entity, new int[]{pos[0], pos[1]});
@@ -163,15 +126,18 @@ public class Donjon {
         m_playerNumber++;
     }
 
-
-
-
+    /**
+     * Demande au MJ de donner le contexte.
+     */
     private void promptContext() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Début du donjon...\nSaisissez le contexte : ");
         scanner.nextLine();
     }
 
+    /**
+     * Toutes les entités font des jets d'initiative.
+     */
     private void initiativeInit(){
         Dice initiativeDice = new Dice(1,20);
         Scanner scan = new Scanner(System.in);
@@ -185,6 +151,10 @@ public class Donjon {
         }
     }
 
+    /**
+     * Permet à une entité de se déplacer.
+     * @param entity Entité qui peut se déplacer.
+     */
     public void moveEntity(Entity entity) {
         int remainingMove = entity.getSpeed();
         int moveSpeed = 1;
@@ -239,6 +209,12 @@ public class Donjon {
     }
 
 
+    /**
+     * Calcule la distance entre deux entités.
+     * @param entity1 Première entité de l'équation
+     * @param entity2 Seconde entité de l'équation
+     * @return Distance des entités.
+     */
     private int distance(Entity entity1, Entity entity2) {
         int x1 = m_entities.get(entity1)[0];
         int y1 = m_entities.get(entity1)[1];
@@ -247,8 +223,11 @@ public class Donjon {
         return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
     }
 
-
-
+    /**
+     * Permet à une entité d'en attaquer une autre.<br>
+     * <i>Une entité ne peut pas attaquer ses alliés.</i>
+     * @param entity Entité auteur de l'attaque.
+     */
     public void playerAttack(Entity entity) {
         EnumEntity entityType = entity.getType();
         ArrayList<Entity> entitiesThatCanBeAttacked = new ArrayList<>();
@@ -287,13 +266,17 @@ public class Donjon {
         }
     }
 
-
+    /**
+     * Passe au tour suivant.
+     */
     public void nextTurn() {
         m_turn++;
         m_display.refreshDisplay();
     }
 
-
+    /**
+     * Vérifie l'état du donjon ; Si les joueurs ont perdu ou gagné.
+     */
     private void checkWin(){
         if(m_playerNumber==0){
             m_donjonLoose=true;
@@ -303,18 +286,43 @@ public class Donjon {
         }
     }
 
+    /**
+     * Getter pour si le donjon est gagnant.
+     * @return État du donjon, s'il a gagné.
+     */
     public boolean getWin(){
         return m_donjonWin;
     }
+
+    /**
+     * Getter pour si le donjon est perdant.
+     * @return État du donjon, s'il a perdu.
+     */
     public boolean getLoose(){
         return m_donjonLoose;
     }
 
-
-
-    // Getters pour DonjonDisplay
+    /**
+     * Getter taille du Donjon
+     * @return Taille de la grille du Donjon.
+     */
     public int getDonjonSize() { return m_donjonSize; }
+
+    /**
+     * Getter de la grille du Donjon.
+     * @return Grille du Donjon.
+     */
     public String[][] getDonjonGrid() { return m_donjonGrid; }
+
+    /**
+     * Getter du tour.
+     * @return Numéro du tour.
+     */
     public int getTurn() { return m_turn; }
+
+    /**
+     * Getter des entités.
+     * @return Les entités et leur position.
+     */
     public HashMap<Entity, int[]> getEntities() { return m_entities; }
 }

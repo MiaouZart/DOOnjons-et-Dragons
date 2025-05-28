@@ -16,4 +16,5 @@ doc/
 *.tar.gz
 *.rar
 
+src/Main.java
 uml/temp.puml

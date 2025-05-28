@@ -1,6 +1,5 @@
 package spell.type;
 
-import dice.Dice;
 import entity.Entity;
 import entity.EnumEntity;
 import entity.personnage.Personnage;
@@ -15,6 +14,9 @@ import java.util.Scanner;
 import static donjon.Display.promptInt;
 
 public class MagicWeapon extends Spell {
+    /**
+     * Constructeur du sort Arme Magique.
+     */
     public MagicWeapon() {
         super("Arme Magique");
     }

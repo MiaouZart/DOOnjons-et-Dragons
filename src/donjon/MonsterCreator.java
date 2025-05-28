@@ -8,16 +8,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import static donjon.Display.promptChoice;
-import static donjon.Display.promptInt;
-import static donjon.Donjon.*;
+import static donjon.Display.*;
 
 public class MonsterCreator {
+
     // Liste des races de monstres prédéfinies
     private static final ArrayList<String> PREDEFINED_SPECIES = new ArrayList<>(List.of(
-            "Orc", "Gobelin", "Troll", "Dragonnet",
+            "Orc", "Gobelin", "Troll", "Cobold",
             "Loup-garou", "Squelette", "Zombie", "Araignée géante"
     ));
+
+    /**
+     * Crée des nouveaux monstres tant que le MJ le veut.
+     * @param display Display du Donjon à utiliser.
+     * @param grid Grille à utiliser pour voir si l'espace est disponible.
+     * @param entities Map des Entités - Position où placer les nouveaux monstres.
+     * @return Nombre de nouveaux monstres ajoutés.
+     */
 
     protected static int bulkCreate(Display display, String[][] grid, HashMap<Entity, int[]> entities) {
         Scanner scanner = new Scanner(System.in);
@@ -59,6 +66,13 @@ public class MonsterCreator {
         return monsterCount;
     }
 
+    /**
+     * Crée un (1) nouveau monstre.<br>
+     * Méthode demandant au MJ les caractéristique du nouveau monstre.
+     * @param scanner Scanner à utiliser pour les demandes consoles.
+     * @param specie Espèce du monstre.
+     * @return Objet du nouveau monstre.
+     */
     protected static Monster createMonster(Scanner scanner, String specie) {
         ArrayList<String> statNames = new ArrayList<>(List.of(
                 "Vie", "Dextérité", "Vitesse", "Force",

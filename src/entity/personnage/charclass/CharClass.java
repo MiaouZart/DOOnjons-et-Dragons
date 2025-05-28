@@ -11,10 +11,23 @@ public abstract class CharClass {
     private final Equipment[] m_baseStuff;
     private final Spell[] m_spells;
 
+    /**
+     * Constructeur classe de personnage/
+     * @param name Nom de la classe
+     * @param baseHealth Vie de base de la classe
+     * @param baseStuff Équipement de base de la classe
+     */
     public CharClass(String name, int baseHealth, Equipment[] baseStuff) {
         this(name, baseHealth, baseStuff, new Spell[0]);
     }
 
+    /**
+     * Constructeur classe de personnage/
+     * @param name Nom de la classe
+     * @param baseHealth Vie de base de la classe
+     * @param baseStuff Équipement de base de la classe
+     * @param spells Tableau des sorts
+     */
     public CharClass(String name, int baseHealth, Equipment[] baseStuff, Spell[] spells) {
         m_baseHealth = baseHealth;
         m_baseStuff = baseStuff;
@@ -22,14 +35,26 @@ public abstract class CharClass {
         m_spells = spells;
     }
 
+    /**
+     * Getter vie de base de la classe
+     * @return Vie de base
+     */
     public int getBaseHealth() {
         return m_baseHealth;
     }
 
+    /**
+     * Getter Équipement de base de la classe
+     * @return Équipement de base
+     */
     public Equipment[] getBaseStuff() {
         return m_baseStuff;
     }
 
+    /**
+     * Getter sorts de base de la classe
+     * @return Sorts de base
+     */
     public Spell[] getSpells() {
         return m_spells;
     }

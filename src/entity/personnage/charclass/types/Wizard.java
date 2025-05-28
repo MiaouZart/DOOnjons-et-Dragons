@@ -7,6 +7,9 @@ import equipment.Equipment;
 import spell.Spell;
 
 public class Wizard extends CharClass {
+    /**
+     * Constructeur Wizard
+     */
     public Wizard() {
         super("Magicien", 12,
                 new Equipment[]{new Quarterstaff(), new Sling()},

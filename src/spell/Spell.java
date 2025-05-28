@@ -8,6 +8,10 @@ import java.util.Objects;
 public abstract class Spell {
     private final String m_name;
 
+    /**
+     * Constructeur du sort.
+     * @param name Nom du sort.
+     */
     public Spell(String name) {
         m_name = name;
     }
@@ -17,6 +21,10 @@ public abstract class Spell {
         return m_name;
     }
 
+    /**
+     * Exécution du sort.
+     * @param m_entities Map des entités.
+     */
     public abstract void spell(HashMap<Entity, int[]> m_entities);
 
     @Override

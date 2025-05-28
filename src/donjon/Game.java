@@ -19,13 +19,12 @@ public class Game {
     private Donjon m_donjon;
     private HashMap<Entity,int[]> m_entities;
     private ArrayList<Entity> m_playerOrder;
-    private GameMaster m_gameMaster;
+    private final GameMaster m_gameMaster;
 
-
+    /**
+     * Demande le choix du donjon et lance le jeu.
+     */
     public Game() {
-
-
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Tapez 0-1-2 si vous voulez utilisez un donjon par défault ou 3 si création Manuelle");
@@ -52,7 +51,7 @@ public class Game {
         }
 
         if(choice ==3) {
-            int nbPlayer = promptInt(scanner, "Nombre de personnages");
+            int nbPlayer = promptInt(scanner, "Nombre de personnages", 1, 10);
             m_entities = new HashMap<>();
             m_playerOrder = new ArrayList<>();
             for (int i = 0; i < nbPlayer; i++) {
@@ -74,6 +73,9 @@ public class Game {
         game();
     }
 
+    /**
+     * Récupère l'ordre du joueur, dans m_playerOrder.
+     */
     private void retrievePlayerOrder(){
         while (m_playerOrder.size() != m_entities.size()){
             int maxInit = -1;
@@ -91,18 +93,22 @@ public class Game {
         }
     }
 
-
+    /**
+     * Initialise le jeu.
+     */
     private void setUp(){
         m_donjon.setupDonjon();
         retrievePlayerOrder();
     }
 
+    /**
+     * Gestion de la boucle des tours.
+     */
     private void game() {
         while (!m_donjon.getLoose() && !m_donjon.getWin()) {
             for (Entity entity : m_playerOrder) {
-                if (m_donjon.getLoose() || m_donjon.getWin()) {
+                if (m_donjon.getLoose() || m_donjon.getWin())
                     break;
-                }
                 m_donjon.m_display.refreshDisplay();
                 entityTurn(entity);
                 m_gameMaster.gameMasterTurn();
@@ -110,15 +116,13 @@ public class Game {
             m_donjon.nextTurn();
         }
 
-        if(m_donjon.getLoose()){
-            System.out.println("Vous avez perdu");
-        }else{
-            System.out.println("Vous avez gagnez");
-        }
-
+        System.out.println(m_donjon.getLoose() ? "Vous avez perdu" : "Vous avez gagné");
     }
 
-
+    /**
+     * Tour d'une entité.
+     * @param entity Entité à qui faire le tour.
+     */
     private void entityTurn(Entity entity) {
         int health = entity.getHp();
         Armor armor = null;
@@ -197,7 +201,7 @@ public class Game {
                         break;
                     }
                     System.out.println("Inventaire :");
-                    System.out.println(((Personnage)entity).getInventoryString());
+//                    System.out.println(((Personnage)entity).getInventoryString());
                     ArrayList<String> inventoryItems = new ArrayList<>();
                     for (Equipment item : inventory) {
                         inventoryItems.add(item.toString());
@@ -231,17 +235,13 @@ public class Game {
         System.out.println("Fin du tour de " + entity + ".");
     }
 
-
-
+    /**
+     * Commente l'action d'une entité.
+     * @param entity Entité à qui commenter l'action.
+     */
     public void commenter(Entity entity){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Saisissez votre commentaire : ");
-        entity.say(scanner.nextLine());
+        entity.say(scanner);
     }
-
-
-
-
-
-
 }

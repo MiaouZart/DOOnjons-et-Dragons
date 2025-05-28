@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import static donjon.Display.promptChoice;
-import static donjon.Donjon.*;
+import static donjon.Display.*;
 
 public class EquipmentCreator {
 
+    /**
+     * Constructeur du créateur d'équipement <i>(bulk)</i>.
+     * @param display Classe Display à utiliser.
+     * @param grid Grille du donjon à utiliser.
+     * @param equipments Map des équipements - positions.
+     */
     public static void create(Display display, String[][] grid, HashMap<Equipment, int[]> equipments) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -32,6 +37,13 @@ public class EquipmentCreator {
         }
     }
 
+    /**
+     * Demande une position d'équipement, et la place sur la grille d'équipement avec un sprite.
+     * @param equipment Équipement à placer.
+     * @param grid Grille à afficher l'équipement.
+     * @param equipments Map des équipements - positions.
+     * @param scanner Scanner à utiliser pour les affichages consoles.
+     */
     private static void positionEquipment(Equipment equipment, String[][] grid, HashMap<Equipment, int[]> equipments, Scanner scanner) {
         System.out.print("Entrez la position de l'équipement (ex: A5) : ");
         String position = scanner.nextLine().trim().toUpperCase();
@@ -42,6 +54,11 @@ public class EquipmentCreator {
         }
     }
 
+    /**
+     * Méthode pour demander au MJ de créer un équipement.
+     * @param scanner Scanner à utiliser pour l'affichage console.
+     * @return Nouvel équipement crée.
+     */
     private static Equipment createEquipment(Scanner scanner) {
         ArrayList<String> typeOptions = new ArrayList<>();
         typeOptions.add("Armure");

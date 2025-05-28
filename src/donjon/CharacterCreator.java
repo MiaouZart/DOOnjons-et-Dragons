@@ -14,11 +14,20 @@ public class CharacterCreator {
     public CharacterCreator() {
     }
 
+    /**
+     * Crée un personnage en demandant avec des utilisateurs
+     * @return Nouveau personnage crée.
+     */
     protected static Personnage create() {
         Scanner scanner = new Scanner(System.in);
         return new Personnage(promptName(scanner), promptRace(), promptClass());
     }
 
+    /**
+     * Demande un nom.
+     * @param scanner Scanner à utiliser pour demander le nom.
+     * @return Chaîne de caractère du nom demandé.
+     */
     private static String promptName(Scanner scanner) {
         String nom = "";
 
@@ -30,6 +39,10 @@ public class CharacterCreator {
         return nom;
     }
 
+    /**
+     * Demande une race
+     * @return Chaîne de caractère de la race demandé.
+     */
     private static Race promptRace() {
         ArrayList<String> raceChoices = new ArrayList<>();
         raceChoices.add("Nain");
@@ -48,6 +61,10 @@ public class CharacterCreator {
         };
     }
 
+    /**
+     * Demande une classe
+     * @return Chaîne de caractère de la classe demandé.
+     */
     private static CharClass promptClass() {
         ArrayList<String> classChoices = new ArrayList<>();
         classChoices.add("Clerc");

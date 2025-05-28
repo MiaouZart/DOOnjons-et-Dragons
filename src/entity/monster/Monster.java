@@ -13,6 +13,18 @@ public class Monster extends Entity {
     private final Dice m_atkDamage;
     private final int m_armor;
 
+    /**
+     * Constructeur du monstre
+     * @param HP Nombre PV du monstre
+     * @param Strength Points de Force du monstre
+     * @param Dex Points de Dextérité du monstre
+     * @param Speed Points de vitesse du monstre
+     * @param species Espèce du monstre
+     * @param id Id du monstre de son espèce
+     * @param atkRange Distance d'attaque du monstre
+     * @param armor Points d'armure du monstre
+     * @param dice Dé de dommage de monstre.
+     */
     public Monster(int HP, int Strength, int Dex, int Speed, String species, int id, int atkRange,int armor, Dice dice){
         super(HP, Strength, Dex, Speed);
         m_specie = species;
@@ -28,6 +40,10 @@ public class Monster extends Entity {
         return this.m_specie+"-"+this.m_id;
     }
 
+    /**
+     * Getter pour la distance d'attaque
+     * @return Distance d'attaque
+     */
     public int getRangePoint(){
         return m_atkRange;
     }

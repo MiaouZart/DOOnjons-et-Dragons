@@ -1,15 +1,16 @@
 package printer;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SytemOut extends StandardOut{
+public class SystemOut extends StandardOut{
+    private final Scanner m_scan;
 
-    private Scanner scan ;
-    public SytemOut(){
-        scan = new Scanner(System.in);
+    /**
+     * Constructeur de SystemOut<br>
+     */
+    public SystemOut(){
+        m_scan = new Scanner(System.in);
     }
-
 
     @Override
     public void out(String str) {
@@ -23,7 +24,7 @@ public class SytemOut extends StandardOut{
 
     @Override
     public String in() {
-        return scan.nextLine();
+        return m_scan.nextLine();
     }
 
     @Override

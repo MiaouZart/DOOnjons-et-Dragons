@@ -87,7 +87,6 @@ package entity
                 + getInventory() : Equipment[]
                 + getWeapon() : Weapon
                 + getArmor() : Armor
-                +
         }
 
         package charclass {
@@ -381,15 +380,36 @@ package donjon{
     GameMaster "m_donjon"-->Donjon :"gére le donjon >";
 
     package defaultDonjon{
-        class default1{
-            +default1(entity: Entity[])
+        abstract class Default {
+            #entities: HashMap<Entity, Integer[]>
+            #donjon: Donjon
+
+            #<<create>> Default(entities:HashMap<Entity, Integer[]>, size:Integer)
+            #initialiseWalls(donjon:Donjon):String[][]
+            - {static} setupDefaultDonjon()
+            - {abstract} initializeDefaultGrid()
+            - {abstract} createDefaultPlayers()
+            - {abstract} createDefaultMonsters()
+            + getDonjon(): Donjon
         }
-        class default3{
-                    +default3(entity: Entity[])
-                }
-        class default2{
-                    +default2(entity: Entity[])
-         }
+        class Default1 extends Default {
+            + Default1(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
+        class Default2 extends Default {
+            + Default2(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
+        class Default3 extends Default {
+            + Default3(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
    Game"1"--> defaultDonjon:<<use>>
     }
 }

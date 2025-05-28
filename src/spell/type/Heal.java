@@ -11,6 +11,9 @@ import java.util.Scanner;
 import static donjon.Display.promptInt;
 
 public class Heal extends Spell {
+    /**
+     * Constructeur du sort Heal.
+     */
     public Heal() {
         super("Guérison");
     }

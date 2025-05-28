@@ -5,6 +5,8 @@ import entity.Entity;
 
 import java.util.*;
 
+import static donjon.Display.promptChoice;
+
 public class GameMaster {
 
     private final HashMap<Entity, int[]> m_entityHashMapCopy;
@@ -25,19 +27,17 @@ public class GameMaster {
         say("C'est votre tour :");
         say("Choisissez l'action à réaliser");
 
-        List<String> actions = Arrays.asList(
+        ArrayList<String> actions = new ArrayList<>(Arrays.asList(
                 "Déplacer un monstre ou un personnage",
                 "Infliger des dégâts à un joueur ou un monstre",
                 "Ajouter des obstacles dans le donjon"
-        );
+        ));
 
-        for (int i = 0; i < actions.size(); i++) {
-            System.out.println("[" + i + "] " + actions.get(i));
-        }
+        int choice = promptChoice(actions, true);
 
-        int res = Display.promptInt(scan, "Choisissez votre action", 0, actions.size());
+        if (choice == -1) return; // L'utilisateur a choisi 'fin'
 
-        switch (res) {
+        switch (choice) {
             case 0:
                 changeEntityPos();
                 break;
@@ -52,40 +52,61 @@ public class GameMaster {
         }
     }
 
-    public void displayPlayer() {
+    private void displayEntities() {
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
-        for (int i = 0; i < entities.size(); i++) {
-            System.out.println("[" + i + "] " + entities.get(i));
+        ArrayList<String> entityNames = new ArrayList<>();
+        for (Entity entity : entities) {
+            entityNames.add(entity.toString() + " (PV: " + entity.getHp() + ")");
         }
+        promptChoice(entityNames, false); // Affiche seulement la liste
     }
 
     public void changeEntityPos() {
-        displayPlayer();
-        say("Entrez l'indice du joueur à déplacer :");
-
+        say("Choisissez l'entité à déplacer :");
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
-        int res = Display.promptInt(scan, "", 0, m_entityHashMapCopy.size());
+        ArrayList<String> entityOptions = new ArrayList<>();
 
-        Entity selected = entities.get(res);
+        for (Entity entity : entities) {
+            entityOptions.add(entity.toString() + " - Position actuelle: "
+                    + Arrays.toString(m_entityHashMapCopy.get(entity)));
+        }
+
+        int choice = promptChoice(entityOptions, true);
+        if (choice == -1) return;
+
+        Entity selected = entities.get(choice);
         m_donjon.EntityPosition(selected);
     }
 
     public void inflictDamage() {
-        displayPlayer();
-        say("Entrez l'indice du joueur à qui infliger des dégâts :");
-
+        say("Choisissez la cible pour les dégâts :");
         List<Entity> entities = new ArrayList<>(m_entityHashMapCopy.keySet());
-        int res = Display.promptInt(scan, "", 0, m_entityHashMapCopy.size());
-        Entity selected = entities.get(res);
+        int targetIndex = promptChoice(
+                new ArrayList<>(entities.stream().map(Entity::toString).toList()),
+                true
+        );
 
-        int nbFaces = Display.promptInt(scan, "Nombre de faces du dé :");
-        int nbRolls = Display.promptInt(scan, "Nombre de lancers :");
+        if (targetIndex == -1) return;
+        Entity selected = entities.get(targetIndex);
 
-        System.out.print("Lancez vos dés (appuyez sur Entrée) : ");
-        scan.nextLine(); // Pause utilisateur
+        say("Configuration des dés :");
+        ArrayList<String> diceOptions = new ArrayList<>(List.of(
+                "1d4", "1d6", "1d8", "1d10",
+                "1d12", "1d20", "2d6", "3d6"
+        ));
+
+        int diceChoice = promptChoice(diceOptions, true);
+        if (diceChoice == -1) return;
+
+        String[] diceParts = diceOptions.get(diceChoice).split("d");
+        int nbRolls = Integer.parseInt(diceParts[0]);
+        int nbFaces = Integer.parseInt(diceParts[1]);
+
+        say("Lancement des dés... (appuyez sur Entrée)");
+        scan.nextLine();
         int totalDamage = Dice.sumUp(new Dice(nbRolls, nbFaces).roll());
 
-        System.out.println("Vous infligez " + totalDamage + " dégâts à " + selected);
+        say("Vous infligez " + totalDamage + " dégâts à " + selected);
         selected.takeDamage(totalDamage);
     }
 

@@ -12,6 +12,7 @@ import equipment.weapon.Weapon;
 
 import java.util.*;
 
+import static donjon.Display.promptChoice;
 import static donjon.Display.promptInt;
 
 public class Game {
@@ -94,7 +95,6 @@ public class Game {
     private void setUp(){
         m_donjon.setupDonjon();
         retrievePlayerOrder();
-        game();
     }
 
     private void game() {
@@ -128,7 +128,7 @@ public class Game {
         int dex = entity.getDex();
         int speed = entity.getSpeed();
 
-        List<String> actions = new ArrayList<>(Arrays.asList(
+        ArrayList<String> actions = new ArrayList<>(Arrays.asList(
                 "attaquer",
                 "se déplacer",
                 "s'équiper",
@@ -142,20 +142,11 @@ public class Game {
             weapon = personnage.getWeapon();
             inventory = personnage.getInventory();
             if (personnage.getSpells().length > 0) {
-                actions.add("utiliser un sors");
+                actions.add("utiliser un sort");
             }
         }
 
-        List<Integer> possibleChoices = new ArrayList<>();
-        for (int i = 0; i < actions.size(); i++) {
-            possibleChoices.add(i);
-        }
         int nbAction = 0;
-        Scanner scan = new Scanner(System.in);
-        if(entity.getType() == EnumEntity.MONSTER){
-            possibleChoices.remove(3);//on enleve car le monstre ne peut pas s'équiper
-        }
-
         while (nbAction < 3) {
             m_donjon.m_display.refreshDisplay();
             System.out.println(entity);
@@ -168,71 +159,67 @@ public class Game {
             System.out.println("    Dextérité : " + dex);
             System.out.println("    Vitesse : " + speed);
 
-            possibleChoices = new ArrayList<>();
-            for (int i = 0; i < actions.size(); i++) {
-                possibleChoices.add(i);
-            }
             System.out.println("\n--- Tour de " + entity + " ---");
             System.out.println("Vous avez " + (3 - nbAction) + " actions restantes.");
 
-            for (int i = 0; i < actions.size(); i++) {
-                    System.out.println("[" + i + "] " + actions.get(i));
-            }
-            if (entity.getType() == EnumEntity.PERSONNAGE) {
-                weapon = ((Personnage) entity).getWeapon();
-                inventory = ((Personnage) entity).getInventory();
-            }
+            // Création d'une copie des actions disponibles
+            ArrayList<String> availableActions = new ArrayList<>(actions);
 
-            if(weapon ==null&&(entity.getType() == EnumEntity.PERSONNAGE)){
-                possibleChoices.remove(0);
+            // Si c'est un monstre, on retire l'option de commentaire
+            if (entity.getType() == EnumEntity.MONSTER) {
+                availableActions.remove("commenter action");
             }
 
-            System.out.print(entity + ", faire une action ou tapez 'fin' : ");
-            String input = scan.nextLine();
+            // Si pas d'arme, on retire l'option d'attaque
+            if (weapon == null && (entity.getType() == EnumEntity.PERSONNAGE)) {
+                availableActions.remove("attaquer");
+            }
 
-            if (input.equalsIgnoreCase("fin")) {
+            // Utilisation de promptChoice
+            int choix = promptChoice(availableActions, true);
+
+            if (choix == -1) { // L'utilisateur a tapé 'fin'
                 break;
             }
 
-            int choix = -1;
-            while (!possibleChoices.contains(choix)){
-                choix = promptInt(scan,"Choisissez votre action ");
-            }
+            String selectedAction = availableActions.get(choix);
 
-            switch (choix) {
-                case 0:
+            switch (selectedAction) {
+                case "attaquer":
                     m_donjon.playerAttack(entity);
                     break;
-                case 1:
+                case "se déplacer":
                     m_donjon.moveEntity(entity);
                     break;
-                case 2:
+                case "s'équiper":
                     if (inventory == null || inventory.length == 0) {
                         System.out.println("Votre inventaire est vide.");
                         break;
                     }
-                    int ivenChoix = -1;
                     System.out.println("Inventaire :");
                     System.out.println(((Personnage)entity).getInventoryString());
-                    while (ivenChoix<0||ivenChoix>inventory.length){
-                        ivenChoix = promptInt(scan,"Choisissez votre action");
+                    ArrayList<String> inventoryItems = new ArrayList<>();
+                    for (Equipment item : inventory) {
+                        inventoryItems.add(item.toString());
                     }
-                    System.out.println("Vous avez choisi d'équiper : " + inventory[ivenChoix]);
-                    ((Personnage)entity).equip(inventory[ivenChoix]);
+                    int itemChoice = promptChoice(inventoryItems, false);
+                    System.out.println("Vous avez choisi d'équiper : " + inventory[itemChoice]);
+                    ((Personnage)entity).equip(inventory[itemChoice]);
                     break;
-                case 3:
+                case "commenter action":
                     commenter(entity);
                     break;
-                case 4:
-                    commenter(entity);//à changer par la suite
+                case "maître du jeu commente":
+                    commenter(entity); // À changer par la suite
                     break;
-                case 5:
+                case "utiliser un sort":
                     Personnage personnage = ((Personnage) entity);
+                    ArrayList<String> spells = new ArrayList<>();
                     for (int i = 0; i < personnage.getSpells().length; i++) {
-                        System.out.printf("[%d]\t\t%s\n", i, personnage.getSpells()[i]);
+                        spells.add(personnage.getSpells()[i].toString());
                     }
-                    int choixSpell = promptInt(scan,"Choisissez votre sort", 0, personnage.getSpells().length);
-                    personnage.getSpells()[choixSpell].spell(m_entities);
+                    int spellChoice = promptChoice(spells, false);
+                    personnage.getSpells()[spellChoice].spell(m_entities);
                     break;
                 default:
                     System.out.println("Choix inconnu.");

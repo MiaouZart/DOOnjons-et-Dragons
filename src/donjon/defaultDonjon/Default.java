@@ -5,6 +5,8 @@ import entity.Entity;
 
 import java.util.HashMap;
 
+import static donjon.Display.obstacleChar;
+
 public abstract class Default {
     protected final HashMap<Entity, int[]> m_entities;
     protected final Donjon m_donjon;
@@ -25,10 +27,10 @@ public abstract class Default {
         int size = donjon.getDonjonSize();
 
         for (int i = 0; i < size; i++) {
-            grid[0][i] = " # ";  // Mur nord
-            grid[size - 1][i] = " # ";  // Mur sud
-            grid[i][0] = " # ";  // Mur ouest
-            grid[i][size - 1] = " # ";  // Mur est
+            grid[0][i] = obstacleChar;  // Mur nord
+            grid[size - 1][i] = obstacleChar;  // Mur sud
+            grid[i][0] = obstacleChar;  // Mur ouest
+            grid[i][size - 1] = obstacleChar;  // Mur est
         }
 
         return grid;

@@ -194,7 +194,7 @@ public class Personnage extends Entity {
 
     @Override
     public String getSprite() {
-        return this.m_name.trim().substring(0,3).toUpperCase();
+        return "\033[32m" + this.m_name.trim().substring(0,3).toUpperCase() + "\033[0m";
     }
 
     @Override

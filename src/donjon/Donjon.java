@@ -7,6 +7,7 @@ import equipment.Equipment;
 
 import java.util.*;
 
+import static donjon.Display.equipmentChar;
 import static donjon.Display.promptChoice;
 
 
@@ -194,7 +195,7 @@ public class Donjon {
             int newY = oldPos[1] + moveFactor[1];
 
             if (newX < 0 || newX > m_donjonSize || newY < 0 || newY > m_donjonSize ||
-                    !(Objects.equals(m_donjonGrid[newX][newY], " . ") || Objects.equals(m_donjonGrid[newX][newY], " E "))) {
+                    !(Objects.equals(m_donjonGrid[newX][newY], " . ") || Objects.equals(m_donjonGrid[newX][newY], equipmentChar))) {
                 System.out.println("Vous n'avez pas le droit");
                 continue;
             }

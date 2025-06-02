@@ -162,6 +162,7 @@ public abstract class Entity {
         try {
             armor = this.getArmorPoint();
         }catch (Exception _){
+            return false;
         }
 
         if(armor < resultat){

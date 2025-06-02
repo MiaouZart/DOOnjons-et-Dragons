@@ -65,7 +65,7 @@ public class Monster extends Entity {
 
     @Override
     public String getSprite() {
-        return this.m_specie.trim().substring(0,3).toUpperCase();
+        return "\033[31m"+this.m_specie.trim().substring(0,3).toUpperCase() + "\033[0m";
     }
 
 

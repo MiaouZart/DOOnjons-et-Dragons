@@ -2,8 +2,7 @@ package donjon;
 
 import java.util.Scanner;
 
-import static donjon.Display.checkEmptyCase;
-import static donjon.Display.retrieveGridPosition;
+import static donjon.Display.*;
 
 public class ObstacleCreator {
     /**
@@ -35,7 +34,7 @@ public class ObstacleCreator {
     private static void create(String input, String[][] grid) {
         int[] pos = retrieveGridPosition(input);
         if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {
-            grid[pos[0]][pos[1]] = " # ";
+            grid[pos[0]][pos[1]] = obstacleChar;
         }
     }
 }

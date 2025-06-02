@@ -11,6 +11,9 @@ import equipment.weapon.types.Longsword;
 
 import java.util.HashMap;
 
+import static donjon.Display.equipmentChar;
+import static donjon.Display.obstacleChar;
+
 public class Default3 extends Default {
 
     /**
@@ -26,14 +29,14 @@ public class Default3 extends Default {
 
         // Quelques murs internes
         for (int i = 8; i <= 16; i++) {
-            grid[12][i] = " # ";
-            grid[i][12] = " # ";
+            grid[12][i] = obstacleChar;
+            grid[i][12] = obstacleChar;
         }
 
         // Entrées / sorties
-        grid[2][2] = " E ";
-        grid[22][22] = " E ";
-        grid[2][22] = " E ";
+        grid[2][2] = equipmentChar;
+        grid[22][22] = equipmentChar;
+        grid[2][22] = equipmentChar;
     }
 
     protected void createDefaultPlayers() {

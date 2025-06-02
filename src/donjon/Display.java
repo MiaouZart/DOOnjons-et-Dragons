@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class Display {
     private final Donjon m_donjon;
     private final int m_repeat;
+    public static String obstacleChar = " \033[35m#\033[0m ";
+    public static String equipmentChar = " \033[93mE\033[0m ";
 
     /**
      * Constructeur du Display relatif à un Donjon
@@ -52,7 +54,7 @@ public class Display {
         if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
             return false;
         }
-        return !donjonGrid[x][y].equals(" # ");
+        return !donjonGrid[x][y].equals(obstacleChar);
     }
 
     /**

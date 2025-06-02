@@ -50,7 +50,7 @@ public class EquipmentCreator {
         int[] pos = retrieveGridPosition(position);
         if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {
             equipments.put(equipment, pos);
-            grid[pos[0]][pos[1]] = " E ";
+            grid[pos[0]][pos[1]] = equipmentChar;
         }
     }
 

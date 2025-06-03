@@ -19,7 +19,7 @@ public class Heal extends Spell {
     }
 
     @Override
-    public void spell(HashMap<Entity, int[]> entities) {
+    public void spell(HashMap<Entity, int[]> entities, String[][] grid) {
         int i = 0;
         System.out.println("Veuillez choisir un personnage à soigner (1d10) :");
         for (Entity e : entities.keySet())

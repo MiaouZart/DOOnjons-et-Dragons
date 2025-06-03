@@ -23,9 +23,10 @@ public abstract class Spell {
 
     /**
      * Exécution du sort.
-     * @param m_entities Map des entités.
+     * @param entities Map des entités.
+     * @param grid Grid en chaîne de caractères.
      */
-    public abstract void spell(HashMap<Entity, int[]> m_entities);
+    public abstract void spell(HashMap<Entity, int[]> entities, String[][] grid);
 
     @Override
     public boolean equals(Object o) {

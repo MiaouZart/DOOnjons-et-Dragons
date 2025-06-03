@@ -18,7 +18,7 @@ public class BoogieWoogie extends Spell {
     }
 
     @Override
-    public void spell(HashMap<Entity, int[]> entities) {
+    public void spell(HashMap<Entity, int[]> entities, String[][] grid) {
         int i;
         for (i = 0; i< entities.size(); i++) {
             Entity e = (Entity) entities.keySet().toArray()[i];
@@ -40,8 +40,13 @@ public class BoogieWoogie extends Spell {
 
         Entity entity0 = (Entity) entities.keySet().toArray()[selected0];
         Entity entity1 = (Entity) entities.keySet().toArray()[selected1];
-        int[] pos0 = entities.get(entity0);
-        entities.replace(entity0, entities.get(entity1));
+        int[] pos0 = entities.get(entity0).clone();
+        int[] pos1 = entities.get(entity1).clone();
+        entities.replace(entity0, pos1);
         entities.replace(entity1, pos0);
+
+        String temp = grid[pos0[0]][pos0[1]];
+        grid[pos0[0]][pos0[1]] = grid[pos1[0]][pos1[1]];
+        grid[pos1[0]][pos1[1]] = temp;
     }
 }

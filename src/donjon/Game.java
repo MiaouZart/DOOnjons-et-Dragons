@@ -223,7 +223,7 @@ public class Game {
                         spells.add(personnage.getSpells()[i].toString());
                     }
                     int spellChoice = promptChoice(spells, false);
-                    personnage.getSpells()[spellChoice].spell(m_entities);
+                    personnage.getSpells()[spellChoice].spell(m_entities, m_donjon.m_donjonGrid);
                     break;
                 default:
                     System.out.println("Choix inconnu.");

@@ -22,7 +22,7 @@ public class MagicWeapon extends Spell {
     }
 
     @Override
-    public void spell(HashMap<Entity, int[]> entities) {
+    public void spell(HashMap<Entity, int[]> entities, String[][] grid) {
         int i = 0;
         System.out.println("Veuillez choisir un personnage à qui améliorer une arme :");
         for (Entity e : entities.keySet())

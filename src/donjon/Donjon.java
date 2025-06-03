@@ -3,13 +3,13 @@ package donjon;
 import dice.Dice;
 import entity.Entity;
 import entity.EnumEntity;
+import entity.personnage.Personnage;
 import equipment.Equipment;
+import printer.StandardOut;
 
 import java.util.*;
 
 import static donjon.Display.equipmentChar;
-import static donjon.Display.promptChoice;
-
 
 public class Donjon {
     protected final int m_donjonSize;
@@ -17,74 +17,54 @@ public class Donjon {
     protected int m_turn = 0;
     protected int m_donjonNumber;
     protected boolean m_setup = false;
-    protected final HashMap<Equipment, int[]> m_equipments;
+    protected final HashMap<int[], Equipment> m_equipments;
     protected final HashMap<Entity, int[]> m_entities;
     protected final Display m_display;
-    protected boolean m_donjonWin=false;
+    protected boolean m_donjonWin = false;
     protected boolean m_donjonLoose = false;
-    private int m_monsterNumber=0;
-    private int m_playerNumber=0;
+    private int m_monsterNumber = 0;
+    private int m_playerNumber = 0;
 
-    /**
-     * Constructeur du Donjon.
-     * @param size Taille de la grille (carré).
-     * @param players Dictionnaire de position - joueurs.
-     */
     public Donjon(int size, HashMap<Entity, int[]> players) {
-
         m_donjonSize = size;
         m_donjonGrid = new String[m_donjonSize][m_donjonSize];
         initializeGrid();
         m_equipments = new HashMap<>();
-
         m_entities = Objects.requireNonNullElseGet(players, HashMap::new);
-
-        m_display = new Display(this);
+        m_display = new Display(this, new printer.SystemOut());
     }
 
-    /**
-     * Initialise la grille.
-     */
     private void initializeGrid() {
-        for (int i = 0; i < m_donjonSize; i++)
-            for (int j = 0; j < m_donjonSize; j++)
+        for (int i = 0; i < m_donjonSize; i++) {
+            for (int j = 0; j < m_donjonSize; j++) {
                 m_donjonGrid[i][j] = " . ";
+            }
+        }
     }
 
-    /**
-     * Met en place le donjon.
-     */
     public void setupDonjon() {
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
         entityPosition();
-        m_monsterNumber= MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
+        m_monsterNumber = MonsterCreator.bulkCreate(m_display, m_donjonGrid, m_entities);
         EquipmentCreator.create(m_display, m_donjonGrid, m_equipments);
         promptContext();
         initiativeInit();
         m_setup = true;
     }
 
-    /**
-     * Demande au MJ des emplacements pour créer un nombre d'obstacles à sa convenience.
-     */
-    public void createObstacle(){
+    public void createObstacle() {
         ObstacleCreator.bulkCreate(m_display, m_donjonGrid);
     }
 
-    /**
-     * Setup la position de chaque entités, par le MJ.
-     */
     private void entityPosition() {
-        Scanner scanner = new Scanner(System.in);
-
         for (Entity playerName : m_entities.keySet()) {
             boolean positionOk = false;
             while (!positionOk) {
                 m_display.displayTitle("\033[95mMaître du jeu\033[0m - Positionnez vos Joueurs");
                 m_display.refreshDisplay();
 
-                System.out.print("Entrez la position du joueur " + playerName + " (ex: A5) : ");
-                String input = scanner.nextLine().trim().toUpperCase();
+                m_display.getOutput().out("Entrez la position du joueur " + playerName + " (ex: A5) : ");
+                String input = m_display.getOutput().in().trim().toUpperCase();
 
                 int[] pos = Display.retrieveGridPosition(input);
                 if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
@@ -92,74 +72,56 @@ public class Donjon {
                     m_entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
                 } else {
-                    System.out.println("Position déjà occupée. Veuillez réessayer.");
+                    m_display.getOutput().outLn("Position déjà occupée. Veuillez réessayer.");
                 }
             }
             m_playerNumber++;
         }
     }
 
-    /**
-     * Demande au MJ de déplacer une entité.
-     * @param entity Entité à déplacer.
-     */
     public void entityPosition(Entity entity) {
-        Scanner scanner = new Scanner(System.in);
         boolean positionOk = false;
         while (!positionOk) {
             m_display.displayTitle("\033[95mMaître du jeu\033[0m - Positionnez vos Joueurs");
             m_display.refreshDisplay();
 
-            System.out.print("Entrez la position du joueur " + entity + " (ex: A5) : ");
-            String input = scanner.nextLine().trim().toUpperCase();
+            m_display.getOutput().out("Entrez la position du joueur " + entity + " (ex: A5) : ");
+            String input = m_display.getOutput().in().trim().toUpperCase();
 
             int[] pos = Display.retrieveGridPosition(input);
 
             if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                m_donjonGrid[m_entities.get(entity)[0]][m_entities.get(entity)[1]]="  ";
-                m_donjonGrid[pos[0]][pos[1]] =entity.getSprite();
+                m_donjonGrid[m_entities.get(entity)[0]][m_entities.get(entity)[1]] = "  ";
+                m_donjonGrid[pos[0]][pos[1]] = entity.getSprite();
                 m_entities.replace(entity, new int[]{pos[0], pos[1]});
                 positionOk = true;
             } else {
-                System.out.println("Position déjà occupée. Veuillez réessayer.");
+                m_display.getOutput().outLn("Position déjà occupée. Veuillez réessayer.");
             }
         }
         m_playerNumber++;
     }
 
-    /**
-     * Demande au MJ de donner le contexte.
-     */
     private void promptContext() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Début du donjon...\nSaisissez le contexte : ");
-        scanner.nextLine();
+        m_display.getOutput().outLn("Début du donjon...\nSaisissez le contexte : ");
+        m_display.getOutput().in();
     }
 
-    /**
-     * Toutes les entités font des jets d'initiative.
-     */
-    private void initiativeInit(){
-        Dice initiativeDice = new Dice(1,20);
-        Scanner scan = new Scanner(System.in);
-        for(Entity entity : m_entities.keySet()){
-            m_display.displayTitle(entity.toString()+" : Faite votre jetté de dés : ");
-            scan.nextLine();
+    private void initiativeInit() {
+        Dice initiativeDice = new Dice(1, 20);
+        for (Entity entity : m_entities.keySet()) {
+            m_display.displayTitle(entity.toString() + " : Faite votre jetté de dés : ");
+            m_display.getOutput().in();
             int lancer = initiativeDice.roll()[0];
-            System.out.println("Vous avez tirez un "+lancer);
+            m_display.getOutput().outLn("Vous avez tirez un " + lancer);
             entity.addInitiative(lancer);
-            System.out.println("Vous avez donc maintenant "+entity.getInitiative()+" d'initiative");
+            m_display.getOutput().outLn("Vous avez donc maintenant " + entity.getInitiative() + " d'initiative");
         }
     }
 
-    /**
-     * Permet à une entité de se déplacer.
-     * @param entity Entité qui peut se déplacer.
-     */
     public void moveEntity(Entity entity) {
         int remainingMove = entity.getSpeed();
         int moveSpeed = 1;
-        Scanner scan = new Scanner(System.in);
 
         ArrayList<String> directions = new ArrayList<>(Arrays.asList(
                 "↑ Haut", "↓ Bas", "→ Droite", "← Gauche",
@@ -168,15 +130,15 @@ public class Donjon {
 
         while (remainingMove > 0) {
             m_display.refreshDisplay();
-            System.out.println("Vous avez " + remainingMove + " points de déplacement restants.");
-            System.out.print("Voulez-vous continuer ou taper 'fin' pour terminer : ");
+            m_display.getOutput().outLn("Vous avez " + remainingMove + " points de déplacement restants.");
+            m_display.getOutput().out("Voulez-vous continuer ou taper 'fin' pour terminer : ");
 
-            String input = scan.nextLine();
+            String input = m_display.getOutput().in();
             if (input.equalsIgnoreCase("fin")) {
                 break;
             }
 
-            int direction = promptChoice(directions, false);
+            int direction = m_display.promptChoice(directions, false);
 
             int[] moveFactor = switch (direction) {
                 case 0 -> new int[]{-moveSpeed, 0};
@@ -196,8 +158,15 @@ public class Donjon {
 
             if (newX < 0 || newX > m_donjonSize || newY < 0 || newY > m_donjonSize ||
                     !(Objects.equals(m_donjonGrid[newX][newY], " . ") || Objects.equals(m_donjonGrid[newX][newY], equipmentChar))) {
-                System.out.println("Vous n'avez pas le droit");
+                m_display.getOutput().outLn("Vous n'avez pas le droit");
                 continue;
+            }
+
+            if (m_equipments.containsKey(new int[]{newX, newY})) {
+                if (entity.getType() == EnumEntity.PERSONNAGE) {
+                    ((Personnage) entity).take(m_equipments.get(new int[]{newX, newY}));
+                    m_equipments.remove(new int[]{newX, newY});
+                }
             }
 
             m_donjonGrid[oldPos[0]][oldPos[1]] = " . ";
@@ -206,16 +175,9 @@ public class Donjon {
             remainingMove -= moveSpeed;
         }
 
-        System.out.println("Fin du déplacement.");
+        m_display.getOutput().outLn("Fin du déplacement.");
     }
 
-
-    /**
-     * Calcule la distance entre deux entités.
-     * @param entity1 Première entité de l'équation
-     * @param entity2 Seconde entité de l'équation
-     * @return Distance des entités.
-     */
     private int distance(Entity entity1, Entity entity2) {
         int x1 = m_entities.get(entity1)[0];
         int y1 = m_entities.get(entity1)[1];
@@ -224,11 +186,6 @@ public class Donjon {
         return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
     }
 
-    /**
-     * Permet à une entité d'en attaquer une autre.<br>
-     * <i>Une entité ne peut pas attaquer ses alliés.</i>
-     * @param entity Entité auteur de l'attaque.
-     */
     public void playerAttack(Entity entity) {
         EnumEntity entityType = entity.getType();
         ArrayList<Entity> entitiesThatCanBeAttacked = new ArrayList<>();
@@ -237,7 +194,7 @@ public class Donjon {
 
         for (Entity enemy : m_entities.keySet()) {
             if (enemy.getType() == entityType) {
-                continue; // même camp
+                continue;
             }
             int distance = distance(entity, enemy);
             if (distance <= range) {
@@ -247,83 +204,65 @@ public class Donjon {
         }
 
         if (entitiesThatCanBeAttacked.isEmpty()) {
-            System.out.println("Personne à attaquer");
+            m_display.getOutput().outLn("Personne à attaquer");
             return;
         }
 
-        System.out.println("Vous pouvez attaquer :");
-        int cible = promptChoice(attackableNames, true);
+        m_display.getOutput().outLn("Vous pouvez attaquer :");
+        int cible = m_display.promptChoice(attackableNames, true);
+
+        if (cible < 0 || cible >= entitiesThatCanBeAttacked.size()) {
+            return;
+        }
 
         Entity chose = entitiesThatCanBeAttacked.get(cible);
         boolean toucher = chose.getAttacked(entity);
 
         if (toucher) {
-            System.out.println("Bravo vous avez touché votre cible");
+            m_display.getOutput().outLn("Bravo vous avez touché votre cible");
             if (chose.getDead()) {
-                System.out.println("Et Vous l'avez tuée");
+                m_display.getOutput().outLn("Et Vous l'avez tuée");
                 m_entities.remove(chose);
                 checkWin();
             }
         }
     }
 
-    /**
-     * Passe au tour suivant.
-     */
     public void nextTurn() {
         m_turn++;
         m_display.refreshDisplay();
     }
 
-    /**
-     * Vérifie l'état du donjon ; Si les joueurs ont perdu ou gagné.
-     */
-    private void checkWin(){
-        if(m_playerNumber==0){
-            m_donjonLoose=true;
+    private void checkWin() {
+        if (m_playerNumber == 0) {
+            m_donjonLoose = true;
         }
-        if(m_monsterNumber==0){
-            m_donjonWin=true;
+        if (m_monsterNumber == 0) {
+            m_donjonWin = true;
         }
     }
 
-    /**
-     * Getter pour si le donjon est gagnant.
-     * @return État du donjon, s'il a gagné.
-     */
-    public boolean getWin(){
+    public boolean getWin() {
         return m_donjonWin;
     }
 
-    /**
-     * Getter pour si le donjon est perdant.
-     * @return État du donjon, s'il a perdu.
-     */
-    public boolean getLoose(){
+    public boolean getLoose() {
         return m_donjonLoose;
     }
 
-    /**
-     * Getter taille du Donjon
-     * @return Taille de la grille du Donjon.
-     */
-    public int getDonjonSize() { return m_donjonSize; }
+    public int getDonjonSize() {
+        return m_donjonSize;
+    }
 
-    /**
-     * Getter de la grille du Donjon.
-     * @return Grille du Donjon.
-     */
-    public String[][] getDonjonGrid() { return m_donjonGrid; }
+    public String[][] getDonjonGrid() {
+        return m_donjonGrid;
+    }
 
-    /**
-     * Getter du tour.
-     * @return Numéro du tour.
-     */
-    public int getTurn() { return m_turn; }
+    public int getTurn() {
+        return m_turn;
+    }
 
-    /**
-     * Getter des entités.
-     * @return Les entités et leur position.
-     */
-    public HashMap<Entity, int[]> getEntities() { return m_entities; }
+    public HashMap<Entity, int[]> getEntities() {
+        return m_entities;
+    }
 }

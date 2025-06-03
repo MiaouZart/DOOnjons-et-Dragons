@@ -5,35 +5,40 @@ import entity.personnage.charclass.types.*;
 import entity.personnage.Personnage;
 import entity.personnage.race.types.*;
 import entity.personnage.race.Race;
+import printer.StandardOut;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class CharacterCreator {
+    private final StandardOut m_output;
 
-    public CharacterCreator() {
+    public CharacterCreator(StandardOut output) {
+        this.m_output = output;
     }
 
     /**
      * Crée un personnage en demandant avec des utilisateurs
      * @return Nouveau personnage crée.
      */
-    protected static Personnage create() {
-        Scanner scanner = new Scanner(System.in);
-        return new Personnage(promptName(scanner), promptRace(), promptClass());
+    protected static Personnage create(StandardOut output) {
+        return new Personnage(
+                promptName(output),
+                promptRace(output),
+                promptClass(output)
+        );
     }
 
     /**
      * Demande un nom.
-     * @param scanner Scanner à utiliser pour demander le nom.
+     * @param output Système de sortie standard à utiliser
      * @return Chaîne de caractère du nom demandé.
      */
-    private static String promptName(Scanner scanner) {
+    private static String promptName(StandardOut output) {
         String nom = "";
 
         while (nom.isEmpty()) {
-            System.out.print("Veuillez saisir un nom : ");
-            nom = scanner.nextLine();
+            output.out("Veuillez saisir un nom : ");
+            nom = output.in();
         }
 
         return nom;
@@ -41,9 +46,10 @@ public class CharacterCreator {
 
     /**
      * Demande une race
-     * @return Chaîne de caractère de la race demandé.
+     * @param output Système de sortie standard à utiliser
+     * @return Race sélectionnée
      */
-    private static Race promptRace() {
+    private static Race promptRace(StandardOut output) {
         ArrayList<String> raceChoices = new ArrayList<>();
         raceChoices.add("Nain");
         raceChoices.add("Elfe");
@@ -63,9 +69,10 @@ public class CharacterCreator {
 
     /**
      * Demande une classe
-     * @return Chaîne de caractère de la classe demandé.
+     * @param output Système de sortie standard à utiliser
+     * @return Classe sélectionnée
      */
-    private static CharClass promptClass() {
+    private static CharClass promptClass(StandardOut output) {
         ArrayList<String> classChoices = new ArrayList<>();
         classChoices.add("Clerc");
         classChoices.add("Guerrier");

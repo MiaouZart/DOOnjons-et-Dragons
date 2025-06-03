@@ -2,40 +2,39 @@ package donjon;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
+import printer.StandardOut;
 
 public class Display {
     private final Donjon m_donjon;
     private final int m_repeat;
+    private static StandardOut m_output = null;
     public static String obstacleChar = " \033[35m#\033[0m ";
     public static String equipmentChar = " \033[93mE\033[0m ";
 
     /**
      * Constructeur du Display relatif à un Donjon
      * @param donjon Donjon à utiliser
+     * @param output Systeme de sortie standard à utiliser
      */
-    public Display(Donjon donjon) {
+    public Display(Donjon donjon, StandardOut output) {
         m_donjon = donjon;
+        Display.init(output);
+        m_output = output;
         int m_cellWidth = 5;
         m_repeat = m_donjon.getDonjonSize() * m_cellWidth;
     }
 
-    /**
-     * Vérifie si la case du donjon est vide.<br>
-     * <i>Version verbeuse de checkEmptyCaseNonVerbose(int x, int y, String[][] donjonGrid, int donjonSize).</i>
-     * @param x Coordonnée X de la case à vérifier.
-     * @param y Coordonnée Y de la case à vérifier.
-     * @param donjonGrid Grille du Donjon à vérifier.
-     * @param donjonSize Taille totale du Donjon.
-     * @return Si oui ou non la case est prise.
-     */
+    public static void init(StandardOut output) {
+        m_output = output;
+    }
+
     protected static boolean checkEmptyCase(int x, int y, String[][] donjonGrid, int donjonSize) {
         if (x < 0 || x >= donjonSize || y < 0 || y >= donjonSize) {
-            System.out.println("Coordonnées hors limites.");
+            m_output.outLn("Coordonnées hors limites.");
             return false;
         }
         if (!donjonGrid[x][y].equals(" . ")) {
-            System.out.println("Il y a un obstacle ici.");
+            m_output.outLn("Il y a un obstacle ici.");
             return false;
         }
         return true;
@@ -66,7 +65,7 @@ public class Display {
         if (position.isEmpty())
             return new int[]{-1, -1};
         if (position.length() < 2 || position.length() > 3) {
-            System.out.println("Entrée invalide. Format attendu : Lettre+chiffre (ex: B3).");
+            m_output.outLn("Entrée invalide. Format attendu : Lettre+chiffre (ex: B3).");
             return new int[]{-1, -1};
         }
 
@@ -75,7 +74,7 @@ public class Display {
         try {
             row = Integer.parseInt(position.substring(1));
         } catch (NumberFormatException e) {
-            System.out.println("Numéro de ligne invalide.");
+            m_output.outLn("Numéro de ligne invalide.");
             return new int[]{-1, -1};
         }
 
@@ -93,11 +92,12 @@ public class Display {
         try {
             result = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("Valeur Invalide.");
+            m_output.outLn("Valeur Invalide.");
             return -1;
         }
         return result;
     }
+
 
     /**
      * Met à jour les informations.
@@ -111,7 +111,7 @@ public class Display {
      * Affiche le tour en cours.
      */
     protected void displayTurn() {
-        System.out.println( "\033[1m"+"Tour " + m_donjon.getTurn() + "\033[0m");
+        m_output.outLn("\033[1mTour " + m_donjon.getTurn() + "\033[0m");
     }
 
     /**
@@ -119,13 +119,13 @@ public class Display {
      * @param message Chaîne de caractère à afficher.
      */
     protected void displayTitle(String message) {
-        System.out.println("*".repeat(m_repeat + 3));
-        System.out.printf("Donjon : %d\n", m_donjon.m_donjonNumber);
+        m_output.outLn("*".repeat(m_repeat + 3));
+        m_output.printf("Donjon : %d\n", m_donjon.m_donjonNumber);
         if (!m_donjon.getEntities().isEmpty()) {
-            System.out.printf(" ".repeat(m_repeat / 3) + "%2s\n", message);
+            m_output.printf(" ".repeat(m_repeat / 3) + "%2s\n", message);
         }
-        System.out.println();
-        System.out.println("*".repeat(m_repeat + 3));
+        m_output.outLn("");
+        m_output.outLn("*".repeat(m_repeat + 3));
     }
 
     /**
@@ -136,57 +136,54 @@ public class Display {
         int rows = 0;
 
         // En-tête des colonnes (A, B, C...)
-        System.out.print("    ");
+        m_output.out("    ");
         for (int i = 0; i < m_donjon.getDonjonSize(); i++) {
-            System.out.printf(" %2s  ", (char)(asciiA + i));
+            m_output.printf(" %2s  ", (char)(asciiA + i));
         }
-        System.out.println();
+        m_output.outLn("");
 
-        System.out.println("   /" + "-".repeat(m_repeat) + "\\");
+        m_output.outLn("   /" + "-".repeat(m_repeat) + "\\");
 
         // Affichage des lignes
         for (int i = 0; i < m_donjon.getDonjonSize(); i++) {
-            System.out.printf("%s %s|", rows, rows < 10 ? " " : "");
+            m_output.printf("%s %s|", rows, rows < 10 ? " " : "");
             rows++;
             for (int j = 0; j < m_donjon.getDonjonSize(); j++) {
                 String cell = m_donjon.getDonjonGrid()[i][j];
                 if (cell == null) cell = " ";
-                System.out.printf(" %s ", cell);
+                m_output.printf(" %s ", cell);
             }
-            System.out.println("|");
+            m_output.outLn("|");
         }
-        System.out.println("  \\" + "-".repeat(m_repeat) + "/");
+        m_output.outLn("  \\" + "-".repeat(m_repeat) + "/");
     }
 
     /**
      * Demande à l'utilisateur une entrée de type nombre entier.
-     * @param scanner Scanner à utiliser pour demander le nombre.
      * @param label Texte à afficher pour demander le nombre.
      * @return Nombre entier que l'utilisateur a entré.
      */
-    public static int promptInt(Scanner scanner, String label) {
+    public static int promptInt(String label) {
         int result = -1;
         while (result == -1) {
-            System.out.print("Entrez " + label + " : ");
-            result = retrieveInt(scanner.nextLine().trim());
+            m_output.out("Entrez " + label + " : ");
+            result = retrieveInt(m_output.in().trim());
         }
         return result;
     }
 
     /**
-     * Demande à l'utilisateur une entrée de type nombre entier, inclus entre deux nombres.<br>
-     * <i>Version clamp de promptInt(Scanner scanner, String label)</i>
-     * @param scanner Scanner à utiliser pour demander le nombre.
+     * Demande à l'utilisateur une entrée de type nombre entier, inclus entre deux nombres.
      * @param label Texte à afficher pour demander le nombre.
      * @param min Nombre minimum accepté.
      * @param max Nombre max accepté.
      * @return Nombre entier que l'utilisateur a entré.
      */
-    public static int promptInt(Scanner scanner, String label, int min, int max) {
+    public static int promptInt(String label, int min, int max) {
         int result = -1;
         while (result == -1 || !(min <= result && result < max)) {
-            System.out.print("Entrez " + label + " : ");
-            result = retrieveInt(scanner.nextLine().trim());
+            m_output.out("Entrez " + label + " : ");
+            result = retrieveInt(m_output.in().trim());
         }
         return result;
     }
@@ -202,16 +199,15 @@ public class Display {
         int res;
 
         for (int i = 0; i < nbChoice; i++) {
-            System.out.println("[" + "\033[1;4m" + i + "\033[0m" + "] " + choices.get(i));
+            m_output.outLn("[" + "\033[1;4m" + i + "\033[0m" + "] " + choices.get(i));
         }
 
-        Scanner scan = new Scanner(System.in);
         while (true) {
-            System.out.print("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " : ");
-            String Choice = scan.nextLine();
+            m_output.out("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " : ");
+            String Choice = m_output.in();
 
             if (allowFin && Objects.equals(Choice, "fin")) {
-                res = -1; // Option "fin" permet de sortir
+                res = -1;
                 break;
             }
 
@@ -219,12 +215,14 @@ public class Display {
             if (res >= 0 && res < nbChoice) {
                 break;
             } else {
-                System.out.println("Choix invalide. Veuillez réessayer.");
+                m_output.outLn("Choix invalide. Veuillez réessayer.");
             }
         }
 
         return res;
     }
 
-
+    public StandardOut getOutput() {
+        return m_output;
+    }
 }

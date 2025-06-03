@@ -1,6 +1,6 @@
 package donjon;
 
-import java.util.Scanner;
+import printer.StandardOut;
 
 import static donjon.Display.*;
 
@@ -11,12 +11,14 @@ public class ObstacleCreator {
      * @param grid Grille en cours, afin de voir s'il y a déjà quelque-chose, et placer le nouvel obstacle.
      */
     public static void bulkCreate(Display display, String[][] grid) {
-        Scanner scanner = new Scanner(System.in);
+        StandardOut output = display.getOutput();
+
         while (true) {
-            display.displayTitle("Maitre du jeu Positionnez vos obstacle");
+            display.displayTitle("Maitre du jeu Positionnez vos obstacles");
             display.refreshDisplay();
-            System.out.print("Entrez la position d'un obstacle (ex: A5) ou 'fin' : ");
-            String input = scanner.nextLine().trim().toUpperCase();
+
+            output.out("Entrez la position d'un obstacle (ex: A5) ou 'fin' : ");
+            String input = output.in().trim().toUpperCase();
 
             if (input.equals("FIN")) {
                 break;

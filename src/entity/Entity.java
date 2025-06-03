@@ -1,6 +1,7 @@
 package entity;
 
 import dice.Dice;
+import printer.StandardOut;
 
 import java.util.Scanner;
 
@@ -194,11 +195,9 @@ public abstract class Entity {
 
     /**
      * Faire dire quelque-chose à l'entité.
-     * @param scanner Scanner à utiliser pour parler.
      */
-    public void say(Scanner scanner){
-        System.out.println(this+"- ");
-        scanner.nextLine();
+    public void say(StandardOut out){
+        out.outLn("oui");
     }
 
     /**

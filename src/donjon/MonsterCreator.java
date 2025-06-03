@@ -3,10 +3,11 @@ package donjon;
 import dice.Dice;
 import entity.Entity;
 import entity.monster.Monster;
+import printer.StandardOut;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import static donjon.Display.*;
 
@@ -25,10 +26,9 @@ public class MonsterCreator {
      * @param entities Map des Entités - Position où placer les nouveaux monstres.
      * @return Nombre de nouveaux monstres ajoutés.
      */
-
     protected static int bulkCreate(Display display, String[][] grid, HashMap<Entity, int[]> entities) {
-        Scanner scanner = new Scanner(System.in);
         int monsterCount = 0;
+        StandardOut output = display.getOutput();
 
         while (true) {
             display.displayTitle("\033[95mMaître du jeu\033[0m : Créez vos Monstres");
@@ -37,43 +37,43 @@ public class MonsterCreator {
             ArrayList<String> options = new ArrayList<>();
             options.add("Nouveau monstre");
 
-            int choice = promptChoice(options, true);
+            int choice = display.promptChoice(options, true);
             if (choice == -1 || choice == 1) break;
 
             // Sélection de la race
             ArrayList<String> speciesOptions = new ArrayList<>(PREDEFINED_SPECIES);
             speciesOptions.add("Autre race...");
 
-            int speciesChoice = promptChoice(speciesOptions, true);
+            int speciesChoice = display.promptChoice(speciesOptions, true);
             if (speciesChoice == -1) continue;
 
             String specie;
             if (speciesChoice == speciesOptions.size() - 1) {
-                System.out.print("Entrez le nom de la race du monstre : ");
-                specie = scanner.nextLine().trim();
+                output.out("Entrez le nom de la race du monstre : ");
+                specie = output.in().trim();
             } else {
                 specie = PREDEFINED_SPECIES.get(speciesChoice);
             }
 
-            Monster monster = createMonster(scanner, specie);
-            int[] pos = promptPosition(scanner, grid);
+            Monster monster = createMonster(specie, display);
+            int[] pos = promptPosition(display, grid);
             grid[pos[0]][pos[1]] = " M ";
             entities.put(monster, pos);
             monsterCount++;
 
-            System.out.println("Monstre créé : " + monster);
+            output.outLn("Monstre créé : " + monster);
         }
         return monsterCount;
     }
 
     /**
-     * Crée un (1) nouveau monstre.<br>
-     * Méthode demandant au MJ les caractéristique du nouveau monstre.
-     * @param scanner Scanner à utiliser pour les demandes consoles.
+     * Crée un (1) nouveau monstre.
      * @param specie Espèce du monstre.
+     * @param display Display pour les interactions
      * @return Objet du nouveau monstre.
      */
-    protected static Monster createMonster(Scanner scanner, String specie) {
+    protected static Monster createMonster(String specie, Display display) {
+        StandardOut output = display.getOutput();
         ArrayList<String> statNames = new ArrayList<>(List.of(
                 "Vie", "Dextérité", "Vitesse", "Force",
                 "ID", "Portée d'attaque", "Points d'armure"
@@ -82,16 +82,16 @@ public class MonsterCreator {
         ArrayList<Integer> stats = new ArrayList<>();
 
         for (String statName : statNames) {
-            stats.add(promptInt(scanner, statName + " :"));
+            stats.add(display.promptInt(statName + " :"));
         }
 
-        System.out.println("\nConfiguration des dés d'attaque :");
+        output.outLn("\nConfiguration des dés d'attaque :");
         ArrayList<String> diceOptions = new ArrayList<>(List.of(
                 "1d4", "1d6", "1d8", "1d10",
                 "2d6", "3d4", "1d12", "2d8"
         ));
 
-        int diceChoice = promptChoice(diceOptions, false);
+        int diceChoice = display.promptChoice(diceOptions, false);
         String[] diceParts = diceOptions.get(diceChoice).split("d");
         int nbDice = Integer.parseInt(diceParts[0]);
         int faceDice = Integer.parseInt(diceParts[1]);
@@ -109,16 +109,17 @@ public class MonsterCreator {
         );
     }
 
-    protected static int[] promptPosition(Scanner scanner, String[][] grid) {
+    protected static int[] promptPosition(Display display, String[][] grid) {
+        StandardOut output = display.getOutput();
         while (true) {
-            System.out.print("Entrez la position du monstre (ex: A5) : ");
-            String position = scanner.nextLine().trim().toUpperCase();
+            output.out("Entrez la position du monstre (ex: A5) : ");
+            String position = output.in().trim().toUpperCase();
             int[] pos = retrieveGridPosition(position);
 
             if (checkEmptyCase(pos[0], pos[1], grid, grid[0].length)) {
                 return pos;
             }
-            System.out.println("Position invalide ou occupée. Veuillez réessayer.");
+            output.outLn("Position invalide ou occupée. Veuillez réessayer.");
         }
     }
 }

@@ -31,7 +31,7 @@ public class MagicWeapon extends Spell {
                 i++;
             }
 
-        int choixPerso = promptInt(new Scanner(System.in), "Choix", 0, i);
+        int choixPerso = promptInt( "Choix", 0, i);
 
         i = 0;
         for (Entity e : entities.keySet())
@@ -46,7 +46,7 @@ public class MagicWeapon extends Spell {
                             j++;
                         }
                     }
-                    int choixArme = promptInt(new Scanner(System.in), "Choix", 0, j);
+                    int choixArme = promptInt( "Choix", 0, j);
                     j = 0;
                     for (Equipment eq: p.getInventory()) {
                         if (eq.getEquipmentType() == EquipmentType.WEAPON) {

@@ -2,6 +2,7 @@ package donjon;
 
 import dice.Dice;
 import entity.Entity;
+import printer.StandardOut;
 
 import java.util.*;
 
@@ -10,17 +11,18 @@ import static donjon.Display.promptChoice;
 public class GameMaster {
     private final HashMap<Entity, int[]> m_entityHashMapCopy;
     private final Donjon m_donjon;
-    private final Scanner scan;
+    private final StandardOut m_output;
 
     /**
      * Constructeur de la classe du Maître du jeu.
      * @param entityHashMapCopy Map des entités - positions.
      * @param donjon Donjon à utiliser.
+     * @param output Système de sortie standard à utiliser.
      */
-    public GameMaster(HashMap<Entity, int[]> entityHashMapCopy, Donjon donjon) {
+    public GameMaster(HashMap<Entity, int[]> entityHashMapCopy, Donjon donjon, StandardOut output) {
         this.m_entityHashMapCopy = entityHashMapCopy;
         this.m_donjon = donjon;
-        this.scan = new Scanner(System.in);
+        this.m_output = output;
     }
 
     /**
@@ -28,7 +30,7 @@ public class GameMaster {
      * @param phrase Phrase à dire.
      */
     public void say(String phrase) {
-        System.out.println("\033[95mMaître du jeu\033[0m - " + phrase);
+        m_output.outLn("\033[95mMaître du jeu\033[0m - " + phrase);
     }
 
     /**
@@ -46,7 +48,7 @@ public class GameMaster {
 
         int choice = promptChoice(actions, true);
 
-        if (choice == -1) return; // L'utilisateur a choisi 'fin'
+        if (choice == -1) return;
 
         switch (choice) {
             case 0:
@@ -72,7 +74,7 @@ public class GameMaster {
         for (Entity entity : entities) {
             entityNames.add(entity.toString() + " (PV: " + entity.getHp() + ")");
         }
-        promptChoice(entityNames, false); // Affiche seulement la liste
+        promptChoice(entityNames, false);
     }
 
     /**
@@ -123,7 +125,7 @@ public class GameMaster {
         int nbFaces = Integer.parseInt(diceParts[1]);
 
         say("Lancement des dés... (appuyez sur Entrée)");
-        scan.nextLine();
+        m_output.in();
         int totalDamage = Dice.sumUp(new Dice(nbRolls, nbFaces).roll());
 
         say("Vous infligez " + totalDamage + " dégâts à " + selected);

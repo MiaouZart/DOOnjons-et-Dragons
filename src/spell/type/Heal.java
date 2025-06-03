@@ -24,7 +24,7 @@ public class Heal extends Spell {
         System.out.println("Veuillez choisir un personnage à soigner (1d10) :");
         for (Entity e : entities.keySet())
             if (e.getType() == EnumEntity.PERSONNAGE) {
-                System.out.printf("[%d]\t\t%d/%d | %s\n", i, e.getHp(), e.getMaxHp(), e);
+                System.out.printf("[\033[1;4m%d\033[0m]\t\t%d/%d | %s\n", i, e.getHp(), e.getMaxHp(), e);
                 i++;
             }
 

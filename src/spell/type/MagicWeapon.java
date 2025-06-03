@@ -27,7 +27,7 @@ public class MagicWeapon extends Spell {
         System.out.println("Veuillez choisir un personnage à qui améliorer une arme :");
         for (Entity e : entities.keySet())
             if (e.getType() == EnumEntity.PERSONNAGE) {
-                System.out.printf("[%d]\t\t%s\n", i, e);
+                System.out.printf("[\033[1;4m%d\033[0m]\t\t%s\n", i, e);
                 i++;
             }
 
@@ -42,7 +42,7 @@ public class MagicWeapon extends Spell {
                     int j = 0;
                     for (Equipment eq: p.getInventory()) {
                         if (eq.getEquipmentType() == EquipmentType.WEAPON) {
-                            System.out.printf("[%d]\t\t%s\n", j, eq);
+                            System.out.printf("[\033[1;4m%d\033[0m]\t\t%s\n", j, eq);
                             j++;
                         }
                     }

@@ -22,7 +22,7 @@ public class BoogieWoogie extends Spell {
         int i;
         for (i = 0; i< entities.size(); i++) {
             Entity e = (Entity) entities.keySet().toArray()[i];
-            System.out.printf("[%d]\t\t[%d,%d]\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
+            System.out.printf("[\033[1;4m%d\033[0m]\t\t\033[36m[%d,%d]\033[0m\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
         }
 
         int selected0 = promptInt(new Scanner(System.in), "Choix du premier personnage à déplacer", 0, i);
@@ -31,7 +31,7 @@ public class BoogieWoogie extends Spell {
             if (i == selected0)
                 continue;
             Entity e = (Entity) entities.keySet().toArray()[i];
-            System.out.printf("[%d]\t\t[%d,%d]\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
+            System.out.printf("[\033[1;4m%d\033[0m]\t\t\033[36m[%d,%d]\033[0m\t%s\n", i, entities.get(e)[0], entities.get(e)[1], e);
         }
 
         int selected1 = -1;

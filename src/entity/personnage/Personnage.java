@@ -154,7 +154,7 @@ public class Personnage extends Entity {
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m_inventory.length; i++) {
-            sb.append("[").append(i).append("]");
+            sb.append("[" + "\033[1;4m").append(i).append( "\033[0m" + "]");
             sb.append(m_inventory[i] != null ? m_inventory[i].toString() : "(vide)");
             if (i < m_inventory.length - 1) {
                 sb.append(" ; ");
@@ -209,6 +209,6 @@ public class Personnage extends Entity {
 
     @Override
     public String toString() {
-        return this.m_name+" ( "+this.m_charClass+" )";
+        return  "\033[32m" + this.m_name+" ( " + "\033[1m"+this.m_charClass + "\033[0;32m" +" )" + "\033[0m";
     }
 }

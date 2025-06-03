@@ -30,7 +30,7 @@ public class Game {
         System.out.println("Tapez 0-1-2 si vous voulez utilisez un donjon par défault ou 3 si création Manuelle");
         int choice = -1;
         while (choice<0||choice>3){
-            choice = promptInt(scanner,"Choix ");
+            choice = promptInt(scanner,"Choix");
         }
         m_playerOrder = new ArrayList<>();
         m_entities = new HashMap<>();
@@ -116,7 +116,7 @@ public class Game {
             m_donjon.nextTurn();
         }
 
-        System.out.println(m_donjon.getLoose() ? "Vous avez perdu" : "Vous avez gagné");
+        System.out.println(m_donjon.getLoose() ? "\033[31mVous avez perdu\033[0m" : "\033[32mVous avez gagné\033[0m");
     }
 
     /**
@@ -154,17 +154,17 @@ public class Game {
         while (nbAction < 3) {
             m_donjon.m_display.refreshDisplay();
             System.out.println(entity);
-            System.out.println("    Vie : " + health);
-            System.out.println("    Armure : " + (armor != null ? armor : "(aucune)"));
-            System.out.println("    Arme : " + (weapon != null ? weapon : "(aucune)"));
-            System.out.print("    Inventaire : ");
-            System.out.println(inventory != null ? ((Personnage) entity).getInventoryString() : "(aucun)");
-            System.out.println("    Force : " + strength);
-            System.out.println("    Dextérité : " + dex);
-            System.out.println("    Vitesse : " + speed);
+            System.out.println("\tVie : \033[1m" + health + "\033[0m");
+            System.out.println("\tArmure : \033[1m" + (armor != null ? armor : "(aucune)") + "\033[0m");
+            System.out.println("\tArme : \033[1m" + (weapon != null ? weapon : "(aucune)") + "\033[0m");
+            System.out.print("\tInventaire : ");
+            System.out.println((inventory != null ? ((Personnage) entity).getInventoryString() : "(aucun)"));
+            System.out.println("\tForce : \033[1m" + strength + "\033[0m");
+            System.out.println("\tDextérité : \033[1m" + dex + "\033[0m");
+            System.out.println("\tVitesse : \033[1m" + speed + "\033[0m");
 
             System.out.println("\n--- Tour de " + entity + " ---");
-            System.out.println("Vous avez " + (3 - nbAction) + " actions restantes.");
+            System.out.println("Vous avez " + "\033[1m" + (3 - nbAction)  + "\033[0m" + " actions restantes.");
 
             // Création d'une copie des actions disponibles
             ArrayList<String> availableActions = new ArrayList<>(actions);

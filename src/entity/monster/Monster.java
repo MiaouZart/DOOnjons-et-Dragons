@@ -37,7 +37,7 @@ public class Monster extends Entity {
 
     @Override
     public String toString() {
-        return this.m_specie+"-"+this.m_id;
+        return  "\033[31;1m" + this.m_specie+"-"+this.m_id + "\033[0m";
     }
 
     /**

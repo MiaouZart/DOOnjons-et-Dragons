@@ -24,7 +24,7 @@ public class EquipmentCreator {
     public static void create(Display display, String[][] grid, HashMap<Equipment, int[]> equipments) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            display.displayTitle("Maître du jeu : Ajouter un équipement");
+            display.displayTitle("\033[95mMaître du jeu\033[0m : Ajouter un équipement");
             ArrayList<String> options = new ArrayList<>();
             options.add("Continuer");
             options.add("Terminer");

@@ -80,7 +80,7 @@ public class Donjon {
         for (Entity playerName : m_entities.keySet()) {
             boolean positionOk = false;
             while (!positionOk) {
-                m_display.displayTitle("Maître du jeu - Positionnez vos Joueurs");
+                m_display.displayTitle("\033[95mMaître du jeu\033[0m - Positionnez vos Joueurs");
                 m_display.refreshDisplay();
 
                 System.out.print("Entrez la position du joueur " + playerName + " (ex: A5) : ");
@@ -107,7 +107,7 @@ public class Donjon {
         Scanner scanner = new Scanner(System.in);
         boolean positionOk = false;
         while (!positionOk) {
-            m_display.displayTitle("Maître du jeu - Positionnez vos Joueurs");
+            m_display.displayTitle("\033[95mMaître du jeu\033[0m - Positionnez vos Joueurs");
             m_display.refreshDisplay();
 
             System.out.print("Entrez la position du joueur " + entity + " (ex: A5) : ");

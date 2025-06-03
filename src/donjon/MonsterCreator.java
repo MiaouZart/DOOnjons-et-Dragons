@@ -31,7 +31,7 @@ public class MonsterCreator {
         int monsterCount = 0;
 
         while (true) {
-            display.displayTitle("Maître du jeu : Créez vos Monstres");
+            display.displayTitle("\033[95mMaître du jeu\033[0m : Créez vos Monstres");
             display.refreshDisplay();
 
             ArrayList<String> options = new ArrayList<>();

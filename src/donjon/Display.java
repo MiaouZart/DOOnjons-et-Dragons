@@ -111,7 +111,7 @@ public class Display {
      * Affiche le tour en cours.
      */
     protected void displayTurn() {
-        System.out.println("Tour " + m_donjon.getTurn());
+        System.out.println( "\033[1m"+"Tour " + m_donjon.getTurn() + "\033[0m");
     }
 
     /**
@@ -202,12 +202,12 @@ public class Display {
         int res;
 
         for (int i = 0; i < nbChoice; i++) {
-            System.out.println("[" + i + "] " + choices.get(i));
+            System.out.println("[" + "\033[1;4m" + i + "\033[0m" + "] " + choices.get(i));
         }
 
         Scanner scan = new Scanner(System.in);
         while (true) {
-            System.out.print("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " :");
+            System.out.print("Faites votre choix" + (allowFin ? " ou tapez 'fin' pour annuler" : "") + " : ");
             String Choice = scan.nextLine();
 
             if (allowFin && Objects.equals(Choice, "fin")) {

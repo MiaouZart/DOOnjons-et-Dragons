@@ -28,7 +28,7 @@ public class GameMaster {
      * @param phrase Phrase à dire.
      */
     public void say(String phrase) {
-        System.out.println("Maître du jeu - " + phrase);
+        System.out.println("\033[95mMaître du jeu\033[0m - " + phrase);
     }
 
     /**

@@ -10,6 +10,7 @@ import printer.StandardOut;
 import java.util.*;
 
 import static donjon.Display.equipmentChar;
+import static donjon.Display.promptChoice;
 
 public class Donjon {
     protected final int m_donjonSize;
@@ -68,7 +69,7 @@ public class Donjon {
 
                 int[] pos = Display.retrieveGridPosition(input);
                 if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                    m_donjonGrid[pos[0]][pos[1]] = " P ";
+                    m_donjonGrid[pos[0]][pos[1]] = playerName.getSprite();
                     m_entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
                 } else {
@@ -138,7 +139,7 @@ public class Donjon {
                 break;
             }
 
-            int direction = m_display.promptChoice(directions, false);
+            int direction = promptChoice(directions, false);
 
             int[] moveFactor = switch (direction) {
                 case 0 -> new int[]{-moveSpeed, 0};
@@ -209,7 +210,7 @@ public class Donjon {
         }
 
         m_display.getOutput().outLn("Vous pouvez attaquer :");
-        int cible = m_display.promptChoice(attackableNames, true);
+        int cible = promptChoice(attackableNames, true);
 
         if (cible < 0 || cible >= entitiesThatCanBeAttacked.size()) {
             return;

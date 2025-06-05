@@ -1,10 +1,16 @@
 package spell;
 
+import donjon.Display;
+import entity.Entity;
 import entity.personnage.Personnage;
 import entity.personnage.charclass.types.*;
 import entity.personnage.race.types.*;
 import org.junit.jupiter.api.Test;
+import printer.StandardOut;
 import spell.type.*;
+
+import java.io.ByteArrayInputStream;
+import java.util.HashMap;
 
 public class SpellTest {
     @Test
@@ -23,19 +29,24 @@ public class SpellTest {
     }
 
     @Test
-    public void BoogieWoogie() {/*
-        System.setIn(new ByteArrayInputStream("1".getBytes()));
-        Spell spell = new BoogieWoogie();
-        Entity testEntity0 = new Personnage("Pierre", new Dwarf(), new Wizard());
-        Entity testEntity1 = new Personnage("Bruno", new Elf(), new Rogue());
-        HashMap<Entity, int[]> entities = new HashMap<>();
-        entities.put(testEntity0, new int[]{0, 0});
-        entities.put(testEntity1, new int[]{0, 5});
-        spell.spell(entities);
-        for (int i = 0; i< entities.size(); i++) {
-            Entity e = (Entity) entities.keySet().toArray()[i];
-            System.out.printf("[%d]\t\t[%d,%d] %s\n", i, entities.get(e)[0], entities.get(e)[1], e);
-        }*/
+    public void BoogieWoogie() {
+//        StandardOut m_output = new printer.SystemOut();
+//        Display.init(m_output);
+//        System.setIn(new ByteArrayInputStream("1".getBytes()));
+//        Spell spell = new BoogieWoogie();
+//        Entity testEntity0 = new Personnage("Pierre", new Dwarf(), new Wizard());
+//        Entity testEntity1 = new Personnage("Bruno", new Elf(), new Rogue());
+//        HashMap<Entity, int[]> entities = new HashMap<>();
+//        entities.put(testEntity0, new int[]{0, 0});
+//        entities.put(testEntity1, new int[]{0, 5});
+//        String[][] sGrid = new String[6][6];
+//        sGrid[0][0] = testEntity0.getSprite();
+//        sGrid[0][5] = testEntity1.getSprite();
+//        spell.spell(entities, sGrid);
+//        for (int i = 0; i< entities.size(); i++) {
+//            Entity e = (Entity) entities.keySet().toArray()[i];
+//            System.out.printf("[%d]\t\t[%d,%d] %s\n", i, entities.get(e)[0], entities.get(e)[1], e);
+//        }
     }
 
     @Test

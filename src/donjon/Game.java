@@ -24,9 +24,9 @@ public class Game {
     private final StandardOut m_output;
 
     public Game() {
-        m_output = new printer.SystemOut();
         m_playerOrder = new ArrayList<>();
         m_entities = new HashMap<>();
+        m_output = new printer.SystemOut();
         Display.init(m_output);
         m_output.outLn("Tapez 0-1-2 si vous voulez utilisez un donjon par défaut ou 3 si création Manuelle");
         int choice = -1;

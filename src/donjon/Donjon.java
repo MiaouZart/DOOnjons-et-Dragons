@@ -69,7 +69,7 @@ public class Donjon {
 
                 int[] pos = Display.retrieveGridPosition(input);
                 if (Display.checkEmptyCase(pos[0], pos[1], m_donjonGrid, m_donjonSize)) {
-                    m_donjonGrid[pos[0]][pos[1]] = " P ";
+                    m_donjonGrid[pos[0]][pos[1]] = playerName.getSprite();
                     m_entities.replace(playerName, new int[]{pos[0], pos[1]});
                     positionOk = true;
                 } else {

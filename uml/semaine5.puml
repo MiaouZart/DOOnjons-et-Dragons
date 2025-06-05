@@ -1,0 +1,561 @@
+@startuml
+skinparam linetype ortho
+
+
+package entity
+    {
+        abstract class Entity {
+           -Sprite: String
+           -initiative: int
+           -strength: int
+           -hp: int
+           -dice: Dice
+           -maxHp: int
+           -armorPoint: int
+           -dex: int
+           -type: EnumEntity
+           -dead: boolean
+           -rangePoint: int
+           -speed: int
+            + Entity(int, int, int, int, int):
+            + Entity(int, int, int, int):
+            + takeDamage(int)
+            + damage(): int
+            + getAttacked(Entity): boolean
+            + addInitiative(int)
+            + say(StandardOut)
+            + takeHeal(int)
+            + attackBonus(): int
+
+
+
+        }
+
+        enum EnumEntity <<enumeration>> {
+          PERSONNAGE
+          MONSTER
+        }
+
+    Entity "1".-->EnumEntity : type;
+
+
+         package monster {
+             class Monster extends entity.Entity {
+                 - m_specie : String
+                 - m_id : Integer
+                 - m_atkRange : Integer
+                 - m_atkDamage : Dice
+                 - m_armor : Integer
+
+                 + <<create>> Monster(HP: Integer, Strength: Integer, Dex: Integer, Speed: Integer, species: String, id: Integer, atkRange: Integer, armor: Integer, dice: Dice)
+                 + toString() : String
+                 + getRangePoint() : Integer
+                 + getArmorPoint() : Integer
+                 + damage() : Integer
+             }
+         }
+
+        package personnage {
+            class Personnage extends entity.Entity {
+                - m_name : String
+                - m_race : Race
+                - m_charClass : CharClass
+                - m_inventory : Equipment[]
+                - m_weapon : Weapon
+                - m_armor : Armor
+                + <<create>> Personnage(name: String, race: Race, charClass: CharClass)
+                + equip(equipment: Equipment)
+                + equip(weapon: Weapon)
+                + equip(armor: Armor)
+                + take(equipment: Equipment)
+                + getInventoryString() : String
+                + getRangePoint() : Integer
+                + getArmorPoint() : Integer
+                + getSpells() : Spell[]
+                + damage() : Integer
+                + attackBonus() : Integer
+                + getSpeed() : Integer
+                + getStrength() : Integer
+                + toString() : String
+                + getCharClass() : CharClass
+                + getInventory() : Equipment[]
+                + getWeapon() : Weapon
+                + getArmor() : Armor
+        }
+
+        package charclass {
+            abstract Class CharClass{
+                -baseHealth:Integer
+                -name:String
+                -baseStuff:Equipment
+                -spells:Spell[]
+                +<<create>>CharClass(name:String, baseHealth:Integer, baseStuff:Equipment[])
+                +<<create>>CharClass(name:String, baseHealth:Integer, baseStuff:Equipment[], spells:Spell[])
+                + toString(): String
+                + hashCode(): Integer
+                + getBaseHealth(): Integer
+                + getBaseStuff(): Equipment
+                + getSpells(): Spell[]
+                + equals(Object): boolean
+            }
+
+            package types {
+                Class Clerc extends entity.personnage.charclass.CharClass {
+                    +<<create>>Clerc()
+                }
+                Class Warrior extends entity.personnage.charclass.CharClass{
+                    +<<create>>Warrior()
+                }
+                Class Wizard extends entity.personnage.charclass.CharClass{
+                   +<<create>>Wizard()
+                }
+                Class Rogue extends entity.personnage.charclass.CharClass{
+                   +<<create>>Rogue()
+                }
+            }
+        }
+
+        package race{
+            abstract class Race{
+                  initiative: int
+                  strength: int
+                  dex: int
+                  speed: int
+                 + Race(String, int, int, int, int):
+                 + hashCode(): int
+                 + toString(): String
+                 + equals(Object): boolean
+            }
+            package types{
+                Class Human extends entity.personnage.race.Race{
+                    -{static}defaultSpeed:Integer
+                    -{static}defaultDex:Integer
+                    -{static}defaultStrength:Integer
+                    -{static}defaultInitiative:Integer
+                    +<<create>>Human()
+                }
+                Class Dwarf extends entity.personnage.race.Race{
+                    -{static}defaultSpeed:Integer
+                    -{static}defaultDex:Integer
+                    -{static}defaultStrength:Integer
+                    -{static}defaultInitiative:Integer
+                    +<<create>>Dwarf()
+                }
+                Class Elf extends entity.personnage.race.Race{
+                    -{static}defaultSpeed:Integer
+                    -{static}defaultDex:Integer
+                    -{static}defaultStrength:Integer
+                    -{static}defaultInitiative:Integer
+                    +<<create>>Elf()
+                }
+                Class Halfelin extends entity.personnage.race.Race{
+                    -{static}defaultSpeed:Integer
+                    -{static}defaultDex:Integer
+                    -{static}defaultStrength:Integer
+                    -{static}defaultInitiative:Integer
+                    +<<create>>Halfelin()
+                }
+            }
+        }
+
+    }
+}
+
+package equipment {
+    Abstract class Equipment{
+        -name: String
+        -type: EquipmentType
+        +<<create>>Equipment(name:String, type:EquipmentType);
+        +getName() : String
+        +getEquipmentType() : EquipmentType
+    }
+
+    enum EquipmentType <<enumeration>> {
+        ARMOR
+        WEAPON
+    }
+
+    package armor {
+        Abstract Armor Extends equipment.Equipment{
+            +<<create>> Armor(name:String,classVal:Integer,speedModifier:Integer)
+            + equals(Object): boolean
+            + hashCode(): Integer
+            -classVal : Integer
+            -speedModifier : Integer
+            -name : String
+        }
+
+        Abstract Heavy Extends Armor {
+            +<<create>> Heavy(name:String, classVal:Integer)
+        }
+
+        Abstract Light Extends Armor {
+            +<<create>> Light(name:String, classVal:Integer)
+        }
+
+        package types {
+            Class ScaleMail Extends equipment.armor.Light {
+                + <<create>>ScaleMail()
+            }
+
+            Class HalfPlate Extends equipment.armor.Light {
+                + <<create>>HalfPlate()
+            }
+
+            Class ChainMail Extends equipment.armor.Heavy {
+                + <<create>>ChainMail()
+            }
+
+            Class Plate Extends equipment.armor.Heavy {
+                + <<create>>Plate()
+            }
+        }
+    }
+
+    package weapon {
+        Abstract class Weapon Extends equipment.Equipment {
+            -range : Integer
+            -speedModifier : Integer
+            -strengthModifier : Integer
+            -name:String
+            -damageDice:Dice
+            - bonusAtk:Integer
+            - bonusDam:Integer
+            +<<create>>Weapon(name:String,range:Integer,damage:Dice,speedModifier:Integer,strengthModifier:Integer);
+            + hashCode(): int
+            + equals(Object): booleanInteger
+            + damage() : Integer
+            + addBonusAttack(bonus:Integer)
+            + addBonusDamage(bonus:Integer)
+            + getBonusAttack() : Integer
+            + getBonusDamage() : Integer
+        }
+
+        Abstract Simple extends Weapon {
+            +<<create>>Simple(name:String, range:Integer, damage:Dice)
+        }
+
+        Abstract Martial extends Weapon {
+            +<<create>>Martial(name:String, range:Integer, damage:Dice)
+        }
+
+        Abstract Ranged extends Weapon {
+            +<<create>>Ranged(name:String, range:Integer, damage:Dice)
+        }
+
+        package types {
+
+            class Quarterstaff extends equipment.weapon.Simple {
+                +<<create>> Quarterstaff()
+            }
+
+            class Mace extends equipment.weapon.Simple {
+                +<<create>> Mace()
+            }
+
+            class Longsword extends equipment.weapon.Martial {
+                +<<create>> Longsword()
+            }
+
+            class Greatsword extends equipment.weapon.Martial {
+                +<<create>> Greatsword()
+            }
+
+            class Rapier extends equipment.weapon.Martial {
+                +<<create>> Rapier()
+            }
+
+            class Crossbow extends equipment.weapon.Ranged {
+                +<<create>> Crossbow()
+            }
+
+            class Sling extends equipment.weapon.Ranged {
+                +<<create>> Sling()
+            }
+
+            class Shortbow extends equipment.weapon.Ranged {
+                +<<create>> Shortbow()
+            }
+        }
+    }
+
+}
+
+package dice{
+    Class Dice{
+        -value:Integer
+        -nbRoll:Integer
+        +<<create>>Dice(throw:Integer,value:Integer)
+        + hashCode(): Integer
+        + toString(): String
+        + roll(): Integer[]
+        + equals(Object): boolean
+    }
+}
+
+package donjon{
+        class Donjon{
+            -donjonGrid: String[][]
+            -win: boolean
+            -turn: int
+            -entities: HashMap<Entity, int[]>
+            -loose: boolean
+            -donjonSize: int
+            + Donjon(int, HashMap<Entity, int[]>):
+            - entityPosition()
+            + playerAttack(Entity)
+            + nextTurn()
+            - initiativeInit()
+            - distance(Entity, Entity): int
+            - checkWin()
+            - initializeGrid()
+            + moveEntity(Entity)
+            + setupDonjon()
+            + createObstacle()
+            + entityPosition(Entity)
+            - promptContext()
+
+    }
+
+    class CharacterCreator {
+        + CharacterCreator()
+        - {static}promptRace(Scanner): Race
+        - {static}promptClass(Scanner): CharClass
+        # {static}create(): Personnage
+        - {static}promptName(Scanner): String
+    }
+
+    class Display {
+         - output: StandardOut
+        + Display(Donjon, StandardOut)
+        # retrieveGridPosition(String): int[]
+        # checkEmptyCaseNonVerbose(int, int, String[][], int): boolean
+        + promptInt(String, int, int): int
+        + refreshDisplay()
+        # retrieveInt(String): int
+        + init(StandardOut)
+        # checkEmptyCase(int, int, String[][], int): boolean
+        + promptInt(String): int
+        + promptChoice(ArrayList<String>, boolean): int
+        # displayTitle(String)
+        # displayGrid()
+        # displayTurn()
+
+
+    }
+    class EquipmentCreator {
+        + EquipmentCreator()
+        + create(Display, String[][], HashMap<int[], Equipment>)
+        - positionEquipment(Display, Equipment, String[][], HashMap<int[], Equipment>
+        - createEquipment(Display): Equipment
+        - createArmor(Display): Equipment
+        - createWeapon(Display): Equipment
+    }
+    class MonsterCreator {
+      + MonsterCreator():
+      # bulkCreate(Display, String[][], HashMap<Entity, int[]>): int
+      # promptPosition(Display, String[][]): int[]
+      # createMonster(String, Display): Monster
+    }
+    class ObstacleCreator {
+      + ObstacleCreator():
+      + bulkCreate(Display, String[][]): void
+      - create(String, String[][]): void
+    }
+    class Game {
+      + Game():
+      - getAvailableActions(Entity, ArrayList<String>, Weapon): ArrayList<String>
+      + commenter(Entity)
+      - displayEntityInfo(Entity, int, Armor, Weapon, Equipment[], int, int, int, int)
+      - handleEquipment(Entity, Equipment[])
+      - retrievePlayerOrder()
+      - entityTurn(Entity)
+      - handleSpell(Personnage)
+      - setUp()
+      - game()
+      - handleAction(String, Entity, Equipment[])
+    }
+
+    class GameMaster{
+          +GameMaster(entityHashMapCopy :[Entity;Integer[2]]
+          +say(phrase:String)
+          +gameMasterTurn()
+          +displayPlayer()
+          +changeEntityPos()
+          +inflictDamage()
+          +addObstacle()
+    }
+
+    Game "1 m_gameMaster"-->GameMaster:"à pour master >"
+    GameMaster "<<use>>"-->Display
+    GameMaster "m_donjon"-->Donjon :"gére le donjon >";
+
+    package defaultDonjon{
+        abstract class Default {
+            #entities: HashMap<Entity, Integer[]>
+            #donjon: Donjon
+
+            #<<create>> Default(entities:HashMap<Entity, Integer[]>, size:Integer)
+            #initialiseWalls(donjon:Donjon):String[][]
+            - {static} setupDefaultDonjon()
+            - {abstract} initializeDefaultGrid()
+            - {abstract} createDefaultPlayers()
+            - {abstract} createDefaultMonsters()
+            + getDonjon(): Donjon
+        }
+        class Default1 extends Default {
+            + Default1(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
+        class Default2 extends Default {
+            + Default2(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
+        class Default3 extends Default {
+            + Default3(entities: HashMap<Entity, Integer[]>)
+            # initializeDefaultGrid()
+            # createDefaultPlayers()
+            # createDefaultMonsters()
+        }
+   Game"1"--> defaultDonjon:<<use>>
+    }
+}
+
+package spell {
+    package type {
+        class BoogieWoogie extends spell.Spell {
+            + <<create>> BoogieWoogie()
+            + spell(entities:HashMap<Entity, int[]>)
+        }
+        class Heal extends spell.Spell {
+            + <<create>> Heal()
+            + spell(entities:HashMap<Entity, int[]>)
+        }
+        class MagicWeapon extends spell.Spell {
+            + <<create>> MagicWeapon()
+            + spell(entities:HashMap<Entity, int[]>)
+        }
+    }
+
+    class Spell {
+        + Spell(String):
+        + toString(): String
+        + equals(Object): boolean
+        + spell(HashMap<Entity, int[]>, String[][])
+        + hashCode(): int
+
+    }
+}
+
+
+package printer{
+    class StandardOut {
+      + StandardOut():
+      + out(String): void
+      + in(): String
+      + outLn(String): void
+      + printf(String, int, String): void
+      + printf(String, Object): void
+    }
+    class SystemOut extends StandardOut {
+      + SystemOut():
+      + printf(String, int, String): void
+      + outLn(String): void
+      + in(): String
+      + out(String): void
+      + printf(String, Object): void
+    }
+}
+
+
+class Main {
+    +{static}<<create>>Main(args:String[])
+    game:Game
+}
+
+Main "1" *-->"game" Game : <<use>>
+
+entity.personnage.Personnage "-charClass"*-up-> entity.personnage.charclass.CharClass : "Est de classe > "
+entity.personnage.Personnage "-inventory"*-> equipment.Equipment : "A les équipements > "
+entity.personnage.Personnage "-weapon"*-> equipment.weapon.Weapon : "Armé équipes > "
+entity.personnage.Personnage "-armor"*--> equipment.armor.Armor : "Possède l'armure >"
+entity.personnage.Personnage "-race"*->entity.personnage.race.Race : "est de race >"
+
+entity.personnage.charclass.CharClass "-{static}baseStuff[*]" *----> equipment.Equipment:"à pour stuff de base >"
+
+equipment.weapon.Weapon "-damageDice"*----> dice.Dice : "Dés de dommages"
+
+
+entity.monster.Monster "\n-atkDamageDice"*---->dice.Dice : "Dés de dommages"
+
+Donjon           "1" *--> "m_display\n1" Display
+Donjon           "1" *--> "m_entities\n*" Entity
+Donjon           "1" *--> "m_equipments\n*" Equipment
+Donjon            -->  EquipmentCreator : <<use>>
+Donjon            -->  MonsterCreator : <<use>>
+Donjon            -->  ObstacleCreator :<<use>>
+EquipmentCreator  -->  Equipment : <<create>>
+Game "1"--> donjon.CharacterCreator : <<use>>
+Game              -->  Donjon           : "«create»"
+Game             "1" *--> "m_donjon\n1" Donjon
+Game             "1" *--> "m_entities\n*" Entity
+Game              -->  Personnage
+Monster          "1" *--> "m_atkDamage\n1" Dice
+MonsterCreator    -->  Monster          : "«create»"
+ObstacleCreator   -->  Display
+ObstacleCreator   -->  Donjon
+
+CharacterCreator  --> entity.personnage.Personnage : "«create»"
+CharacterCreator  --> entity.personnage.race.Race : <<use>>
+CharacterCreator  --> entity.personnage.charclass.CharClass : <<use>>
+
+Equipment *--> EquipmentType
+Armor *--> EquipmentType
+Weapon *--> EquipmentType
+MagicWeapon .> EquipmentType
+
+MagicWeapon .> Weapon
+MagicWeapon .> Entity
+Heal .> Entity
+BoogieWoogie .> Entity
+
+
+BoogieWoogie      -->  Display
+BoogieWoogie      -->  Entity
+CharClass        "1" *--> "m_spells\n*" Spell
+CharacterCreator  -->  Display
+CharacterCreator "1" *--> "m_output\n1" StandardOut
+Clerc             -->  Spell            : "«create»"
+Display          "1" *--> "m_donjon\n1" Donjon
+Display          "1" *--> "m_output\n1" StandardOut
+Donjon            -->  Display          : "«create»"
+Donjon           "1" *--> "m_display\n1" Display
+Donjon            -->  SystemOut        : "«create»"
+Entity            -->  StandardOut
+EquipmentCreator  -->  StandardOut
+Game             "1" *--> "m_output\n1" StandardOut
+Game              -->  SystemOut        : "«create»"
+GameMaster        -->  Display
+GameMaster       "1" *--> "m_output\n1" StandardOut
+Heal              -->  Dice             : "«create»"
+Heal              -->  Display
+MonsterCreator    -->  Display
+MonsterCreator    -->  Monster          : "«create»"
+MonsterCreator    -->  StandardOut
+ObstacleCreator   -->  Display
+ObstacleCreator   -->  StandardOut
+Personnage       "1" *--> "m_weapon\n1" Weapon
+SystemOut         -->  StandardOut
+Wizard            -->  BoogieWoogie     : "«create»"
+Wizard            -->  Heal             : "«create»"
+Wizard            -->  MagicWeapon      : "«create»"
+Wizard            -->  Spell            : "«create»"
+@enduml
+
+
+
+@enduml

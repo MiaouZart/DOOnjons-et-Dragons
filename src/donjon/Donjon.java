@@ -121,7 +121,7 @@ public class Donjon {
     }
 
     public void moveEntity(Entity entity) {
-        int remainingMove = entity.getSpeed();
+        int remainingMove = entity.getSpeed()/3;
         int moveSpeed = 1;
 
         ArrayList<String> directions = new ArrayList<>(Arrays.asList(

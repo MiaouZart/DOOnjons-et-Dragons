@@ -469,176 +469,79 @@ class Main {
 
 Main "1" *-->"game" Game : <<use>>
 
-Armor             -->  EquipmentType  : "«create»"
-BoogieWoogie      -->  Display : "«use»"
-BoogieWoogie      -->  Entity : "«use»"
+Armor             -->  EquipmentType
+BoogieWoogie      -->  Display
+BoogieWoogie      -->  Entity
 CharClass        "1" *--> "m_baseStuff\n*" Equipment
 CharClass        "1" *--> "m_spells\n*" Spell
 CharClass         -->  Spell            : "«use»"
-CharacterCreator  -->  CharClass : "«use»"
-CharacterCreator  -->  Clerc            : "«create»"
-CharacterCreator  -->  Display : "«use»"
-CharacterCreator  -->  Dwarf            : "«create»"
-CharacterCreator  -->  Elf              : "«create»"
-CharacterCreator  -->  Halfelin         : "«create»"
-CharacterCreator  -->  Human            : "«create»"
-CharacterCreator  -->  Personnage       : "«create»"
-CharacterCreator  -->  Race : "«use»"
-CharacterCreator  -->  Rogue            : "«create»"
+CharacterCreator  -->  CharClass        : "«create»"
+CharacterCreator  -->  Display          : "«use»"
 CharacterCreator "1" *--> "m_output\n1" StandardOut
 CharacterCreator  -->  Warrior          : "«create»"
 CharacterCreator  -->  Wizard           : "«create»"
-Clerc             -->  Equipment        : "«use»"
-Clerc             -->  Spell            : "«use»"
 Crossbow          -->  Dice             : "«create»"
 Default           -->  Donjon           : "«create»"
 Default          "1" *--> "m_donjon\n1" Donjon
 Default          "1" *--> "m_entities\n*" Entity
-Default1          -->  ChainMail        : "«create»"
-Default1          -->  Dice             : "«create»"
-Default1          -->  Donjon  : "«create»"
-Default1          -->  Dwarf            : "«create»"
-Default1          -->  Elf              : "«create»"
-Default1          -->  Entity  : "«create»"
-Default1          -->  Human            : "«create»"
-Default1          -->  Longsword        : "«create»"
-Default1          -->  Monster          : "«create»"
-Default1          -->  Personnage       : "«create»"
-Default1          -->  Rogue            : "«create»"
-Default1          -->  Warrior          : "«create»"
-Default1          -->  Wizard           : "«create»"
-Default2          -->  ChainMail        : "«create»"
-Default2          -->  Dice             : "«create»"
-Default2          -->  Donjon  : "«create»"
-Default2          -->  Entity  : "«create»"
-Default2          -->  Human            : "«create»"
-Default2          -->  Longsword        : "«create»"
-Default2          -->  Monster          : "«create»"
-Default2          -->  Personnage       : "«create»"
-Default2          -->  Rogue            : "«create»"
-Default2          -->  Warrior          : "«create»"
-Default3          -->  ChainMail        : "«create»"
-Default3          -->  Dice             : "«create»"
-Default3          -->  Donjon  : "«create»"
-Default3          -->  Dwarf            : "«create»"
-Default3          -->  Elf              : "«create»"
-Default3          -->  Entity  : "«create»"
-Default3          -->  Longsword        : "«create»"
-Default3          -->  Monster          : "«create»"
-Default3          -->  Personnage       : "«create»"
-Default3          -->  Rogue            : "«create»"
-Default3          -->  Warrior          : "«create»"
-Default3          -->  Wizard           : "«create»"
+Default1          -->  Donjon   : "«create»"
+Default2          -->  Donjon   : "«create»"
+Default3          -->  Donjon   : "«create»"
 Display          "1" *--> "m_donjon\n1" Donjon
 Display          "1" *--> "m_output\n1" StandardOut
 Donjon            -->  Dice             : "«create»"
 Donjon            -->  Display          : "«create»"
 Donjon           "1" *--> "m_display\n1" Display
 Donjon           "1" *--> "m_entities\n*" Entity
-Donjon            -->  EnumEntity : "«use»"
+Donjon            -->  EnumEntity
 Donjon           "1" *--> "m_equipments\n*" Equipment
-Donjon            -->  EquipmentCreator : "«call»"
-Donjon            -->  MonsterCreator : "«call»"
-Donjon            -->  ObstacleCreator: "«call»"
-Donjon            -->  Personnage: "«use»"
-Donjon            -->  StandardOut: "«use»"
-Donjon            -->  SystemOut        : "«use»"
-Entity            -->  Dice             : "«use»"
+Donjon            -->  EquipmentCreator
+Donjon            -->  MonsterCreator
+Donjon            -->  ObstacleCreator
+Donjon            -->  Personnage
+Donjon            -->  StandardOut
+Donjon            -->  SystemOut        : "«create»"
+Entity            -->  Dice             : "«create»"
 Entity           "1" *--> "m_type\n1" EnumEntity
 Entity            -->  StandardOut
 Equipment        "1" *--> "m_type\n1" EquipmentType
-EquipmentCreator  -->  ChainMail        : "«create»"
-EquipmentCreator  -->  Crossbow         : "«create»"
-EquipmentCreator  -->  Display: "«use»"
-EquipmentCreator  -->  Equipment: "«use»"
-EquipmentCreator  -->  EquipmentCreator: "«use»"
-EquipmentCreator  -->  Greatsword       : "«create»"
-EquipmentCreator  -->  HalfPlate        : "«create»"
-EquipmentCreator  -->  Longsword        : "«create»"
-EquipmentCreator  -->  Mace             : "«create»"
-EquipmentCreator  -->  Plate            : "«create»"
-EquipmentCreator  -->  Quarterstaff     : "«create»"
-EquipmentCreator  -->  Rapier           : "«create»"
-EquipmentCreator  -->  ScaleMail        : "«create»"
-EquipmentCreator  -->  Shortbow         : "«create»"
-EquipmentCreator  -->  Sling            : "«create»"
-EquipmentCreator  -->  StandardOut: "«use»"
-Game              -->  Armor: "«use»"
-Game              -->  CharacterCreator: "«call»"
-Game              -->  Default: "«call»"
-Game              -->  Default1       : "«call»"
-Game              -->  Default2        : "«call»"
-Game              -->  Default3        : "«call»"
-Game              -->  Display : "«instantiate»"
+EquipmentCreator  -->  Display  : "«use»"
+EquipmentCreator  -->  Equipment: "«create»"
+EquipmentCreator  -->  StandardOut  : "«use»"
+Game              -->  Default : "«create»"
+Game              -->  Display : "«create»"
 Game              -->  Donjon           : "«create»"
 Game             "1" *--> "m_donjon\n1" Donjon
 Game             "1" *--> "m_entities\n*" Entity
-Game              -->  EnumEntity   : "«use»"
-Game              -->  Equipment    : "«use»"
+Game              -->  EnumEntity : "«use»"
+Game              -->  Equipment : "«use»"
 Game             "1" *--> "m_gameMaster\n1" GameMaster
 Game              -->  GameMaster       : "«create»"
 Game              -->  Personnage : "«use»"
-Game              -->  Spell    : "«call»"
+Game              -->  Spell: "«use»"
 Game             "1" *--> "m_output\n1" StandardOut
 Game              -->  SystemOut        : "«use»"
-Game              -->  Weapon   : "«use»"
 GameMaster        -->  Dice             : "«use»"
-GameMaster        -->  Display  : "«use»"
+GameMaster        -->  Display
 GameMaster       "1" *--> "m_donjon\n1" Donjon
 GameMaster       "1" *--> "m_entityHashMapCopy\n*" Entity
 GameMaster       "1" *--> "m_output\n1" StandardOut
-Greatsword        -->  Dice             : "«use»"
-Heal              -->  Dice             : "«use»"
-Heal              -->  Display  : "«use»"
-Heal              -->  Entity   : "«use»"
-Heal              -->  EnumEntity   : "«use»"
-Longsword         -->  Dice             : "«use»"
-Mace              -->  Dice             : "«create»"
-MagicWeapon       -->  Display         : "«use»"
-MagicWeapon       -->  Entity   : "«use»"
-MagicWeapon       -->  EnumEntity   : "«use»"
-MagicWeapon       -->  Equipment    : "«use»"
-MagicWeapon       -->  EquipmentType    : "«use»"
-MagicWeapon       -->  Personnage   : "«use»"
-MagicWeapon       -->  Spell        : "«use»"
-MagicWeapon       -->  Weapon   : "«use»"
-Martial           -->  Dice : "«use»"
-Martial           -->  EnumWeaponType   : "«use»"
 Monster          "1" *--> "m_atkDamage\n1" Dice
-Monster           -->  EnumEntity   : "«use»"
-MonsterCreator    -->  Dice             : "«create»"
-MonsterCreator    -->  Display  : "«use»"
-MonsterCreator    -->  Entity   : "«use»"
+Monster           -->  EnumEntity : "«use»"
+MonsterCreator    -->  Display : "«use»"
 MonsterCreator    -->  Monster          : "«create»"
-MonsterCreator    -->  StandardOut  : "«use»"
-ObstacleCreator   -->  Display  : "«use»"
-ObstacleCreator   -->  StandardOut  : "«use»"
+MonsterCreator    -->  StandardOut : "«use»"
+ObstacleCreator   -->  Display : "«use»"
+ObstacleCreator   -->  StandardOut : "«use»"
 Personnage       "1" *--> "m_armor\n1" Armor
 Personnage       "1" *--> "m_charClass\n1" CharClass
 Personnage        -->  Dice             : "«use»"
-Personnage        -->  Entity   : "«use»"
-Personnage        -->  EnumEntity   : "«use»"
+Personnage        -->  EnumEntity : "«use»"
 Personnage       "1" *--> "m_inventory\n*" Equipment
-Personnage        -->  EquipmentType    : "«use»"
+Personnage        -->  EquipmentType : "«use»"
 Personnage       "1" *--> "m_race\n1" Race
-Personnage        -->  Spell    : "«use»"
+Personnage        -->  Spell : "«use»"
 Personnage       "1" *--> "m_weapon\n1" Weapon
-Quarterstaff      -->  Dice             : "«use»"
-Ranged            -->  Dice : "«use»"
-Ranged            -->  EnumWeaponType   : "«use»"
-Rapier            -->  Dice             : "«use»"
-Rogue             -->  Equipment        : "«create»"
-Rogue             -->  Rapier           : "«create»"
-Shortbow          -->  Dice             : "«create»"
-Simple            -->  Dice             : "«use»"
-Simple            -->  EnumWeaponType   : "«use»"
-Sling             -->  Dice             : "«use»"
-Spell             -->  Entity           : "«use»"
-Warrior           -->  Crossbow         : "«create»"
-Warrior           -->  Equipment        : "«create»"
 Weapon           "1" *--> "m_damageDice\n1" Dice
 Weapon           "1" *--> "m_type\n1" EnumWeaponType
-Wizard            -->  BoogieWoogie     : "«create»"
-Wizard            -->  Equipment        : "«create»"
-Wizard            -->  Spell            : "«use»"
 @enduml

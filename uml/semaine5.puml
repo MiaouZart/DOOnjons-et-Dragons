@@ -359,8 +359,8 @@ package donjon{
     }
     class ObstacleCreator {
       + ObstacleCreator():
-      + bulkCreate(Display, String[][]): void
-      - create(String, String[][]): void
+      + bulkCreate(Display, String[][])
+      - create(String, String[][])
     }
     class Game {
       + Game():
@@ -455,19 +455,19 @@ package spell {
 package printer{
     class StandardOut {
       + StandardOut():
-      + out(String): void
+      + out(String)
       + in(): String
-      + outLn(String): void
-      + printf(String, int, String): void
-      + printf(String, Object): void
+      + outLn(String)
+      + printf(String, int, String)
+      + printf(String, Object)
     }
     class SystemOut extends StandardOut {
       + SystemOut():
-      + printf(String, int, String): void
-      + outLn(String): void
+      + printf(String, int, String)
+      + outLn(String)
       + in(): String
-      + out(String): void
-      + printf(String, Object): void
+      + out(String)
+      + printf(String, Object)
     }
 }
 

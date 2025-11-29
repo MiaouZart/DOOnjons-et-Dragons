@@ -231,18 +231,6 @@ Caelynn il vous reste 2 actions que souhaitez vous faire ?
   - se déplacer (dep <Case>)
   - s'équiper (equ <numero equipement>)
 ```
-
-```
-  $ att P14
-  Lancer un dé de 20 (appuyer sur n'importe quelle touche)
-  $
-  Vous avez fait 13
-  Votre attaque est de 13+16(Dextérité)=29.
-  Votre attaque perce l'armure du Demogorgon (18).
-  Lancer un dé de 4 pour infliger des dégâts (appuyer sur n'importe quelle touche)
-  $
-  Le Demogorgon subit 3 dégâts!
-  Il lui reste 22 PV.
 ```
 
 
